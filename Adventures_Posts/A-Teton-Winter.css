@@ -1,20 +1,27 @@
  .u-section-1 {
   background-image: url("../images/IMG_3862.jpeg");
+  background-position: 50% 50%;
 }
 
 .u-section-1 .u-sheet-1 {
   min-height: 475px;
 }
 
+@media (max-width: 1199px) {
+  .u-section-1 .u-sheet-1 {
+    min-height: 516px;
+  }
+}
+
 @media (max-width: 767px) {
   .u-section-1 .u-sheet-1 {
-    min-height: 368px;
+    min-height: 399px;
   }
 }
 
 @media (max-width: 575px) {
   .u-section-1 .u-sheet-1 {
-    min-height: 276px;
+    min-height: 299px;
   }
 }.u-section-2 .u-sheet-1 {
   min-height: 2337px;
