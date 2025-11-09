@@ -62,7 +62,7 @@
 
     window._npAddGAnalytics = function () {
         if (gdprConfirmed() && !added) {
-            var gaBody = "<!-- Google Analytics -->\n    <gascript async src=\"https://www.googletagmanager.com/gtag/js?id=G-7L4E28LW1Q\"></gascript>\n    <gascript>\n        window.dataLayer = window.dataLayer || [];\n        function gtag(){dataLayer.push(arguments);}\n        gtag('js', new Date());\n        gtag('config', 'G-7L4E28LW1Q');\n    </gascript>\n    <!-- End Google Analytics -->";
+            var gaBody = "<!-- Google Analytics -->\n    <gascript async src=\"https://www.googletagmanager.com/gtag/js?id=G-YHXQ8YB4JK\"></gascript>\n    <gascript>\n        window.dataLayer = window.dataLayer || [];\n        function gtag(){dataLayer.push(arguments);}\n        gtag('js', new Date());\n        gtag('config', 'G-YHXQ8YB4JK');\n    </gascript>\n    <!-- End Google Analytics -->";
             var replacedBody = gaBody.replace(/gascript/g, 'script');
             insertHTML(replacedBody);
             added = true;
