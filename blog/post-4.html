@@ -9,12 +9,12 @@
 <link rel="stylesheet" href="../Post-Template.css" media="screen">
     <script class="u-script" type="text/javascript" src="../jquery.js" defer=""></script>
     <script class="u-script" type="text/javascript" src="../nicepage.js" defer=""></script>
-    <meta name="generator" content="Nicepage 7.9.4, nicepage.com">
+    <meta name="generator" content="Nicepage 7.15.4, nicepage.com">
     
     
     
-    <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alata:400">
-    <link id="u-page-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alata:400">
+    
+    <link id="u-page-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Alata:wght@400">
     <script type="application/ld+json">{
 		"@context": "http://schema.org",
 		"@type": "Organization",
@@ -26,9 +26,55 @@
 		]
 }</script>
     <meta name="theme-color" content="#478ac9">
-  <meta data-intl-tel-input-cdn-path="intlTelInput/"></head>
-  <body data-path-to-root="./" data-include-products="false" class="u-body u-xl-mode" data-lang="en"><header class="u-clearfix u-header u-hidden-sm u-hidden-xs u-sticky u-sticky-b4bd u-white u-header" id="sec-cdd0"><div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
-        <nav class="u-menu u-menu-one-level u-offcanvas u-menu-1" role="navigation" data-responsive-from="SM">
+  <script>
+    (function() {
+    function gdprConfirmed() {
+        return true;
+    }
+
+    var added = false;
+    var currentScript = document.currentScript;
+
+    function insertHTML(html) {
+        var container = document.createElement('div');
+        container.innerHTML = html;
+        container.querySelectorAll('script').forEach(s => {
+            const ns = document.createElement('script');
+            ns.async = s.async;
+            if (s.src) {
+                ns.src = s.src;
+            } else {
+                ns.textContent = s.textContent;
+            }
+            s.replaceWith(ns);
+        });
+
+            var fragment = document.createDocumentFragment();
+            fragment.append(...container.childNodes);
+
+            if (currentScript && currentScript.parentNode) {
+                currentScript.after(fragment);
+            }
+    }
+
+    window._npAddGAnalytics = function () {
+        if (gdprConfirmed() && !added) {
+            var gaBody = "<!-- Google Analytics -->\n    <gascript async src=\"https://www.googletagmanager.com/gtag/js?id=G-7L4E28LW1Q\"></gascript>\n    <gascript>\n        window.dataLayer = window.dataLayer || [];\n        function gtag(){dataLayer.push(arguments);}\n        gtag('js', new Date());\n        gtag('config', 'G-7L4E28LW1Q');\n    </gascript>\n    <!-- End Google Analytics -->";
+            var replacedBody = gaBody.replace(/gascript/g, 'script');
+            insertHTML(replacedBody);
+            added = true;
+        }
+    }
+
+    window._npAddGAnalytics();
+    })();
+    </script><meta name="referrer" content="origin"><meta data-intl-tel-input-cdn-path="intlTelInput/"></head>
+  <body data-path-to-root="./" data-include-products="false" class="u-body u-xl-mode" data-lang="en"><header class="u-clearfix u-header u-hidden-sm u-hidden-xs u-sticky u-sticky-b4bd u-white u-header" id="sec-cdd0"><style class="u-sticky-style" data-style-id="b4bd">.u-sticky-fixed.u-sticky-b4bd:before, .u-body.u-sticky-fixed .u-sticky-b4bd:before {
+borders: top right bottom left !important
+} </style><div class="u-clearfix u-sheet u-sheet-1">
+        <img class="u-image u-image-contain u-image-default u-image-1" src="../images/long_bar-02.png" alt="" data-image-width="609" data-image-height="606">
+        <img class="u-image u-image-contain u-image-default u-image-2" src="../images/long_bar-02.png" alt="" data-image-width="609" data-image-height="606">
+        <nav class="u-menu u-menu-dropdown u-offcanvas u-menu-1" role="navigation" data-responsive-from="XS">
           <div class="menu-collapse" style="font-size: 1rem; letter-spacing: 0px; font-weight: 700;">
             <a class="u-button-style u-custom-active-border-color u-custom-active-color u-custom-border u-custom-border-color u-custom-border-radius u-custom-borders u-custom-color u-custom-hover-border-color u-custom-hover-color u-custom-left-right-menu-spacing u-custom-padding-bottom u-custom-text-active-color u-custom-text-color u-custom-text-decoration u-custom-text-hover-color u-custom-text-shadow u-custom-top-bottom-menu-spacing u-hamburger-link u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="#" tabindex="-1" aria-label="Open menu" aria-controls="fa42">
               <svg class="u-svg-link" viewBox="0 0 24 24"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#menu-hamburger"></use></svg>
@@ -37,44 +83,54 @@
             </a>
           </div>
           <div class="u-custom-menu u-nav-container">
-            <ul class="u-custom-font u-heading-font u-nav u-spacing-20 u-unstyled u-nav-1" role="menubar"><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3" href="../" style="padding: 10px;">Home</a>
-</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3" href="../Maps.html" style="padding: 10px;">Maps</a>
-</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3" href="../Adventures.html" style="padding: 10px;">Adventures</a>
-</li><li role="none" class="u-nav-item"><a tabindex="-1" role="menuitem" class="u-button-style u-nav-link u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3" href="https://www.etsy.com/shop/MaddyGrubbMaps" target="_blank" style="padding: 10px;">Etsy</a>
+            <ul role="menubar" class="u-custom-font u-heading-font u-nav u-spacing-20 u-unstyled u-nav-1"><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3" href="../" style="padding: 10px;">About</a>
+</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3" href="../Portfolio.html" style="padding: 10px;">Portfolio</a>
+</li><li role="none" class="u-nav-item"><a tabindex="-1" role="menuitem" class="u-button-style u-nav-link u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3" href="https://maddygrubbmaps.etsy.com" target="_blank" style="padding: 10px;">Etsy</a>
+</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3" href="../Journal.html" style="padding: 10px;">Journal</a>
+</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3" href="../Custom-Cartography.html" style="padding: 10px;">Custom Cartography</a><div class="u-nav-popup"><ul role="menu" class="u-h-spacing-10 u-nav u-unstyled u-v-spacing-10 u-nav-2" aria-label="Custom Cartography menu"><li role="none" class="u-nav-item"><a tabindex="-1" role="menuitem" class="u-active-custom-color-7 u-button-style u-hover-custom-color-3 u-nav-link u-text-custom-color-2 u-text-hover-white u-white" href="../Custom-Cartography.html#block-1" data-page-id="76927179">How it Works</a>
+</li><li role="none" class="u-nav-item"><a tabindex="-1" role="menuitem" class="u-active-custom-color-7 u-button-style u-hover-custom-color-3 u-nav-link u-text-custom-color-2 u-text-hover-white u-white" href="https://calendar.app.google/xW35UVz1tDesZTkq5" target="_blank">Schedule a Consult</a>
+</li><li role="none" class="u-nav-item"><a tabindex="-1" role="menuitem" class="u-active-custom-color-7 u-button-style u-hover-custom-color-3 u-nav-link u-text-custom-color-2 u-text-hover-white u-white" href="../Custom-Cartography.html#block-5" data-page-id="76927179">FAQ</a>
+</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-active-custom-color-7 u-button-style u-hover-custom-color-3 u-nav-link u-text-custom-color-2 u-text-hover-white u-white" href="../Ranch_and_Property_Maps.html" target="_blank">Ranch &amp; Property Maps</a>
+</li></ul>
+</div>
 </li></ul>
           </div>
           <div class="u-custom-menu u-nav-container-collapse" id="fa42" role="region" aria-label="Menu panel">
             <div class="u-black u-container-style u-inner-container-layout u-opacity u-opacity-95 u-sidenav">
               <div class="u-inner-container-layout u-sidenav-overflow">
                 <div class="u-menu-close" tabindex="-1" aria-label="Close menu"></div>
-                <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2" role="menubar"><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link" href="../">Home</a>
-</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link" href="../Maps.html">Maps</a>
-</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link" href="../Adventures.html">Adventures</a>
-</li><li role="none" class="u-nav-item"><a tabindex="-1" role="menuitem" class="u-button-style u-nav-link" href="https://www.etsy.com/shop/MaddyGrubbMaps" target="_blank">Etsy</a>
+                <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-3" role="menubar"><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link" href="../">About</a>
+</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link" href="../Portfolio.html">Portfolio</a>
+</li><li role="none" class="u-nav-item"><a tabindex="-1" role="menuitem" class="u-button-style u-nav-link" href="https://maddygrubbmaps.etsy.com" target="_blank">Etsy</a>
+</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link" href="../Journal.html">Journal</a>
+</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link" href="../Custom-Cartography.html">Custom Cartography</a><div class="u-nav-popup"><ul role="menu" class="u-h-spacing-10 u-nav u-unstyled u-v-spacing-10 u-nav-4" aria-label="Custom Cartography menu"><li role="none" class="u-nav-item"><a tabindex="-1" role="menuitem" class="u-button-style u-nav-link" href="../Custom-Cartography.html#block-1" data-page-id="76927179">How it Works</a>
+</li><li role="none" class="u-nav-item"><a tabindex="-1" role="menuitem" class="u-button-style u-nav-link" href="https://calendar.app.google/xW35UVz1tDesZTkq5" target="_blank">Schedule a Consult</a>
+</li><li role="none" class="u-nav-item"><a tabindex="-1" role="menuitem" class="u-button-style u-nav-link" href="../Custom-Cartography.html#block-5" data-page-id="76927179">FAQ</a>
+</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link" href="../Ranch_and_Property_Maps.html" target="_blank">Ranch &amp; Property Maps</a>
+</li></ul>
+</div>
 </li></ul>
               </div>
             </div>
             <div class="u-black u-menu-overlay u-opacity u-opacity-70"></div>
           </div>
-          <style class="menu-style">@media (max-width: 990px) {
-                    [data-responsive-from="SM"] .u-nav-container {
+          <style class="menu-style">@media (max-width: 639px) {
+                    [data-responsive-from="XS"] .u-nav-container {
                         display: none;
                     }
-                    [data-responsive-from="SM"] .menu-collapse {
+                    [data-responsive-from="XS"] .menu-collapse {
                         display: block;
                     }
                 }</style>
         </nav>
-      </div><style class="u-sticky-style" data-style-id="b4bd">.u-sticky-fixed.u-sticky-b4bd:before, .u-body.u-sticky-fixed .u-sticky-b4bd:before {
-borders: top right bottom left !important
-}</style></header>
+      </div></header>
     <section class="u-align-center u-clearfix u-section-1" id="sec-f74c">
       <div class="u-clearfix u-sheet u-valign-middle-md u-valign-middle-sm u-valign-middle-xs u-sheet-1"><!--post_details--><!--post_details_options_json--><!--{"source":""}--><!--/post_details_options_json--><!--blog_post-->
         <div class="u-container-style u-expanded-width u-post-details u-post-details-1">
           <div class="u-container-layout u-valign-middle u-container-layout-1"><!--blog_post_image-->
             <img alt="" class="u-blog-control u-expanded-width u-image u-image-default u-image-1" src="../images/68f64b9d.jpeg"><!--/blog_post_image--><!--blog_post_header-->
             <h2 class="u-blog-control u-text u-text-1">Post 5 Headline</h2><!--/blog_post_header--><!--blog_post_metadata-->
-            <div class="u-blog-control u-metadata u-metadata-1"><!--blog_post_metadata_date--><span class="u-meta-date u-meta-icon">Jun 26, 2022</span><!--/blog_post_metadata_date--><!--blog_post_metadata_category--><span class="u-meta-category u-meta-icon"><a href="../blog/blog.html#/blog-1///">Uncategorized</a></span><!--/blog_post_metadata_category--><!--blog_post_metadata_comments--><span class="u-meta-comments u-meta-icon"><!--blog_post_metadata_comments_content-->Comments (0)<!--/blog_post_metadata_comments_content--></span><!--/blog_post_metadata_comments-->
+            <div class="u-blog-control u-metadata u-metadata-1"><!--blog_post_metadata_date--><span class="u-meta-date u-meta-icon">Jun 25, 2022</span><!--/blog_post_metadata_date--><!--blog_post_metadata_category--><span class="u-meta-category u-meta-icon"><a href="/blog/blog.html#/blog-1///">Uncategorized</a></span><!--/blog_post_metadata_category--><!--blog_post_metadata_comments--><span class="u-meta-comments u-meta-icon"><!--blog_post_metadata_comments_content-->Comments (0)<!--/blog_post_metadata_comments_content--></span><!--/blog_post_metadata_comments-->
             </div><!--/blog_post_metadata--><!--blog_post_content-->
             <div class="u-align-justify u-blog-control u-post-content u-text u-text-2 fr-view">
   Sample small text. Lorem ipsum dolor sit amet.
@@ -86,7 +142,8 @@ borders: top right bottom left !important
     
     
     
-    <footer class="u-align-center u-clearfix u-container-align-center u-custom-color-3 u-footer u-footer" id="sec-71e6"><div class="u-clearfix u-sheet u-sheet-1">
+    
+    <footer class="u-align-center u-clearfix u-container-align-center u-footer u-hidden-sm u-hidden-xs u-white u-footer" id="sec-71e6"><div class="u-clearfix u-sheet u-sheet-1">
         <div class="u-social-icons u-social-icons-1">
           <a class="u-social-url" target="_blank" data-type="Etsy" title="Etsy" href="https://www.etsy.com/shop/MaddyGrubbMaps?ref=seller-platform-mcnav&amp;dd_referrer=https%3A%2F%2Fmaddygrubbmaps.github.io%2F"><span class="u-icon u-social-etsy u-social-icon u-icon-1"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 112 112" style=""><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-4103"></use></svg><svg class="u-svg-content" viewBox="0 0 112 112" x="0" y="0" id="svg-4103"><circle fill="currentColor" cx="56.1" cy="56.1" r="55"></circle><path fill="#FFFFFF" d="M46.5,53.1V30.3c0-0.8,0.1-1.3,1.5-1.3h19.6c3.4,0,5.3,2.9,6.7,8.3l1.1,4.3h3.3C79.5,29.3,80,24,80,24
 	s-8.4,0.9-13.4,0.9H41.5L28,24.5V28l4.5,0.8c3.2,0.6,3.9,1.3,4.2,4.1c0,0,0.3,8.4,0.3,22.3c0,13.9-0.3,22.2-0.3,22.2

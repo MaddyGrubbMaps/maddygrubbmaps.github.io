@@ -1,0 +1,118 @@
+ .u-section-1 {
+  background-image: url("images/Ski_Bend_20251104.jpg");
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+}
+
+.u-section-1 .u-sheet-1 {
+  min-height: 830px;
+}
+
+.u-section-1 .u-image-1 {
+  width: 254px;
+  height: 203px;
+  margin: 98px auto 0;
+}
+
+.u-section-1 .u-btn-1 {
+  text-transform: none;
+  margin: 32px auto 0;
+  padding: 10px 18px 10px 16px;
+}
+
+.u-section-1 .u-icon-1 {
+  font-size: 1rem;
+}
+
+.u-section-1 .u-btn-2 {
+  text-transform: none;
+  margin: 15px auto 0;
+  padding: 10px 12px;
+}
+
+.u-section-1 .u-icon-2 {
+  font-size: 1rem;
+}
+
+.u-section-1 .u-btn-3 {
+  text-transform: none;
+  margin: 15px auto 0;
+  padding: 10px 18px 10px 17px;
+}
+
+.u-section-1 .u-icon-3 {
+  font-size: 1rem;
+}
+
+.u-section-1 .u-btn-4 {
+  text-transform: none;
+  margin: 15px auto 60px;
+  padding: 10px 44px 10px 42px;
+}
+
+.u-section-1 .u-icon-4 {
+  font-size: 1rem;
+}
+
+@media (max-width: 1399px) {
+  .u-section-1 .u-sheet-1 {
+    min-height: 829px;
+  }
+}
+
+@media (max-width: 767px) {
+  .u-section-1 .u-sheet-1 {
+    min-height: 618px;
+  }
+
+  .u-section-1 .u-image-1 {
+    margin-top: 132px;
+    margin-left: 66px;
+  }
+
+  .u-section-1 .u-btn-1 {
+    margin-top: -225px;
+    margin-right: 73px;
+  }
+
+  .u-section-1 .u-btn-2 {
+    margin-right: 72px;
+  }
+
+  .u-section-1 .u-btn-3 {
+    margin-right: 72px;
+  }
+
+  .u-section-1 .u-btn-4 {
+    margin-right: 72px;
+  }
+}
+
+@media (max-width: 575px) {
+   .u-section-1 {
+    background-size: auto 181%;
+  }
+
+  .u-section-1 .u-sheet-1 {
+    min-height: 866px;
+  }
+
+  .u-section-1 .u-btn-1 {
+    margin-top: 32px;
+    margin-right: auto;
+    padding-left: 17px;
+  }
+
+  .u-section-1 .u-btn-2 {
+    margin-right: auto;
+  }
+
+  .u-section-1 .u-btn-3 {
+    margin-right: auto;
+  }
+
+  .u-section-1 .u-btn-4 {
+    margin-right: auto;
+  }
+}
