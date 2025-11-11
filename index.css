@@ -224,7 +224,7 @@
 .u-section-3 .u-image-1 {
   min-height: 615px;
   background-position: 50% 100%;
-  background-image: url("images/Wasatch_Mountains_Backcountry_Winter_Map.jpeg");
+  background-image: url("images/Wasatch_Mountains_Backcountry_Winter_Map.webp");
   background-size: cover;
 }
 
@@ -241,22 +241,22 @@
 
 .u-section-3 .u-image-3 {
   min-height: 307px;
-  background-position: 50% 0%;
-  background-image: url("images/MTG_Ablation_Stakes-02.jpg");
+  background-position: 50% 50%;
+  background-image: url("images/DSC04435.jpg");
   background-size: cover;
 }
 
 .u-section-3 .u-image-4 {
   min-height: 307px;
   background-position: 50% 50%;
-  background-image: url("images/Society_Map_color_v1.png");
+  background-image: url("images/Colorado_Trail_v3copy21.webp");
   background-size: cover;
 }
 
 .u-section-3 .u-image-5 {
   min-height: 307px;
-  background-position: 30.25% 0%;
-  background-image: url("images/Mount_Moran_3D_View.png");
+  background-position: 0% 0%;
+  background-image: url("images/Mount_Moran_3D_View1.webp");
   background-size: auto 130%;
 }
 
@@ -513,7 +513,7 @@
     margin-bottom: 0;
   }
 } .u-section-6 {
-  background-image: url("images/Teton_Glaciers_View_COMPOSITE_V2.jpg");
+  background-image: url("images/Teton_Glaciers_View_COMPOSITE_V2.webp");
   background-position: 50% 50%;
 }
 
