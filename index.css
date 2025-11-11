@@ -84,7 +84,7 @@
 
 @media (max-width: 767px) {
    .u-section-1 {
-    min-height: 95px;
+    min-height: 284px;
   }
 
   .u-section-1 .u-sheet-1 {
@@ -100,12 +100,12 @@
   }
 
   .u-section-1 .u-image-1 {
-    margin-top: -269px;
+    margin-top: -285px;
     margin-left: 79px;
   }
 
   .u-section-1 .u-btn-1 {
-    margin-top: -225px;
+    margin-top: -209px;
     margin-left: 348px;
   }
 
@@ -128,28 +128,29 @@
 
 @media (max-width: 575px) {
    .u-section-1 {
-    background-position: 50% 50%, 50% 50%;
+    background-position: 50% 50%, 46.76% 48.95%;
     background-repeat: no-repeat, no-repeat;
-    background-size: cover, cover;
+    background-size: cover, auto 115%;
     min-height: 94px;
   }
 
   .u-section-1 .u-sheet-1 {
-    min-height: 994px;
+    min-height: 795px;
   }
 
   .u-section-1 .u-text-1 {
     line-height: 1.1;
-    margin-top: 477px;
+    margin-top: 44px;
+    margin-right: auto;
   }
 
   .u-section-1 .u-image-1 {
-    margin-top: -251px;
+    margin-top: 83px;
     margin-left: auto;
   }
 
   .u-section-1 .u-btn-1 {
-    margin-top: 70px;
+    margin-top: 32px;
     margin-left: auto;
   }
 
@@ -166,6 +167,7 @@
   .u-section-1 .u-btn-4 {
     margin-top: 16px;
     margin-left: auto;
+    margin-bottom: 60px;
   }
 }.u-section-2 .u-sheet-1 {
   min-height: 459px;
@@ -239,8 +241,8 @@
 
 .u-section-3 .u-image-3 {
   min-height: 307px;
-  background-position: 50% 50%;
-  background-image: url("images/Glacier_Figures-01copy.png");
+  background-position: 50% 0%;
+  background-image: url("images/MTG_Ablation_Stakes-02.jpg");
   background-size: cover;
 }
 
@@ -253,9 +255,9 @@
 
 .u-section-3 .u-image-5 {
   min-height: 307px;
-  background-position: 92.5% 84.77%;
-  background-image: url("images/LSR_TH_Map_20230522_smol.jpg");
-  background-size: auto 210%;
+  background-position: 30.25% 0%;
+  background-image: url("images/Mount_Moran_3D_View.png");
+  background-size: auto 130%;
 }
 
 .u-section-3 .u-text-1 {
