@@ -131,7 +131,7 @@
     background-position: 50% 50%, 46.76% 48.95%;
     background-repeat: no-repeat, no-repeat;
     background-size: cover, auto 115%;
-    min-height: 94px;
+    min-height: 166px;
   }
 
   .u-section-1 .u-sheet-1 {
@@ -140,12 +140,13 @@
 
   .u-section-1 .u-text-1 {
     line-height: 1.1;
-    margin-top: 44px;
+    width: 202px;
+    margin-top: 637px;
     margin-right: auto;
   }
 
   .u-section-1 .u-image-1 {
-    margin-top: 83px;
+    margin-top: -516px;
     margin-left: auto;
   }
 

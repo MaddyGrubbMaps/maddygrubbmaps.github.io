@@ -4,7 +4,7 @@
 
 .u-section-1 .u-text-1 {
   width: 674px;
-  margin: 87px auto 0;
+  margin: 60px auto 0;
 }
 
 .u-section-1 .u-text-2 {
@@ -15,6 +15,13 @@
   width: 176px;
   height: 175px;
   margin: -203px auto 88px 159px;
+}
+
+@media (max-width: 1399px) {
+  .u-section-1 .u-text-2 {
+    width: auto;
+    margin-right: 159px;
+  }
 }
 
 @media (max-width: 767px) {
@@ -38,7 +45,6 @@
 
   .u-section-1 .u-image-1 {
     margin-top: -428px;
-    margin-bottom: 60px;
     margin-left: 108px;
   }
 }
