@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html style="font-size: 16px;" lang="en"><head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Custom Ranch Maps
+">
+    <meta name="description" content="">
+    <title>Contact</title>
+    <link rel="stylesheet" href="nicepage.css" media="screen">
+<link rel="stylesheet" href="Contact.css" media="screen">
+    <script class="u-script" type="text/javascript" src="jquery.js" defer=""></script>
+    <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
+    <meta name="generator" content="Nicepage 8.0.3, nicepage.com">
+    
+    
+    
+    
+    <link id="u-page-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Alata:wght@400">
+    <script type="application/ld+json">{
+		"@context": "http://schema.org",
+		"@type": "Organization",
+		"name": "maddygrubbmaps",
+		"sameAs": [
+				"https://www.etsy.com/shop/MaddyGrubbMaps?ref=seller-platform-mcnav&dd_referrer=https%3A%2F%2Fmaddygrubbmaps.github.io%2F",
+				"mailto:maddygrubbmaps@gmail.com?subject=an%20inquiry!",
+				"tel:425-295-4375"
+		]
+}</script>
+    <meta name="theme-color" content="#478ac9">
+    <meta property="og:title" content="Contact">
+    <meta property="og:description" content="">
+    <meta property="og:type" content="website">
+  <script>
+    (function() {
+    function gdprConfirmed() {
+        return true;
+    }
+
+    var added = false;
+    var currentScript = document.currentScript;
+
+    function insertHTML(html) {
+        var container = document.createElement('div');
+        container.innerHTML = html;
+        container.querySelectorAll('script').forEach(s => {
+            const ns = document.createElement('script');
+            ns.async = s.async;
+            if (s.src) {
+                ns.src = s.src;
+            } else {
+                ns.textContent = s.textContent;
+            }
+            s.replaceWith(ns);
+        });
+
+            var fragment = document.createDocumentFragment();
+            fragment.append(...container.childNodes);
+
+            if (currentScript && currentScript.parentNode) {
+                currentScript.after(fragment);
+            }
+    }
+
+    window._npAddGAnalytics = function () {
+        if (gdprConfirmed() && !added) {
+            var gaBody = "<!-- Google Analytics -->\n    <gascript async src=\"https://www.googletagmanager.com/gtag/js?id=G-YHXQ8YB4JK\"></gascript>\n    <gascript>\n        window.dataLayer = window.dataLayer || [];\n        function gtag(){dataLayer.push(arguments);}\n        gtag('js', new Date());\n        gtag('config', 'G-YHXQ8YB4JK');\n    </gascript>\n    <!-- End Google Analytics -->";
+            var replacedBody = gaBody.replace(/gascript/g, 'script');
+            insertHTML(replacedBody);
+            added = true;
+        }
+    }
+
+    window._npAddGAnalytics();
+    })();
+    </script><meta name="referrer" content="origin"><script>
+    window.recaptchaRenderedV2 = false;
+    window.recaptchaFallback = false;
+    window.recaptchaSiteKeyV2 = '6LdfeIwrAAAAAMnDkaIExdHsV0Nsj8y-CU9AyTjZ';
+
+    function gdprConfirmed() {
+        return true;
+    }
+
+    function dynamicLoadScript() {
+        var script = document.createElement('script');
+        script.src = 'https://www.google.com/recaptcha/api.js?render=6Le35RwsAAAAAAbmmB__PO81uC5GD-kVnCYRAnHu';
+        script.async = true;
+        script.onload = function () {
+            var event = new CustomEvent("recaptchaLoaded");
+            document.dispatchEvent(event);
+        };
+        document.body.appendChild(script);
+    }
+
+    function showRecaptchaError(error) {
+        error = error || '';
+        var formError = document.querySelector('.u-form-send-error');
+
+        if (formError) {
+            formError.innerText = 'Site Owner Error: ' + error.replace(/:[\s\S]*/, '');
+            formError.style.display = 'block';
+        }
+
+        console.error('Error in grecaptcha: ', error);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var confirmButtons = document.querySelectorAll('.u-cookies-consent .u-button-confirm');
+        confirmButtons.forEach(function (button) {
+            button.onclick = dynamicLoadScript;
+        });
+    });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+            if (!gdprConfirmed()) {
+                return;
+            }
+            dynamicLoadScript();
+        });
+    </script>
+
+    <script>
+        document.addEventListener("recaptchaLoaded", function() {
+            if (!gdprConfirmed()) {
+                return;
+            }
+
+            (function (grecaptcha, sitekey, actions) {
+                var recaptcha = {
+                    execute: function (action, submitFormCb) {
+                        if (typeof grecaptcha === 'undefined' || typeof grecaptcha.execute !== 'function') {
+                            showRecaptchaError('reCAPTCHA script failed to load.');
+                            return;
+                        }
+
+                        try {
+                            grecaptcha.execute(sitekey, {action: action}).then((token) => {
+                                if (!token) {
+                                    throw new Error('Empty token received from reCAPTCHA');
+                                }
+
+                                var forms = document.getElementsByTagName('form');
+
+                                for (var i = 0; i < forms.length; i++) {
+                                    var response = forms[i].querySelector('[name="recaptchaResponse"]');
+
+                                    if (!response) {
+                                        response = document.createElement('input');
+                                        response.setAttribute('type', 'hidden');
+                                        response.setAttribute('name', 'recaptchaResponse');
+                                        forms[i].appendChild(response);
+                                    }
+
+                                    response.value = token;
+                                }
+
+                                submitFormCb();
+                            }).catch((e) => {
+                                showRecaptchaError(e.message);
+                            });
+                        } catch (e) {
+                            showRecaptchaError(e.message);
+                        }
+                    },
+
+                    executeContact: function (submitFormCb) {
+                        recaptcha.execute(actions['contact'], submitFormCb);
+                    }
+                };
+
+                window.recaptchaObject = recaptcha;
+                window.grecaptchaObject = grecaptcha;
+            })(
+                grecaptcha,
+                
+                '6Le35RwsAAAAAAbmmB__PO81uC5GD-kVnCYRAnHu',
+                {'contact': 'contact'}
+            );
+        });
+    </script>
+
+    <script>
+    window.showRecaptchaV2 = function (form) {
+        if (!form || !form.length) {
+            return;
+        }
+        if (typeof window.grecaptchaObject === 'undefined' || !window.grecaptchaObject) {
+            return;
+        }
+
+        const formEl = form[0];
+
+        let container = document.getElementById('recaptcha-v2-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'recaptcha-v2-container';
+            formEl.parentElement.appendChild(container);
+        }
+
+        let tokenReceived = false;
+        let timeoutHandle;
+
+        if (window.recaptchaRenderedV2 === false || typeof window.recaptchaRenderedV2 === 'undefined') {
+            window.recaptchaRenderedV2 = window.grecaptchaObject.render('recaptcha-v2-container', {
+                'sitekey': window.recaptchaSiteKeyV2,
+                'size': 'invisible',
+                'callback': function (token) {
+                    clearTimeout(timeoutHandle);
+
+                    if (!token) {
+                        showRecaptchaError('reCAPTCHA v2 token was empty. Please try again.');
+                        return;
+                    }
+
+                    tokenReceived = true;
+
+                    let recaptchaResponseV2 = formEl.querySelector('input[name="recaptchaResponseV2"]');
+
+                    if (!recaptchaResponseV2) {
+                        recaptchaResponseV2 = document.createElement('input');
+                        recaptchaResponseV2.type = 'hidden';
+                        recaptchaResponseV2.name = 'recaptchaResponseV2';
+                        formEl.appendChild(recaptchaResponseV2);
+                    }
+
+                    recaptchaResponseV2.value = token;
+
+                    if (window.recaptchaSiteKeyV2) {
+                        let siteKeyInput = formEl.querySelector('input[name="siteKey"]');
+
+                        if (siteKeyInput) {
+                            siteKeyInput.value = window.recaptchaSiteKeyV2;
+                        }
+                    }
+
+                    document.querySelectorAll('.u-form-send-error').forEach(el => {
+                        el.style.display = 'none';
+                    });
+
+                    const event = new CustomEvent('submit', {
+                        detail: { recaptchaPassed: true },
+                        bubbles: true,
+                        cancelable: true,
+                    });
+
+                    formEl.dispatchEvent(event);
+                },
+                'error-callback': function () {
+                    clearTimeout(timeoutHandle);
+                    showRecaptchaError('reCAPTCHA v2 error. Please try again.');
+                },
+                'expired-callback': function () {
+                    clearTimeout(timeoutHandle);
+                }
+            });
+
+            window.grecaptchaObject.reset(window.recaptchaRenderedV2);
+
+            setTimeout(() => {
+                window.grecaptchaObject.execute(window.recaptchaRenderedV2);
+            }, 300);
+
+            timeoutHandle = setTimeout(function () {
+                if (!tokenReceived) {
+                    showRecaptchaError('The Contact Form could not be submitted because Google reCAPTCHA v3 detected unusual activity from your connection. Please try again later, or complete the reCAPTCHA v2 challenge if it appears.');
+                }
+            }, 120000);
+        } else {
+            window.grecaptchaObject.reset(window.recaptchaRenderedV2);
+
+            setTimeout(() => {
+                window.grecaptchaObject.execute(window.recaptchaRenderedV2);
+            }, 300);
+        }
+    };
+    </script>
+<meta data-intl-tel-input-cdn-path="intlTelInput/"></head>
+  <body data-path-to-root="./" data-include-products="false" class="u-body u-clearfix u-xxl-mode" data-lang="en"><header class="u-clearfix u-header u-sticky u-sticky-b4bd u-white u-header" id="sec-cdd0"><div class="u-clearfix u-sheet u-valign-middle-lg u-valign-middle-md u-valign-middle-xl u-valign-middle-xxl u-sheet-1">
+        <nav class="u-align-left-lg u-align-left-md u-align-left-sm u-align-left-xl u-align-left-xxl u-align-right-xs u-menu u-menu-dropdown u-offcanvas u-offcanvas-shift u-menu-1" data-responsive-from="SM" role="navigation">
+          <div class="menu-collapse" style="font-weight: 700;">
+            <a class="u-button-style u-custom-border u-custom-text-active-color u-custom-text-color u-custom-text-hover-color u-hamburger-link u-nav-link u-text-custom-color-2 u-hamburger-link-1" href="#" tabindex="-1" aria-label="Open menu" aria-controls="87f2">
+              <svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 302 302" style=""><use xlink:href="#svg-5c50"></use></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="svg-5c50" x="0px" y="0px" viewBox="0 0 302 302" style="enable-background:new 0 0 302 302;" xml:space="preserve" class="u-svg-content"><g><rect y="36" width="302" height="30"></rect><rect y="236" width="302" height="30"></rect><rect y="136" width="302" height="30"></rect>
+</g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+            </a>
+          </div>
+          <div class="u-custom-menu u-nav-container">
+            <ul role="menubar" class="u-custom-font u-heading-font u-nav u-spacing-20 u-unstyled u-nav-1"><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3" href="Portfolio.html" style="padding: 10px;">Portfolio</a>
+</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3" href="Custom-Cartography.html" style="padding: 10px;">Custom Cartography</a><div class="u-nav-popup"><ul role="menu" class="u-h-spacing-10 u-nav u-unstyled u-v-spacing-10 u-nav-2" aria-label="Custom Cartography menu"><li role="none" class="u-nav-item"><a tabindex="-1" role="menuitem" class="u-active-custom-color-7 u-button-style u-hover-custom-color-3 u-nav-link u-text-custom-color-2 u-text-hover-white u-white" href="Custom-Cartography.html#block-1" data-page-id="76927179">How it Works</a>
+</li><li role="none" class="u-nav-item"><a tabindex="-1" role="menuitem" class="u-active-custom-color-7 u-button-style u-hover-custom-color-3 u-nav-link u-text-custom-color-2 u-text-hover-white u-white" href="https://calendar.app.google/xW35UVz1tDesZTkq5" target="_blank">Schedule a Consult</a>
+</li><li role="none" class="u-nav-item"><a tabindex="-1" role="menuitem" class="u-active-custom-color-7 u-button-style u-hover-custom-color-3 u-nav-link u-text-custom-color-2 u-text-hover-white u-white" href="Custom-Cartography.html#block-5" data-page-id="76927179">FAQ</a>
+</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-active-custom-color-7 u-button-style u-hover-custom-color-3 u-nav-link u-text-custom-color-2 u-text-hover-white u-white" href="Ranch_and_Property_Maps.html" target="_blank">Ranch &amp; Property Maps</a>
+</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-active-custom-color-7 u-button-style u-hover-custom-color-3 u-nav-link u-text-custom-color-2 u-text-hover-white u-white" href="blog/blog.html">Blog</a>
+</li></ul>
+</div>
+</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3" href="Journal.html" style="padding: 10px;">Journal</a>
+</li><li role="none" class="u-nav-item"><a tabindex="-1" role="menuitem" class="u-button-style u-nav-link u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3" href="https://maddygrubbmaps.etsy.com" target="_blank" style="padding: 10px;">Etsy</a>
+</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3" href="Contact.html" target="_blank" style="padding: 10px;">Contact</a>
+</li></ul>
+          </div>
+          <div class="u-custom-menu u-nav-container-collapse" id="87f2" role="region" aria-label="Menu panel">
+            <div class="u-align-center u-container-align-center u-container-style u-custom-color-2 u-inner-container-layout u-opacity u-opacity-95 u-sidenav">
+              <div class="u-inner-container-layout u-sidenav-overflow">
+                <div class="u-menu-close" tabindex="-1" aria-label="Close menu"></div>
+                <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-3" role="menubar"><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link" href="Portfolio.html">Portfolio</a>
+</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link" href="Custom-Cartography.html">Custom Cartography</a><div class="u-nav-popup"><ul role="menu" class="u-h-spacing-10 u-nav u-unstyled u-v-spacing-10 u-nav-4" aria-label="Custom Cartography menu"><li role="none" class="u-nav-item"><a tabindex="-1" role="menuitem" class="u-button-style u-nav-link" href="Custom-Cartography.html#block-1" data-page-id="76927179">How it Works</a>
+</li><li role="none" class="u-nav-item"><a tabindex="-1" role="menuitem" class="u-button-style u-nav-link" href="https://calendar.app.google/xW35UVz1tDesZTkq5" target="_blank">Schedule a Consult</a>
+</li><li role="none" class="u-nav-item"><a tabindex="-1" role="menuitem" class="u-button-style u-nav-link" href="Custom-Cartography.html#block-5" data-page-id="76927179">FAQ</a>
+</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link" href="Ranch_and_Property_Maps.html" target="_blank">Ranch &amp; Property Maps</a>
+</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link" href="blog/blog.html">Blog</a>
+</li></ul>
+</div>
+</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link" href="Journal.html">Journal</a>
+</li><li role="none" class="u-nav-item"><a tabindex="-1" role="menuitem" class="u-button-style u-nav-link" href="https://maddygrubbmaps.etsy.com" target="_blank">Etsy</a>
+</li><li role="none" class="u-nav-item"><a role="menuitem" class="u-button-style u-nav-link" href="Contact.html" target="_blank">Contact</a>
+</li></ul>
+              </div>
+            </div>
+            <div class="u-custom-color-2 u-menu-overlay u-opacity u-opacity-var" style="--opacity: 0.5;"></div>
+          </div>
+          <style class="menu-style">@media (max-width: 990px) {
+                    [data-responsive-from="SM"] .u-nav-container {
+                        display: none;
+                    }
+                    [data-responsive-from="SM"] .menu-collapse {
+                        display: block;
+                    }
+                }</style>
+        </nav>
+        <img class="u-align-left-xs u-image u-image-contain u-image-default u-image-1" src="images/Logo.png" alt="" data-image-width="1269" data-image-height="182" data-href="./" data-page-id="566602774" title="About">
+      </div><style class="u-sticky-style" data-style-id="b4bd">.u-sticky-fixed.u-sticky-b4bd, .u-body.u-sticky-fixed .u-sticky-b4bd {
+background-color: #ffffff !important; background-image: none !important
+}.u-sticky-fixed.u-sticky-b4bd:before, .u-body.u-sticky-fixed .u-sticky-b4bd:before {
+background-color: var(--unset) !important
+} .u-sticky-fixed.u-sticky-b4bd .u-background-video, .u-body.u-sticky-fixed .u-sticky-b4bd .u-background-video {
+display: none !important
+}</style></header>
+    <section class="u-clearfix u-section-1" id="block-7">
+      <div class="u-clearfix u-sheet u-sheet-1">
+        <h4 class="u-align-center u-text u-text-custom-color-2 u-text-1">Start a project or ask a question. I’m excited to hear from you. </h4>
+        <div class="u-align-center u-form u-form-1">
+          <form action="https://service.nicepagesrv.com/form/v4/form-process" class="u-clearfix u-form-spacing-10 u-form-vertical u-inner-form" source="email" name="form" style="padding: 10px;">
+            <div class="u-form-group u-form-name u-label-top">
+              <label for="name-a2b1" class="u-label u-text-custom-color-2 u-label-1">Name</label>
+              <input type="text" placeholder="Enter your Name" id="name-a2b1" name="name" class="u-border-custom-color-2 u-input u-input-rectangle u-none u-text-custom-color-2 u-input-1" required="">
+            </div>
+            <div class="u-form-email u-form-group u-label-top">
+              <label for="email-a2b1" class="u-label u-text-custom-color-2 u-label-2">Email</label>
+              <input type="email" placeholder="Enter a valid email address" id="email-a2b1" name="email" class="u-border-custom-color-2 u-input u-input-rectangle u-none u-text-custom-color-2 u-input-2" required="">
+            </div>
+            <div class="u-form-group u-form-message u-label-top">
+              <label for="message-a2b1" class="u-label u-text-custom-color-2 u-label-3">Message</label>
+              <textarea placeholder="Share any details about the location, project, or ideas you have." rows="4" cols="50" id="message-a2b1" name="message" class="u-border-custom-color-2 u-input u-input-rectangle u-none u-text-custom-color-2 u-input-3" required=""></textarea>
+            </div>
+            <div class="u-align-left u-form-group u-form-submit u-label-top">
+              <input type="submit" value="submit" class="u-form-control-hidden">
+              <a href="#" class="u-btn u-btn-submit u-button-style u-btn-1">SEND</a>
+            </div>
+            <div class="u-form-send-message u-form-send-success">Thank you so much for reaching out with your ideas or inquiring about a custom map. I'll get back to you in the next few days to set up a time to chat.</div>
+            <div class="u-form-send-error u-form-send-message"> Unable to send your message. Please fix errors then try again. </div>
+            <input type="hidden" value="" name="recaptchaResponse">
+            <input type="hidden" name="formServices" value="1087ff14-af9e-73de-6cdc-fde489840c6b">
+            <input type="hidden" name="siteKey" value="6Le35RwsAAAAAAbmmB__PO81uC5GD-kVnCYRAnHu">
+          </form>
+        </div>
+        <p class="u-align-center u-text u-text-custom-color-2 u-text-2">
+          <a class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3 u-btn-2" href="mailto:maddygrubbmaps@gmail.com?subject=Reaching%20Out"> maddygrubbmaps@gmail.com<br>
+          </a>
+        </p>
+        <a class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3 u-btn-3" href="tel:+1 (425) 295 - 4375">+1 425 295 4375 </a>
+      </div>
+    </section>
+    
+    
+    
+    
+    
+    <section class="u-backlink u-clearfix u-grey-80"></section>
+  
+</body></html>
