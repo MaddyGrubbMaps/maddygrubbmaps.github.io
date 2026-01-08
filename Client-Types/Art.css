@@ -177,7 +177,9 @@
     width: 375px;
   }
 } .u-section-4 {
-  background-image: url("../images/Adirondack_High_Peaks_20250614.jpg");
+  background-repeat: no-repeat;
+  background-image: url("../images/adk_espresso_frame.jpg");
+  background-size: cover;
 }
 
 .u-section-4 .u-sheet-1 {
@@ -201,6 +203,7 @@
 }
 
 .u-section-5 .u-btn-1 {
+  --radius: 50px;
   margin: 20px auto 0;
 }
 
