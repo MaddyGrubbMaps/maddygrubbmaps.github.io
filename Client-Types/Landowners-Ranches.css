@@ -1,7 +1,7 @@
  .u-section-1 {
   background-position: 50% 0%;
   background-repeat: no-repeat;
-  background-image: url("images/3D_Map_Text_Handrawn_screen.png");
+  background-image: url("../images/3D_Map_Text_Handrawn_screen.png");
   background-size: cover;
 }
 
@@ -99,7 +99,7 @@
 } .u-section-3 {
   background-position: 50% 50%, 50% 50%;
   background-repeat: no-repeat, no-repeat;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)), url("images/Artboard13xcopysmallcopy.png");
+  background-image: linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)), url("../images/Artboard13xcopysmallcopy.png");
   background-size: cover, cover;
 }
 
@@ -138,8 +138,10 @@
   }
 
   .u-section-3 .u-text-2 {
+    margin-top: 20px;
     margin-right: 441px;
     margin-left: 0;
+    margin-bottom: initial;
   }
 
   .u-section-3 .u-text-3 {
@@ -218,13 +220,17 @@
   }
 
   .u-section-4 .u-text-1 {
+    margin-top: 20px;
     margin-right: 328px;
     margin-left: 157px;
+    margin-bottom: initial;
   }
 
   .u-section-4 .u-text-2 {
+    margin-top: 20px;
     margin-right: 26px;
     margin-left: 459px;
+    margin-bottom: initial;
   }
 
   .u-section-4 .u-btn-1 {
@@ -246,13 +252,11 @@
   }
 
   .u-section-4 .u-text-1 {
-    margin-right: 219px;
-    margin-left: 0;
+    margin: -64px 219px 0 0;
   }
 
   .u-section-4 .u-text-2 {
-    margin-right: 0;
-    margin-left: 219px;
+    margin: -57px 0 0 219px;
   }
 
   .u-section-4 .u-btn-1 {
@@ -438,8 +442,10 @@
   }
 
   .u-section-5 .u-text-4 {
+    margin-top: 20px;
     margin-right: 0;
     margin-left: 367px;
+    margin-bottom: initial;
   }
 
   .u-section-5 .u-gallery-1 {
@@ -486,7 +492,6 @@
   }
 
   .u-section-5 .u-text-4 {
-    margin-top: -638px;
     margin-left: 102px;
   }
 

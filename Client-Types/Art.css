@@ -1,0 +1,243 @@
+ .u-section-1 {
+  background-position: 50% 50%, 50% 50%;
+  background-repeat: no-repeat, no-repeat;
+  background-image: linear-gradient(to bottom, rgba(131, 55, 14, 0.5), rgba(76, 115, 151, 0.5)), url('../images/DSC04435-21.webp');
+  background-size: cover, cover;
+}
+
+.u-section-1 .u-sheet-1 {
+  min-height: 506px;
+}
+
+.u-section-1 .u-text-1 {
+  width: 460px;
+  margin: 153px auto 0;
+}
+
+.u-section-1 .u-text-2 {
+  width: 460px;
+  margin: 12px auto 0;
+}
+
+.u-section-1 .u-btn-1 {
+  --radius: 20px;
+  background-image: none;
+  margin: 35px auto 60px;
+  padding: 10px 20px 10px 19px;
+}
+
+@media (max-width: 1399px) {
+  .u-section-1 .u-sheet-1 {
+    min-height: 505px;
+  }
+
+  .u-section-1 .u-text-1 {
+    margin-top: 60px;
+  }
+}
+
+@media (max-width: 767px) {
+  .u-section-1 .u-sheet-1 {
+    min-height: 326px;
+  }
+}
+
+@media (max-width: 575px) {
+  .u-section-1 .u-sheet-1 {
+    min-height: 191px;
+  }
+
+  .u-section-1 .u-text-1 {
+    width: 375px;
+  }
+
+  .u-section-1 .u-text-2 {
+    width: 375px;
+  }
+}.u-section-2 .u-sheet-1 {
+  min-height: 418px;
+}
+
+.u-section-2 .u-text-1 {
+  width: 629px;
+  margin: 82px auto 48px;
+}
+
+@media (max-width: 575px) {
+  .u-section-2 .u-text-1 {
+    width: 375px;
+  }
+}.u-section-3 .u-sheet-1 {
+  min-height: 1016px;
+}
+
+.u-section-3 .u-gallery-1 {
+  height: 708px;
+  margin-top: 86px;
+  margin-bottom: 0;
+}
+
+.u-section-3 .u-gallery-inner-1 {
+  --gap: 10px;
+  grid-template-columns: repeat(3, auto);
+}
+
+.u-section-3 .u-over-slide-1 {
+  background-image: linear-gradient(0deg, rgba(0,0,0,0.2), rgba(0,0,0,0.2));
+  padding: 20px;
+}
+
+.u-section-3 .u-over-slide-2 {
+  background-image: linear-gradient(0deg, rgba(0,0,0,0.2), rgba(0,0,0,0.2));
+  padding: 20px;
+}
+
+.u-section-3 .u-over-slide-3 {
+  background-image: linear-gradient(0deg, rgba(0,0,0,0.2), rgba(0,0,0,0.2));
+  padding: 20px;
+}
+
+.u-section-3 .u-over-slide-4 {
+  background-image: linear-gradient(0deg, rgba(0,0,0,0.2), rgba(0,0,0,0.2));
+  padding: 20px;
+}
+
+.u-section-3 .u-over-slide-5 {
+  background-image: linear-gradient(0deg, rgba(0,0,0,0.2), rgba(0,0,0,0.2));
+  padding: 20px;
+}
+
+.u-section-3 .u-over-slide-6 {
+  background-image: linear-gradient(0deg, rgba(0,0,0,0.2), rgba(0,0,0,0.2));
+  padding: 20px;
+}
+
+.u-section-3 .u-text-1 {
+  width: 629px;
+  margin: 50px auto 0;
+}
+
+.u-section-3 .u-btn-1 {
+  --radius: 20px;
+  background-image: none;
+  margin: 32px 325px 40px auto;
+  padding: 10px 20px 10px 19px;
+}
+
+@media (max-width: 1399px) {
+  .u-section-3 .u-btn-1 {
+    margin-right: 324px;
+  }
+}
+
+@media (max-width: 991px) {
+  .u-section-3 .u-sheet-1 {
+    min-height: 1909px;
+  }
+
+  .u-section-3 .u-gallery-1 {
+    height: 1592px;
+  }
+
+  .u-section-3 .u-gallery-inner-1 {
+    grid-template-columns: repeat(2, auto);
+  }
+}
+
+@media (max-width: 767px) {
+  .u-section-3 .u-sheet-1 {
+    min-height: 4450px;
+  }
+
+  .u-section-3 .u-gallery-1 {
+    height: 4113px;
+  }
+
+  .u-section-3 .u-gallery-inner-1 {
+    grid-template-columns: repeat(1, auto);
+  }
+
+  .u-section-3 .u-btn-1 {
+    margin-top: 31px;
+    margin-right: auto;
+    margin-bottom: 41px;
+  }
+}
+
+@media (max-width: 575px) {
+  .u-section-3 .u-sheet-1 {
+    min-height: 2727px;
+  }
+
+  .u-section-3 .u-gallery-1 {
+    height: 2410px;
+  }
+
+  .u-section-3 .u-text-1 {
+    width: 375px;
+  }
+} .u-section-4 {
+  background-image: url("../images/Adirondack_High_Peaks_20250614.jpg");
+}
+
+.u-section-4 .u-sheet-1 {
+  min-height: 400px;
+}
+
+@media (max-width: 1399px) {
+   .u-section-4 {
+    background-position: 50% 50%;
+  }
+}.u-section-5 .u-sheet-1 {
+  min-height: 821px;
+}
+
+.u-section-5 .u-text-1 {
+  font-weight: 700;
+  font-size: 2.25rem;
+  width: 369px;
+  line-height: 1.1;
+  margin: 67px auto 0;
+}
+
+.u-section-5 .u-btn-1 {
+  margin: 20px auto 0;
+}
+
+.u-section-5 .u-image-1 {
+  width: 658px;
+  height: 448px;
+  box-shadow: 5px 5px 20px 0 rgba(0,0,0,0.4);
+  margin: 29px auto 60px;
+}
+
+@media (max-width: 767px) {
+  .u-section-5 .u-sheet-1 {
+    min-height: 809px;
+  }
+
+  .u-section-5 .u-text-1 {
+    margin-top: 101px;
+  }
+
+  .u-section-5 .u-image-1 {
+    width: 535px;
+    height: 364px;
+    margin-top: 45px;
+  }
+}
+
+@media (max-width: 575px) {
+  .u-section-5 .u-sheet-1 {
+    min-height: 700px;
+  }
+
+  .u-section-5 .u-text-1 {
+    margin-top: 60px;
+  }
+
+  .u-section-5 .u-image-1 {
+    width: 375px;
+    height: 255px;
+  }
+}

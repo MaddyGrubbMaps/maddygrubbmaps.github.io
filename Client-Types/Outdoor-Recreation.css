@@ -1,0 +1,242 @@
+ .u-section-1 {
+  background-position: 50% 50%, 50% 50%;
+  background-repeat: no-repeat, no-repeat;
+  background-image: linear-gradient(to bottom, rgba(65, 121, 111, 0.75), rgba(65, 121, 111, 0.75)), url('../images/MonmouthBattlefieldFINALDraft11x17.jpg');
+  background-size: cover, cover;
+}
+
+.u-section-1 .u-sheet-1 {
+  min-height: 444px;
+}
+
+.u-section-1 .u-text-1 {
+  width: 460px;
+  margin: 116px auto 0;
+}
+
+.u-section-1 .u-text-2 {
+  width: 460px;
+  margin: 11px auto 0;
+}
+
+.u-section-1 .u-btn-1 {
+  --radius: 20px;
+  background-image: none;
+  margin: 35px auto 60px;
+  padding: 10px 20px 10px 19px;
+}
+
+@media (max-width: 1399px) {
+  .u-section-1 .u-text-1 {
+    margin-top: 60px;
+  }
+}
+
+@media (max-width: 767px) {
+  .u-section-1 .u-sheet-1 {
+    min-height: 287px;
+  }
+}
+
+@media (max-width: 575px) {
+  .u-section-1 .u-sheet-1 {
+    min-height: 168px;
+  }
+
+  .u-section-1 .u-text-1 {
+    width: 375px;
+  }
+
+  .u-section-1 .u-text-2 {
+    width: 375px;
+  }
+}.u-section-2 .u-sheet-1 {
+  min-height: 622px;
+}
+
+.u-section-2 .u-text-1 {
+  margin: 62px 118px 0 567px;
+}
+
+.u-section-2 .u-image-1 {
+  width: 405px;
+  height: 521px;
+  margin: -86px auto 0 118px;
+}
+
+.u-section-2 .u-text-2 {
+  margin: -409px 118px 39px 567px;
+}
+
+@media (max-width: 1399px) {
+  .u-section-2 .u-text-1 {
+    margin-left: 566px;
+  }
+
+  .u-section-2 .u-text-2 {
+    margin-left: 566px;
+  }
+}
+
+@media (max-width: 767px) {
+  .u-section-2 .u-sheet-1 {
+    min-height: 608px;
+  }
+
+  .u-section-2 .u-text-1 {
+    width: 287px;
+    margin-top: 37px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .u-section-2 .u-image-1 {
+    width: 295px;
+    height: 410px;
+    margin-top: 25px;
+    margin-left: 25px;
+  }
+
+  .u-section-2 .u-text-2 {
+    width: auto;
+    margin: -410px 30px 50px 351px;
+  }
+}
+
+@media (max-width: 575px) {
+  .u-section-2 .u-sheet-1 {
+    min-height: 1085px;
+  }
+
+  .u-section-2 .u-text-1 {
+    margin-top: 36px;
+  }
+
+  .u-section-2 .u-image-1 {
+    width: 345px;
+    height: 448px;
+    margin-left: auto;
+  }
+
+  .u-section-2 .u-text-2 {
+    width: 259px;
+    margin: 44px auto 36px;
+  }
+}.u-section-3 .u-sheet-1 {
+  min-height: 1041px;
+}
+
+.u-section-3 .u-image-1 {
+  width: 619px;
+  height: 698px;
+  margin: 224px auto 0 58px;
+}
+
+.u-section-3 .u-image-2 {
+  width: 634px;
+  height: 294px;
+  margin: -864px 58px 0 auto;
+}
+
+.u-section-3 .u-text-1 {
+  margin: 25px 134px 0 703px;
+}
+
+.u-section-3 .u-btn-1 {
+  --radius: 20px;
+  background-image: none;
+  margin: 31px 163px 60px auto;
+  padding: 10px 13px 10px 12px;
+}
+
+@media (max-width: 1399px) {
+  .u-section-3 .u-sheet-1 {
+    min-height: 1072px;
+  }
+
+  .u-section-3 .u-image-1 {
+    margin-top: 275px;
+  }
+
+  .u-section-3 .u-text-1 {
+    margin-left: 702px;
+  }
+
+  .u-section-3 .u-btn-1 {
+    margin-right: 162px;
+  }
+}
+
+@media (max-width: 991px) {
+  .u-section-3 .u-sheet-1 {
+    min-height: 1121px;
+  }
+
+  .u-section-3 .u-image-1 {
+    margin-top: 316px;
+  }
+}
+
+@media (max-width: 767px) {
+  .u-section-3 .u-sheet-1 {
+    min-height: 970px;
+  }
+
+  .u-section-3 .u-image-1 {
+    width: 412px;
+    height: 532px;
+    margin-top: 361px;
+    margin-left: 21px;
+  }
+
+  .u-section-3 .u-image-2 {
+    width: 588px;
+    height: 268px;
+    margin-top: -850px;
+    margin-right: auto;
+  }
+
+  .u-section-3 .u-text-1 {
+    width: auto;
+    margin-top: 58px;
+    margin-right: 26px;
+    margin-left: 459px;
+  }
+
+  .u-section-3 .u-btn-1 {
+    margin-top: 21px;
+    margin-right: 55px;
+  }
+}
+
+@media (max-width: 575px) {
+  .u-section-3 .u-sheet-1 {
+    min-height: 624px;
+  }
+
+  .u-section-3 .u-image-1 {
+    height: 270px;
+    width: 209px;
+    margin-top: 39px;
+    margin-left: 11px;
+  }
+
+  .u-section-3 .u-image-2 {
+    height: 145px;
+    width: 209px;
+    margin-top: -432px;
+    margin-left: 11px;
+  }
+
+  .u-section-3 .u-text-1 {
+    margin-top: -145px;
+    margin-right: 11px;
+    margin-left: 237px;
+  }
+
+  .u-section-3 .u-btn-1 {
+    margin-top: 26px;
+    margin-right: auto;
+    margin-bottom: -123px;
+  }
+}
