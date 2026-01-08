@@ -1,10 +1,15 @@
  .u-section-1 {
   background-image: url("../images/IMG_3862.jpeg");
-  background-position: 50% 50%;
 }
 
-.u-section-1 .u-sheet-1 {
-  min-height: 475px;
+@media (max-width: 1399px) {
+   .u-section-1 {
+    background-position: 50% 50%;
+  }
+
+  .u-section-1 .u-sheet-1 {
+    min-height: 475px;
+  }
 }
 
 @media (max-width: 1199px) {
@@ -23,58 +28,60 @@
   .u-section-1 .u-sheet-1 {
     min-height: 299px;
   }
-}.u-section-2 .u-sheet-1 {
-  min-height: 2337px;
-}
+}@media (max-width: 1399px) {
+  .u-section-2 .u-sheet-1 {
+    min-height: 2337px;
+  }
 
-.u-section-2 .u-text-1 {
-  margin: 61px 345px 0 377px;
-}
+  .u-section-2 .u-text-1 {
+    margin: 61px 345px 0 377px;
+  }
 
-.u-section-2 .u-text-2 {
-  margin: 11px auto 0;
-}
+  .u-section-2 .u-text-2 {
+    margin: 11px auto 0;
+  }
 
-.u-section-2 .u-image-1 {
-  width: 300px;
-  height: 400px;
-  margin: 88px auto 0 104px;
-}
+  .u-section-2 .u-image-1 {
+    width: 300px;
+    height: 400px;
+    margin: 88px auto 0 104px;
+  }
 
-.u-section-2 .u-image-2 {
-  width: 441px;
-  height: 602px;
-  margin: -400px 104px 0 auto;
-}
+  .u-section-2 .u-image-2 {
+    width: 441px;
+    height: 602px;
+    margin: -400px 104px 0 auto;
+  }
 
-.u-section-2 .u-image-3 {
-  width: 300px;
-  height: 329px;
-  margin: -161px auto 0 104px;
-}
+  .u-section-2 .u-image-3 {
+    width: 300px;
+    height: 329px;
+    margin: -161px auto 0 104px;
+  }
 
-.u-section-2 .u-image-4 {
-  width: 441px;
-  height: 613px;
-  margin: -127px 104px 0 auto;
-}
+  .u-section-2 .u-image-4 {
+    width: 441px;
+    height: 613px;
+    margin: -127px 104px 0 auto;
+  }
 
-.u-section-2 .u-image-5 {
-  width: 300px;
-  height: 688px;
-  margin: -444px auto 0 104px;
-}
+  .u-section-2 .u-image-5 {
+    width: 300px;
+    height: 688px;
+    margin: -444px auto 0 104px;
+  }
 
-.u-section-2 .u-image-6 {
-  width: 441px;
-  height: 687px;
-  margin: -202px 104px 0 auto;
-}
+  .u-section-2 .u-image-6 {
+    width: 441px;
+    height: 687px;
+    margin: -202px 104px 0 auto;
+  }
 
-.u-section-2 .u-image-7 {
-  width: 300px;
-  height: 444px;
-  margin: -444px auto 60px 104px;
+  .u-section-2 .u-image-7 {
+    width: 300px;
+    height: 444px;
+    margin: -444px auto 60px 104px;
+  }
 }
 
 @media (max-width: 1199px) {
