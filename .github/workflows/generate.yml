@@ -13,6 +13,8 @@ on:
 jobs:
   generate:
     runs-on: ubuntu-latest
+    # Skip if triggered by the bot merging the seo-draft PR back to main
+    if: github.actor != 'github-actions[bot]'
     permissions:
       contents: write
       pull-requests: write
