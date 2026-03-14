@@ -165,33 +165,11 @@ def patch_img_alt(html, filename, alt_text):
     return re.sub(pattern, replacer, html, flags=re.IGNORECASE)
 
 
-def inject_responsive_css(html, page_path):
-    if "responsive-fixes.css" in html:
-        return html
-    depth  = len(page_path.relative_to(REPO_ROOT).parts) - 1
-    prefix = "../" * depth
-    link   = f'  <link rel="stylesheet" href="{prefix}responsive-fixes.css" media="screen">\n'
-    return html.replace("</head>", link + "</head>", 1)
-
-
 def ensure_og_image(html):
     if 'property="og:image"' not in html:
         tag = f'  <meta property="og:image" content="{OG_IMAGE}">\n'
         return html.replace("</head>", tag + "</head>", 1)
     return html
-
-
-# ---------------------------------------------------------------------------
-# Copy responsive CSS to repo root
-# ---------------------------------------------------------------------------
-
-def sync_responsive_css():
-    src  = REPO_ROOT / "scripts" / "responsive_fixes.css"
-    dest = REPO_ROOT / "responsive-fixes.css"
-    if src.exists():
-        dest.write_text(src.read_text())
-        return True
-    return False
 
 
 # ---------------------------------------------------------------------------
@@ -202,9 +180,6 @@ def main():
     today    = date.today().isoformat()
     html_files = find_html_files()
     print(f"Found {len(html_files)} pages to process.\n")
-
-    sync_responsive_css()
-    print("✓ responsive-fixes.css synced to root\n")
 
     review_lines = [
         f"# SEO & Accessibility Review — {today}",
@@ -255,9 +230,6 @@ def main():
                 alt = "Cartography work by Maddy Grubb Maps"
             html = patch_img_alt(html, filename, alt)
             alt_summary.append(f"  - `{filename}` → {alt}")
-
-        # --- Responsive CSS ---
-        html = inject_responsive_css(html, page_path)
 
         # --- Write back ---
         page_path.write_text(html, encoding="utf-8")
