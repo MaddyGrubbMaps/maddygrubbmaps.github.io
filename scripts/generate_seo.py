@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 """
 generate_seo.py — runs in GitHub Actions on every push to main.
-Patches HTML files directly (meta tags, alt text, responsive CSS),
-then writes a review summary. The workflow handles the PR.
+Only processes HTML files that changed in the triggering push.
+On workflow_dispatch (manual run), processes all HTML files.
+Patches meta tags and alt text, then writes a review summary.
+The workflow handles the PR.
 """
 
 import os
 import re
 import time
+import urllib.request
+import json
 from pathlib import Path
 from html.parser import HTMLParser
 from datetime import date
@@ -18,6 +22,7 @@ import anthropic
 # Config
 # ---------------------------------------------------------------------------
 REPO_ROOT  = Path(__file__).parent.parent
+REPO       = "MaddyGrubbMaps/maddygrubbmaps.github.io"
 SITE_NAME  = "Maddy Grubb Maps"
 SITE_URL   = "https://maddygrubbmaps.com"
 OG_IMAGE   = f"{SITE_URL}/images/Logo.png"
@@ -29,10 +34,38 @@ client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
 
 
 # ---------------------------------------------------------------------------
-# Find HTML files
+# Find HTML files — changed only (push) or all (manual)
 # ---------------------------------------------------------------------------
 
-def find_html_files():
+def get_changed_html_files():
+    """Return only HTML files modified in the current push commit."""
+    sha = os.environ.get("GITHUB_SHA", "")
+    if not sha:
+        return None  # fall back to all files
+
+    try:
+        req = urllib.request.Request(
+            f"https://api.github.com/repos/{REPO}/commits/{sha}",
+            headers={"Accept": "application/vnd.github.v3+json"}
+        )
+        with urllib.request.urlopen(req, timeout=15) as r:
+            data = json.loads(r.read())
+
+        changed = []
+        for f in data.get("files", []):
+            if f["status"] in ("added", "modified") and f["filename"].endswith(".html"):
+                path = REPO_ROOT / f["filename"]
+                if path.exists() and path.name not in SKIP_FILES:
+                    parts = set(Path(f["filename"]).parts)
+                    if not (parts & SKIP_DIRS):
+                        changed.append(path)
+        return sorted(changed)
+    except Exception as e:
+        print(f"⚠ Could not fetch changed files: {e} — falling back to all files")
+        return None
+
+
+def find_all_html_files():
     files = []
     for path in REPO_ROOT.rglob("*.html"):
         parts = set(path.relative_to(REPO_ROOT).parts)
@@ -42,6 +75,23 @@ def find_html_files():
             continue
         files.append(path)
     return sorted(files)
+
+
+def find_html_files():
+    event = os.environ.get("GITHUB_EVENT_NAME", "")
+    if event == "workflow_dispatch":
+        print("Manual run — processing all HTML files.")
+        return find_all_html_files()
+
+    changed = get_changed_html_files()
+    if changed is not None:
+        if not changed:
+            print("No HTML files changed in this push — nothing to do.")
+            return []
+        print(f"Push detected — processing {len(changed)} changed file(s) only.")
+        return changed
+
+    return find_all_html_files()
 
 
 # ---------------------------------------------------------------------------
