@@ -1,0 +1,17 @@
+{
+  "_comment": "Optional manual overrides. Set a value here to use it instead of the AI-generated one. Leave blank to use AI output. Set skip to true to leave a page completely untouched.",
+  "site": {
+    "name": "Maddy Grubb Maps",
+    "author": "Maddy Grubb",
+    "og_image": "images/Logo.png"
+  },
+  "pages": {
+    "index.html":                { "meta_description": "", "title": "", "skip": false },
+    "About.html":                { "meta_description": "", "title": "", "skip": false },
+    "Portfolio.html":            { "meta_description": "", "title": "", "skip": false },
+    "Contact.html":              { "meta_description": "", "title": "", "skip": false },
+    "Custom-Cartography.html":   { "meta_description": "", "title": "", "skip": false },
+    "Journal.html":              { "meta_description": "", "title": "", "skip": false },
+    "Landing-Page.html":         { "meta_description": "", "title": "", "skip": false }
+  }
+}
