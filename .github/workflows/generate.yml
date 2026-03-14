@@ -7,11 +7,16 @@ on:
       - 'scripts/**'
       - '.github/**'
       - 'responsive-fixes.css'
+      - '_seo_review.md'
   workflow_dispatch:
 
 jobs:
   generate:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,12 +27,45 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install anthropic requests
+        run: pip install anthropic
 
-      - name: Generate SEO content \u2192 Notion
+      - name: Generate SEO content and patch HTML
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          NOTION_TOKEN:      ${{ secrets.NOTION_TOKEN }}
-          NOTION_PAGES_DB_ID:  ${{ secrets.NOTION_PAGES_DB_ID }}
-          NOTION_IMAGES_DB_ID: ${{ secrets.NOTION_IMAGES_DB_ID }}
         run: python scripts/generate_seo.py
+
+      - name: Push to seo-draft branch and open PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          BRANCH="seo-draft"
+          DATE=$(date +'%Y-%m-%d')
+
+          # Reset seo-draft to current main
+          git push origin --delete $BRANCH 2>/dev/null || true
+          git checkout -b $BRANCH
+
+          git add -A
+
+          if git diff --staged --quiet; then
+            echo "No changes — skipping PR"
+            exit 0
+          fi
+
+          git commit -m "seo: meta descriptions, alt text & responsive fixes — $DATE"
+          git push origin $BRANCH
+
+          # Close any existing open PRs for this branch
+          gh pr list --head $BRANCH --state open --json number \
+            --jq '.[].number' \
+            | xargs -I{} gh pr close {} --comment "Superseded by new run" 2>/dev/null || true
+
+          # Open new PR
+          gh pr create \
+            --title "SEO & Accessibility Update — $DATE" \
+            --body-file _seo_review.md \
+            --base main \
+            --head $BRANCH
