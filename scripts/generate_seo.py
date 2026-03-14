@@ -159,8 +159,11 @@ def notion_find_existing(db_id, title_prop, title_value):
         f"https://api.notion.com/v1/databases/{db_id}/query",
         headers=NOTION_HEADERS,
         json={"filter": {"property": title_prop, "title": {"equals": title_value}}},
-        timeout=10,
+        timeout=30,
     )
+    if not resp.ok:
+        print(f"  ⚠ Notion query failed: {resp.status_code} — {resp.text[:200]}")
+        return None
     results = resp.json().get("results", [])
     return results[0]["id"] if results else None
 
@@ -181,19 +184,23 @@ def notion_upsert(db_id, title_prop, title_value, props_data):
 
     if existing_id:
         update = {k: v for k, v in props.items() if k != "Status"}
-        requests.patch(
+        resp = requests.patch(
             f"https://api.notion.com/v1/pages/{existing_id}",
             headers=NOTION_HEADERS,
             json={"properties": update},
-            timeout=10,
+            timeout=30,
         )
+        if not resp.ok:
+            print(f"  ⚠ Notion update failed: {resp.status_code} — {resp.text[:200]}")
     else:
-        requests.post(
+        resp = requests.post(
             "https://api.notion.com/v1/pages",
             headers=NOTION_HEADERS,
             json={"parent": {"database_id": db_id}, "properties": props},
-            timeout=10,
+            timeout=30,
         )
+        if not resp.ok:
+            print(f"  ⚠ Notion create failed: {resp.status_code} — {resp.text[:200]}")
 
 
 # ---------------------------------------------------------------------------
@@ -202,6 +209,18 @@ def notion_upsert(db_id, title_prop, title_value, props_data):
 
 def main():
     today = date.today().isoformat()
+
+    # Quick Notion connectivity check before doing expensive API work
+    print("Checking Notion connection...")
+    test = requests.get(
+        "https://api.notion.com/v1/users/me",
+        headers=NOTION_HEADERS, timeout=30,
+    )
+    if not test.ok:
+        print(f"❌ Notion auth failed: {test.status_code} — {test.text[:300]}")
+        print("Check that NOTION_TOKEN secret is set and the integration has access to the databases.")
+        raise SystemExit(1)
+    print(f"✓ Notion connected as: {test.json().get('name', 'unknown')}\n")
 
     print("Fetching HTML files from GitHub...")
     files = fetch_html_files()
