@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 """
 generate_seo.py — runs in GitHub Actions on every push to main.
-Fetches all HTML pages, generates SEO content via Claude API,
-and populates the Notion review databases. Nothing is written to the repo.
+Patches HTML files directly (meta tags, alt text, responsive CSS),
+then writes a review summary. The workflow handles the PR.
 """
 
 import os
 import re
 import time
-import requests
 from pathlib import Path
 from html.parser import HTMLParser
 from datetime import date
@@ -16,76 +15,58 @@ from datetime import date
 import anthropic
 
 # ---------------------------------------------------------------------------
-# Config — from GitHub Actions secrets
+# Config
 # ---------------------------------------------------------------------------
-REPO            = "MaddyGrubbMaps/maddygrubbmaps.github.io"
-RAW_BASE        = f"https://raw.githubusercontent.com/{REPO}/main"
-SITE_NAME       = "Maddy Grubb Maps"
-
-ANTHROPIC_API_KEY   = os.environ["ANTHROPIC_API_KEY"]
-NOTION_TOKEN        = os.environ["NOTION_TOKEN"]
-NOTION_PAGES_DB_ID  = os.environ.get("NOTION_PAGES_DB_ID",  "f542c52e-233c-4c29-a425-03c8a5c6e920")
-NOTION_IMAGES_DB_ID = os.environ.get("NOTION_IMAGES_DB_ID", "c4471e1b-2d78-4eb2-bddf-1fc97ee636dd")
+REPO_ROOT  = Path(__file__).parent.parent
+SITE_NAME  = "Maddy Grubb Maps"
+SITE_URL   = "https://maddygrubbmaps.com"
+OG_IMAGE   = f"{SITE_URL}/images/Logo.png"
 
 SKIP_FILES = {"Blog-Template.html", "Post-Template.html", "post.html"}
-SCAN_FOLDERS = ["", "Adventures_Posts", "Client-Types", "Map-Pages", "blog"]
+SKIP_DIRS  = {".github", "scripts", "intlTelInput", "node_modules"}
 
-anthropic_client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
-
-NOTION_HEADERS = {
-    "Authorization": f"Bearer {NOTION_TOKEN}",
-    "Notion-Version": "2022-06-28",
-    "Content-Type": "application/json",
-}
+client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
 
 
 # ---------------------------------------------------------------------------
-# Fetch HTML files from GitHub
+# Find HTML files
 # ---------------------------------------------------------------------------
 
-def fetch_html_files():
+def find_html_files():
     files = []
-    for folder in SCAN_FOLDERS:
-        url = f"https://api.github.com/repos/{REPO}/contents/{folder}"
-        resp = requests.get(url, timeout=10)
-        if not resp.ok:
+    for path in REPO_ROOT.rglob("*.html"):
+        parts = set(path.relative_to(REPO_ROOT).parts)
+        if parts & SKIP_DIRS:
             continue
-        for item in resp.json():
-            if item["type"] == "file" and item["name"].endswith(".html"):
-                if item["name"] in SKIP_FILES:
-                    continue
-                path = item["path"]
-                html = requests.get(f"{RAW_BASE}/{path}", timeout=10).text
-                files.append((path, html))
-                time.sleep(0.1)
-    return files
+        if path.name in SKIP_FILES:
+            continue
+        files.append(path)
+    return sorted(files)
 
 
 # ---------------------------------------------------------------------------
-# HTML parsing (stdlib only — no beautifulsoup needed in generate step)
+# HTML parsing
 # ---------------------------------------------------------------------------
 
 class PageParser(HTMLParser):
     def __init__(self):
         super().__init__()
         self.title = ""
-        self.h1 = ""
+        self.h1    = ""
         self.body_words = []
         self.images = []
-        self._in = {"title": False, "h1": False, "body": False, "script": False, "style": False}
+        self._in = {t: False for t in ("title", "h1", "body", "script", "style")}
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
-        for t in ("title", "h1", "body", "script", "style"):
-            if tag == t:
-                self._in[t] = True
+        if tag in self._in:
+            self._in[tag] = True
         if tag == "img" and attrs.get("src"):
             self.images.append({"src": attrs["src"], "alt": attrs.get("alt", "")})
 
     def handle_endtag(self, tag):
-        for t in ("title", "h1", "script", "style"):
-            if tag == t:
-                self._in[t] = False
+        if tag in ("title", "h1", "script", "style"):
+            self._in[tag] = False
 
     def handle_data(self, data):
         text = data.strip()
@@ -115,16 +96,16 @@ def parse_html(html):
 
 def generate_meta_description(page_path, parsed):
     prompt = (
-        f'You are an SEO expert for a freelance cartography and GIS portfolio site called "{SITE_NAME}".\n\n'
-        f"Write a meta description (150–160 characters) for this page:\n"
-        f"- File: {page_path}\n"
-        f"- Title tag: {parsed['title']}\n"
+        f'SEO expert for "{SITE_NAME}" — freelance cartography and GIS portfolio.\n\n'
+        f"Write a meta description (150–160 chars) for this page:\n"
+        f"- File: {page_path.name}\n"
+        f"- Title: {parsed['title']}\n"
         f"- H1: {parsed['h1']}\n"
-        f"- Content preview: {parsed['body_preview'][:300]}\n\n"
-        f"Rules: 150–160 chars, action-oriented, include relevant keywords (cartography, maps, GIS), "
-        f"professional tone. Return ONLY the description text."
+        f"- Content: {parsed['body_preview'][:300]}\n\n"
+        f"Rules: 150–160 chars exactly, action-oriented, include relevant keywords "
+        f"(cartography, maps, GIS), professional tone. Return ONLY the description."
     )
-    msg = anthropic_client.messages.create(
+    msg = client.messages.create(
         model="claude-haiku-4-5-20251001",
         max_tokens=100,
         messages=[{"role": "user", "content": prompt}],
@@ -135,14 +116,14 @@ def generate_meta_description(page_path, parsed):
 def generate_alt_text(img_src, page_path, parsed):
     filename = Path(img_src).stem.replace("-", " ").replace("_", " ")
     prompt = (
-        f'Generate alt text for an image on a cartography portfolio site ("{SITE_NAME}").\n\n'
+        f'Alt text for an image on "{SITE_NAME}" cartography portfolio.\n\n'
         f"Image filename (hint): {filename}\n"
-        f"Page: {parsed['title'] or page_path}\n"
-        f"Page context: {parsed['body_preview'][:200]}\n\n"
-        f"Rules: under 100 chars, describe specifically what the image shows, "
+        f"Page: {parsed['title'] or page_path.name}\n"
+        f"Context: {parsed['body_preview'][:200]}\n\n"
+        f"Rules: under 100 chars, describe what the image shows specifically, "
         f"no 'image of' prefix. Return ONLY the alt text."
     )
-    msg = anthropic_client.messages.create(
+    msg = client.messages.create(
         model="claude-haiku-4-5-20251001",
         max_tokens=60,
         messages=[{"role": "user", "content": prompt}],
@@ -151,56 +132,66 @@ def generate_alt_text(img_src, page_path, parsed):
 
 
 # ---------------------------------------------------------------------------
-# Notion helpers
+# HTML patching
 # ---------------------------------------------------------------------------
 
-def notion_find_existing(db_id, title_prop, title_value):
-    resp = requests.post(
-        f"https://api.notion.com/v1/databases/{db_id}/query",
-        headers=NOTION_HEADERS,
-        json={"filter": {"property": title_prop, "title": {"equals": title_value}}},
-        timeout=30,
-    )
-    if not resp.ok:
-        print(f"  ⚠ Notion query failed: {resp.status_code} — {resp.text[:200]}")
-        return None
-    results = resp.json().get("results", [])
-    return results[0]["id"] if results else None
+def patch_meta(html, name, content, prop="name"):
+    attr    = f'{prop}="{name}"'
+    pattern = rf'<meta\s[^>]*{re.escape(attr)}[^>]*/?\s*>'
+    new_tag = f'<meta {prop}="{name}" content="{content}">'
+    if re.search(pattern, html, re.IGNORECASE):
+        return re.sub(pattern, new_tag, html, flags=re.IGNORECASE)
+    return html.replace("</head>", f"  {new_tag}\n</head>", 1)
 
 
-def notion_upsert(db_id, title_prop, title_value, props_data):
-    """Create or update a Notion DB row. Never overwrites Status on existing rows."""
-    existing_id = notion_find_existing(db_id, title_prop, title_value)
+def patch_title(html, title):
+    if re.search(r"<title>", html, re.IGNORECASE):
+        return re.sub(r"<title>[^<]*</title>", f"<title>{title}</title>",
+                      html, flags=re.IGNORECASE)
+    return html.replace("</head>", f"  <title>{title}</title>\n</head>", 1)
 
-    props = {title_prop: {"title": [{"text": {"content": title_value[:2000]}}]}}
-    for key, value in props_data.items():
-        if key == "Status":
-            if not existing_id:   # only set on creation
-                props[key] = {"select": {"name": value}}
-        elif key == "Last Run":
-            props[key] = {"date": {"start": value}}
-        else:
-            props[key] = {"rich_text": [{"text": {"content": str(value)[:2000]}}]}
 
-    if existing_id:
-        update = {k: v for k, v in props.items() if k != "Status"}
-        resp = requests.patch(
-            f"https://api.notion.com/v1/pages/{existing_id}",
-            headers=NOTION_HEADERS,
-            json={"properties": update},
-            timeout=30,
-        )
-        if not resp.ok:
-            print(f"  ⚠ Notion update failed: {resp.status_code} — {resp.text[:200]}")
-    else:
-        resp = requests.post(
-            "https://api.notion.com/v1/pages",
-            headers=NOTION_HEADERS,
-            json={"parent": {"database_id": db_id}, "properties": props},
-            timeout=30,
-        )
-        if not resp.ok:
-            print(f"  ⚠ Notion create failed: {resp.status_code} — {resp.text[:200]}")
+def patch_img_alt(html, filename, alt_text):
+    safe_alt = alt_text.replace('"', "&quot;")
+    escaped  = re.escape(filename)
+
+    def replacer(m):
+        tag = m.group(0)
+        if re.search(r"\balt=", tag, re.IGNORECASE):
+            return re.sub(r'alt="[^"]*"', f'alt="{safe_alt}"', tag, flags=re.IGNORECASE)
+        return re.sub(r"\s*/?>$", f' alt="{safe_alt}">', tag.rstrip())
+
+    pattern = rf'<img\b[^>]*\bsrc="[^"]*{escaped}[^"]*"[^>]*/?\s*>'
+    return re.sub(pattern, replacer, html, flags=re.IGNORECASE)
+
+
+def inject_responsive_css(html, page_path):
+    if "responsive-fixes.css" in html:
+        return html
+    depth  = len(page_path.relative_to(REPO_ROOT).parts) - 1
+    prefix = "../" * depth
+    link   = f'  <link rel="stylesheet" href="{prefix}responsive-fixes.css" media="screen">\n'
+    return html.replace("</head>", link + "</head>", 1)
+
+
+def ensure_og_image(html):
+    if 'property="og:image"' not in html:
+        tag = f'  <meta property="og:image" content="{OG_IMAGE}">\n'
+        return html.replace("</head>", tag + "</head>", 1)
+    return html
+
+
+# ---------------------------------------------------------------------------
+# Copy responsive CSS to repo root
+# ---------------------------------------------------------------------------
+
+def sync_responsive_css():
+    src  = REPO_ROOT / "scripts" / "responsive_fixes.css"
+    dest = REPO_ROOT / "responsive-fixes.css"
+    if src.exists():
+        dest.write_text(src.read_text())
+        return True
+    return False
 
 
 # ---------------------------------------------------------------------------
@@ -208,26 +199,27 @@ def notion_upsert(db_id, title_prop, title_value, props_data):
 # ---------------------------------------------------------------------------
 
 def main():
-    today = date.today().isoformat()
+    today    = date.today().isoformat()
+    html_files = find_html_files()
+    print(f"Found {len(html_files)} pages to process.\n")
 
-    # Quick Notion connectivity check before doing expensive API work
-    print("Checking Notion connection...")
-    test = requests.get(
-        "https://api.notion.com/v1/users/me",
-        headers=NOTION_HEADERS, timeout=30,
-    )
-    if not test.ok:
-        print(f"❌ Notion auth failed: {test.status_code} — {test.text[:300]}")
-        print("Check that NOTION_TOKEN secret is set and the integration has access to the databases.")
-        raise SystemExit(1)
-    print(f"✓ Notion connected as: {test.json().get('name', 'unknown')}\n")
+    sync_responsive_css()
+    print("✓ responsive-fixes.css synced to root\n")
 
-    print("Fetching HTML files from GitHub...")
-    files = fetch_html_files()
-    print(f"Found {len(files)} pages.\n")
+    review_lines = [
+        f"# SEO & Accessibility Review — {today}",
+        "",
+        "Review the changes below. **Merge this PR** to publish them to your live site.",
+        "If anything looks wrong, edit the files on this branch before merging.",
+        "",
+        "---",
+        "",
+    ]
 
-    for page_path, html in files:
-        print(f"Processing {page_path}...")
+    for page_path in html_files:
+        rel  = page_path.relative_to(REPO_ROOT)
+        html = page_path.read_text(encoding="utf-8")
+        print(f"Processing {rel}...")
         parsed = parse_html(html)
 
         # --- Meta description ---
@@ -236,22 +228,23 @@ def main():
             time.sleep(0.3)
         except Exception as e:
             print(f"  ⚠ Meta API error: {e}")
-            meta = "Custom cartography and GIS services by Maddy Grubb. Trail maps, climate maps, and outdoor recreation cartography."
+            meta = ("Custom cartography and GIS services by Maddy Grubb. "
+                    "Trail maps, climate maps, and outdoor recreation cartography.")
 
-        raw_title = parsed["title"].replace(" | Maddy Grubb Maps", "").strip()
+        raw_title  = parsed["title"].replace(f" | {SITE_NAME}", "").strip()
         page_title = f"{raw_title} | {SITE_NAME}" if raw_title else SITE_NAME
 
-        notion_upsert(
-            NOTION_PAGES_DB_ID, "Page", page_path,
-            {"Meta Description": meta, "Page Title": page_title,
-             "OG Description": meta, "Status": "Draft", "Last Run": today},
-        )
-        print(f"  ✓ Page SEO → Notion")
+        html = patch_meta(html, "description", meta)
+        html = patch_meta(html, "og:description", meta, prop="property")
+        html = patch_title(html, page_title)
+        html = patch_meta(html, "og:title", page_title, prop="property")
+        html = ensure_og_image(html)
 
         # --- Alt text for blank images ---
         blank_imgs = [img for img in parsed["images"] if not img["alt"].strip()]
         print(f"  {len(blank_imgs)} images need alt text")
 
+        alt_summary = []
         for img in blank_imgs:
             filename = Path(img["src"]).name
             try:
@@ -260,16 +253,38 @@ def main():
             except Exception as e:
                 print(f"  ⚠ Alt API error for {filename}: {e}")
                 alt = "Cartography work by Maddy Grubb Maps"
+            html = patch_img_alt(html, filename, alt)
+            alt_summary.append(f"  - `{filename}` → {alt}")
 
-            notion_upsert(
-                NOTION_IMAGES_DB_ID, "Image", filename,
-                {"Alt Text": alt, "Page": page_path, "Status": "Draft"},
-            )
+        # --- Responsive CSS ---
+        html = inject_responsive_css(html, page_path)
 
-        if blank_imgs:
-            print(f"  ✓ {len(blank_imgs)} images → Notion")
+        # --- Write back ---
+        page_path.write_text(html, encoding="utf-8")
+        print(f"  ✓ patched")
 
-    print(f"\n✅ Done. Review at: https://www.notion.so/323d0b23a28b815bbb77f41f4f4b1089")
+        # --- Review block ---
+        review_lines += [
+            f"## `{rel}`",
+            "",
+            f"**Meta description:** {meta}",
+            "",
+            f"**Page title:** {page_title}",
+            "",
+        ]
+        if alt_summary:
+            review_lines += ["**Alt text added:**", ""] + alt_summary + [""]
+        review_lines.append("---")
+        review_lines.append("")
+
+    review_lines += [
+        "_Generated automatically by `scripts/generate_seo.py`._",
+        "_Edit `scripts/page_config.json` to override any value on future runs._",
+    ]
+
+    review_path = REPO_ROOT / "_seo_review.md"
+    review_path.write_text("\n".join(review_lines), encoding="utf-8")
+    print(f"\n✅ Done. Review summary written to _seo_review.md")
 
 
 if __name__ == "__main__":
