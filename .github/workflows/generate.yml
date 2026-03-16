@@ -1,0 +1,73 @@
+name: Generate SEO Content
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'scripts/**'
+      - '.github/**'
+      - 'responsive-fixes.css'
+      - '_seo_review.md'
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    # Skip if triggered by the bot merging the seo-draft PR back to main
+    if: github.actor != 'github-actions[bot]'
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install anthropic
+
+      - name: Generate SEO content and patch HTML
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/generate_seo.py
+
+      - name: Push to seo-draft branch and open PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          BRANCH="seo-draft"
+          DATE=$(date +'%Y-%m-%d')
+
+          # Reset seo-draft to current main
+          git push origin --delete $BRANCH 2>/dev/null || true
+          git checkout -b $BRANCH
+
+          git add -A
+
+          if git diff --staged --quiet; then
+            echo "No changes — skipping PR"
+            exit 0
+          fi
+
+          git commit -m "seo: meta descriptions, alt text & responsive fixes — $DATE"
+          git push origin $BRANCH
+
+          # Close any existing open PRs for this branch
+          gh pr list --head $BRANCH --state open --json number \
+            --jq '.[].number' \
+            | xargs -I{} gh pr close {} --comment "Superseded by new run" 2>/dev/null || true
+
+          # Open new PR
+          gh pr create \
+            --title "SEO & Accessibility Update — $DATE" \
+            --body-file _seo_review.md \
+            --base main \
+            --head $BRANCH
