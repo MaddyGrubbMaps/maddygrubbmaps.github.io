@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://maddygrubbmaps.com/sitemap.xml
+
+# AI crawlers — allow indexing for generative engine optimization
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: GoogleOther
+Allow: /

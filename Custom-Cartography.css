@@ -1766,3 +1766,32 @@
     margin-right: 1px;
   }
 }
+
+/* === White background overrides for teal sections === */
+
+/* Section 2: CTA button strip */
+#block-6 {
+  background-color: #ffffff !important;
+}
+#block-6 .u-btn-1 {
+  border-color: #293d7d !important;
+  color: #293d7d !important;
+  background-color: transparent !important;
+}
+#block-6 .u-btn-1:hover {
+  background-color: #293d7d !important;
+  color: #ffffff !important;
+}
+
+/* Section 4: Consultation call */
+#block-3 {
+  background-color: #ffffff !important;
+}
+#block-3 .u-text-1,
+#block-3 .u-text-2 {
+  color: #293d7d !important;
+}
+#block-3 .u-btn-1 {
+  color: #293d7d !important;
+  border-color: #293d7d !important;
+}
