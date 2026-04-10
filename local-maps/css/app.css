@@ -101,7 +101,11 @@ html, body {
   cursor: pointer;
   pointer-events: auto;
   color: var(--text-primary);
-  max-width: 70%;
+  max-width: 50%;
+}
+
+@media (min-width: 768px) {
+  .title-pill { max-width: 70%; }
 }
 
 .title-pill-logo {
@@ -150,19 +154,15 @@ html, body {
 .status-label {
   font-size: 0.6875rem;
   color: var(--text-secondary);
-  display: none; /* hidden on mobile — dot alone is enough; text shows on tablet */
-}
-
-@media (min-width: 768px) {
-  .status-label { display: inline; }
 }
 
 /* ─── Right Controls ──────────────────────────────────────────────────────── */
 
 #north-arrow {
   position: absolute;
-  /* Always sit below the top bar regardless of safe-area-inset height */
-  top: calc(max(1rem, env(safe-area-inset-top)) + 3.25rem);
+  /* Always sit below the top bar regardless of safe-area-inset height.
+     Formula: top-bar-top + top-bar-height(~2.5rem) + gap(1.5rem) */
+  top: calc(max(1rem, env(safe-area-inset-top)) + 4rem);
   right: 0.5rem;
   z-index: 9; /* below top-bar (z-index:10) so it never occludes Maps button */
   display: flex;
@@ -1193,11 +1193,25 @@ html, body {
 
 /* ─── Maps Button ──────────────────────────────────────────────────────────── */
 
+/* Mobile: combined status+maps pill */
 .top-bar-right {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  align-items: stretch;
+  gap: 0;
   flex-shrink: 0;
+  background: var(--navy-solid);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.status-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.625rem;
+  background: transparent;
+  flex-shrink: 0;
+  border-radius: 0;
 }
 
 .maps-btn {
@@ -1205,9 +1219,10 @@ html, body {
   align-items: center;
   gap: 0.375rem;
   padding: 0.375rem 0.625rem;
-  border-radius: 0.75rem;
-  background: var(--navy-solid);
+  border-radius: 0;
+  background: transparent;
   border: none;
+  border-left: 1px solid rgba(255,255,255,0.15);
   cursor: pointer;
   pointer-events: auto;
   color: var(--text-primary);
@@ -1216,14 +1231,28 @@ html, body {
   font-weight: 500;
   flex-shrink: 0;
 }
-.maps-btn:hover { background: rgba(255,255,255,0.15); }
+.maps-btn:hover { background: rgba(255,255,255,0.12); }
 .maps-btn-label { display: none; }
 
 @media (min-width: 768px) {
+  /* Desktop: separate pills again */
+  .top-bar-right {
+    background: transparent;
+    border-radius: 0;
+    gap: 0.5rem;
+    align-items: center;
+    overflow: visible;
+  }
+  .status-pill {
+    background: var(--navy-solid);
+    border-radius: 0.75rem;
+    padding: 0.375rem 0.625rem;
+  }
   .maps-btn {
     background: transparent;
     padding: 0.25rem 0.5rem;
     border-radius: 0.375rem;
+    border-left: none;
   }
   .maps-btn:hover { background: rgba(255,255,255,0.1); }
   .maps-btn-label { display: inline; }
