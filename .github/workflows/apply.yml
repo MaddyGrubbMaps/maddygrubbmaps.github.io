@@ -1,0 +1,35 @@
+name: Apply SEO from Notion
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Type 'apply' to confirm you have reviewed Notion and are ready to publish"
+        required: true
+        default: ""
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm == 'apply'
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Apply approved Notion content to site
+        env:
+          GITHUB_TOKEN:        ${{ secrets.GITHUB_TOKEN }}
+          NOTION_TOKEN:        ${{ secrets.NOTION_TOKEN }}
+          NOTION_PAGES_DB_ID:  ${{ secrets.NOTION_PAGES_DB_ID }}
+          NOTION_IMAGES_DB_ID: ${{ secrets.NOTION_IMAGES_DB_ID }}
+        run: python scripts/apply_from_notion.py

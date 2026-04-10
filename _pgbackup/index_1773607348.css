@@ -1,0 +1,893 @@
+ .u-section-1 {
+  min-height: 538px;
+  background-image: linear-gradient(to bottom, rgba(41, 61, 125, 0.2), rgba(41, 61, 125, 0.2)), url('images/Teton_Glaciers_View_COMPOSITE_V2.jpg');
+  background-position: 50% 50%;
+}
+
+.u-section-1 .u-sheet-1 {
+  min-height: 712px;
+}
+
+.u-section-1 .u-text-1 {
+  font-weight: 400;
+  font-style: normal;
+  margin: 30px auto 0;
+}
+
+.u-section-1 .u-image-1 {
+  width: 254px;
+  height: 203px;
+  margin: 0 auto 0 0;
+}
+
+.u-section-1 .u-btn-1 {
+  text-transform: none;
+  background-image: none;
+  margin: 0 auto 0 0;
+  padding: 10px 18px 10px 16px;
+}
+
+.u-section-1 .u-icon-1 {
+  font-size: 1rem;
+}
+
+.u-section-1 .u-btn-2 {
+  text-transform: none;
+  background-image: none;
+  margin: 0 auto 0 0;
+  padding: 10px 12px;
+}
+
+.u-section-1 .u-icon-2 {
+  font-size: 1rem;
+}
+
+.u-section-1 .u-btn-3 {
+  text-transform: none;
+  background-image: none;
+  margin: 0 auto 0 0;
+  padding: 10px 18px 10px 17px;
+}
+
+.u-section-1 .u-icon-3 {
+  font-size: 1rem;
+}
+
+.u-section-1 .u-btn-4 {
+  text-transform: none;
+  background-image: none;
+  margin: 0 auto 0 0;
+  padding: 10px 44px 10px 42px;
+}
+
+.u-section-1 .u-icon-4 {
+  font-size: 1rem;
+}
+
+@media (max-width: 1399px) {
+  .u-section-1 .u-sheet-1 {
+    min-height: 711px;
+  }
+}
+
+@media (max-width: 1199px) {
+   .u-section-1 {
+    min-height: 350px;
+  }
+}
+
+@media (max-width: 991px) {
+   .u-section-1 {
+    min-height: 246px;
+  }
+}
+
+@media (max-width: 767px) {
+   .u-section-1 {
+    min-height: 284px;
+  }
+
+  .u-section-1 .u-sheet-1 {
+    min-height: 459px;
+  }
+
+  .u-section-1 .u-text-1 {
+    font-weight: 700;
+    width: auto;
+    font-style: italic;
+    margin-top: 362px;
+    margin-right: 90px;
+  }
+
+  .u-section-1 .u-image-1 {
+    margin-top: -285px;
+    margin-left: 79px;
+  }
+
+  .u-section-1 .u-btn-1 {
+    margin-top: -209px;
+    margin-left: 348px;
+  }
+
+  .u-section-1 .u-btn-2 {
+    margin-top: 15px;
+    margin-left: 348px;
+  }
+
+  .u-section-1 .u-btn-3 {
+    margin-top: 15px;
+    margin-right: 81px;
+    margin-left: auto;
+    padding-right: 62px;
+    padding-left: 60px;
+  }
+
+  .u-section-1 .u-btn-4 {
+    margin-top: 15px;
+    margin-bottom: 60px;
+    margin-left: 348px;
+  }
+}
+
+@media (max-width: 575px) {
+   .u-section-1 {
+    background-position: 50% 50%, 46.76% 48.95%;
+    background-repeat: no-repeat, no-repeat;
+    background-size: cover, auto 115%;
+    min-height: 94px;
+  }
+
+  .u-section-1 .u-sheet-1 {
+    min-height: 795px;
+  }
+
+  .u-section-1 .u-text-1 {
+    line-height: 1.1;
+    width: 202px;
+    margin-top: 637px;
+    margin-right: auto;
+  }
+
+  .u-section-1 .u-image-1 {
+    margin-top: -516px;
+    margin-left: auto;
+  }
+
+  .u-section-1 .u-btn-1 {
+    margin-top: 32px;
+    margin-left: auto;
+  }
+
+  .u-section-1 .u-btn-2 {
+    margin-top: 16px;
+    margin-left: auto;
+  }
+
+  .u-section-1 .u-btn-3 {
+    margin-top: 18px;
+    margin-right: auto;
+  }
+
+  .u-section-1 .u-btn-4 {
+    margin-top: 14px;
+    margin-left: auto;
+  }
+}.u-section-2 .u-sheet-1 {
+  min-height: 444px;
+}
+
+.u-section-2 .u-text-1 {
+  margin: 60px 142px 0 365px;
+}
+
+.u-section-2 .u-image-1 {
+  width: 176px;
+  height: 175px;
+  margin: -134px auto 0 142px;
+}
+
+.u-section-2 .u-btn-1 {
+  --radius: 20px;
+  border-style: solid;
+  margin: -12px auto 60px 370px;
+  padding: 10px 20px 10px 19px;
+}
+
+@media (max-width: 1399px) {
+  .u-section-2 .u-btn-1 {
+    margin-left: 369px;
+  }
+}
+
+@media (max-width: 767px) {
+  .u-section-2 .u-text-1 {
+    margin-left: -300px;
+    margin-right: -300px;
+  }
+
+  .u-section-2 .u-image-1 {
+    width: 600px;
+    margin-top: 20px;
+    margin-left: auto;
+  }
+
+  .u-section-2 .u-btn-1 {
+    margin-top: 20px;
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 575px) {
+  .u-section-2 .u-text-1 {
+    margin-left: -167px;
+    margin-right: -167px;
+  }
+
+  .u-section-2 .u-image-1 {
+    width: 335px;
+    margin-top: -134px;
+  }
+
+  .u-section-2 .u-btn-1 {
+    margin-top: -12px;
+  }
+}.u-section-3 .u-sheet-1 {
+  min-height: 1100px;
+  padding-left: 50px;
+  padding-right: 50px;
+  box-sizing: border-box;
+}
+
+.u-section-3 .u-layout-wrap-1 {
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+
+.u-section-3 .u-image-1 {
+  min-height: 615px;
+  background-position: 50% 100%;
+  background-image: url("images/Wasatch_Mountains_Backcountry_Winter_Map.webp");
+  background-size: cover;
+}
+
+.u-section-3 .u-image-2 {
+  min-height: 615px;
+  background-image: url("images/A028570B-44F3-4037-8A31-A7332A7AB5EE20230621-DSC05319.JPG");
+  background-position: 50% 50%;
+}
+
+.u-section-3 .u-container-layout-2 {
+  text-shadow: 0px 0px 0px rgba(0,0,0,0);
+  box-shadow: -2px 0 0 0 rgba(0,0,0,0);
+}
+
+.u-section-3 .u-image-3 {
+  min-height: 307px;
+  background-position: 50% 67.72%;
+  background-image: url("images/IMG_8508.webp");
+  background-size: cover;
+}
+
+.u-section-3 .u-image-4 {
+  min-height: 307px;
+  background-position: 50% 50%;
+  background-image: url("images/Colorado_Trail_v3copy21.webp");
+  background-size: cover;
+}
+
+.u-section-3 .u-image-5 {
+  min-height: 307px;
+  background-position: 0% 0%;
+  background-image: url("images/Mount_Moran_3D_View1.webp");
+  background-size: auto 130%;
+}
+
+.u-section-3 .u-text-1 {
+  width: min(766px, 100%);
+  margin: 59px auto 58px;
+}
+
+@media (max-width: 1399px) {
+  .u-section-3 .u-sheet-1 {
+    min-height: 1099px;
+  }
+
+  .u-section-3 .u-image-1 {
+    min-height: 614px;
+  }
+
+  .u-section-3 .u-image-2 {
+    min-height: 614px;
+    transition-duration: 0.5s;
+    background-size: cover;
+    transform: translateX(0px) translateY(0px) scale(1) rotate(0deg);
+  }
+
+  .u-section-3 .u-image-3 {
+    min-height: 317px;
+  }
+}
+
+@media (max-width: 1199px) {
+  .u-section-3 .u-image-3 {
+    min-height: 324px;
+  }
+}
+
+@media (max-width: 991px) {
+  .u-section-3 .u-image-1 {
+    min-height: 668px;
+  }
+
+  .u-section-3 .u-image-2 {
+    min-height: 668px;
+  }
+
+  .u-section-3 .u-container-layout-2 {
+    padding: 0;
+  }
+
+  .u-section-3 .u-image-3 {
+    min-height: 263px;
+    order: 2;
+  }
+
+  .u-section-3 .u-image-4 {
+    min-height: 263px;
+    order: 0;
+  }
+
+  .u-section-3 .u-image-5 {
+    min-height: 263px;
+    background-position: 86.33% 92.48%;
+    background-size: 165%;
+    order: 1;
+  }
+}
+
+@media (max-width: 767px) {
+  .u-section-3 .u-sheet-1 {
+    min-height: 3153px;
+  }
+
+  .u-section-3 .u-image-1 {
+    min-height: 696px;
+  }
+
+  .u-section-3 .u-image-2 {
+    min-height: 1392px;
+  }
+
+  .u-section-3 .u-image-3 {
+    min-height: 1401px;
+  }
+
+  .u-section-3 .u-image-4 {
+    min-height: 1401px;
+  }
+
+  .u-section-3 .u-image-5 {
+    min-height: 1401px;
+  }
+
+  .u-section-3 .u-text-1 {
+    width: 640px;
+  }
+}
+
+@media (max-width: 575px) {
+  .u-section-3 .u-sheet-1 {
+    min-height: 1922px;
+  }
+
+  .u-section-3 .u-text-1 {
+    width: 375px;
+  }
+}
+
+.u-section-3 .u-image-2:not([data-block-selected]):not([data-cell-selected]),
+.u-section-3 .u-image-2:not([data-block-selected]):not([data-cell-selected]):before,
+.u-section-3 .u-image-2:not([data-block-selected]):not([data-cell-selected]) > .u-container-layout:before {
+  transition-property: fill, color, background-color, stroke-width, border-style, border-width, border-top-width, border-left-width, border-right-width, border-bottom-width, custom-border, borders, box-shadow, text-shadow, opacity, border-radius, stroke, border-color, font-size, font-style, font-weight, text-decoration, letter-spacing, transform, background-image, image-zoom, background-size, background-position;
+}
+
+.u-section-3 .u-image-2 {
+  border-color: transparent !important;
+}
+
+.u-section-3 .u-image-2.u-image-2.u-image-2:hover:not([data-block-selected]):not([data-cell-selected]) {
+  transform: translateX(0px) translateY(px) scale(1) rotate(0deg) !important;
+  text-shadow: 0px 0px 0px rgba(0,0,0,0) !important;
+}
+
+.u-section-3 .u-image-2 {
+  border-color: transparent !important;
+}
+
+.u-section-3 .u-image-2.u-image-2.u-image-2.hover {
+  transform: translateX(0px) translateY(px) scale(1) rotate(0deg) !important;
+  text-shadow: 0px 0px 0px rgba(0,0,0,0) !important;
+}
+
+:hover:not([data-block-selected]):not([data-cell-selected]) > .u-container-layout > .u-section-3 .u-image-2 {
+  transform: rotate(0deg) scale(1) translateX(0px) translateY(0px) !important;
+}
+
+.u-section-3 .hover > .u-container-layout .u-image-2 {
+  transform: rotate(0deg) scale(1) translateX(0px) translateY(0px) !important;
+}.u-section-4 .u-sheet-1 {
+  min-height: 1553px;
+}
+
+.u-section-4 .u-image-1 {
+  height: auto;
+}
+
+.u-section-4 .u-text-1 {
+  font-weight: 700;
+  width: auto;
+  font-size: 1.125rem;
+  margin: 20px auto 56px;
+}
+
+.u-section-4 .u-image-2 {
+  width: 323px;
+  height: 258px;
+  margin: 20px auto 60px;
+}
+
+.u-section-4 .u-image-3 {
+  width: 327px;
+  height: 351px;
+  margin: 21px auto 60px;
+}
+
+.u-section-4 .u-image-4 {
+  width: 327px;
+  height: 656px;
+  margin: 24px auto 60px;
+}
+
+.u-section-4 .u-image-5 {
+  width: 327px;
+  height: 327px;
+  margin: -1054px -30px 60px auto;
+}
+
+@media (max-width: 1399px) {
+  .u-section-4 .u-image-1 {
+    height: auto;
+  }
+}
+
+@media (max-width: 575px) {
+  .u-section-4 .u-text-1 {
+    font-size: 1.25rem;
+    margin-top: 24px;
+    margin-bottom: 0;
+  }
+
+  .u-section-4 .u-image-3 {
+    height: 435px;
+    margin-top: 367px;
+    margin-bottom: 0;
+  }
+
+  .u-section-4 .u-image-4 {
+    margin-bottom: 0;
+  }
+
+  .u-section-4 .u-image-5 {
+    margin-top: -1457px;
+    margin-right: auto;
+    margin-bottom: 1154px;
+  }
+}.u-section-5 .u-sheet-1 {
+  min-height: 1055px;
+}
+
+.u-section-5 .u-image-1 {
+  height: auto;
+}
+
+.u-section-5 .u-text-1 {
+  font-weight: 700;
+  font-size: 1.25rem;
+  width: auto;
+  margin: 20px auto 0;
+}
+
+.u-section-5 .u-image-2 {
+  width: 323px;
+  height: 258px;
+  margin: 20px auto 60px;
+}
+
+.u-section-5 .u-image-3 {
+  width: 329px;
+  height: 332px;
+  margin: 20px auto 60px;
+}
+
+.u-section-5 .u-image-4 {
+  width: 328px;
+  height: 227px;
+  margin: 24px auto 0;
+}
+
+.u-section-5 .u-image-5 {
+  width: 328px;
+  height: 253px;
+  margin: 24px auto 60px;
+}
+
+@media (max-width: 1399px) {
+  .u-section-5 .u-image-1 {
+    height: auto;
+  }
+}
+
+@media (max-width: 575px) {
+  .u-section-5 .u-image-3 {
+    width: 328px;
+    height: 373px;
+    margin-top: 31px;
+    margin-bottom: 0;
+  }
+} .u-section-6 {
+  background-image: url("images/Teton_Glaciers_View_COMPOSITE_V2.webp");
+  background-position: 50% 50%;
+}
+
+.u-section-6 .u-sheet-1 {
+  min-height: 773px;
+}
+
+.u-section-6 .u-btn-1 {
+  --radius: 20px;
+  border-style: solid;
+  margin: 53px auto 60px;
+  padding: 10px 20px 10px 19px;
+}
+
+@media (max-width: 1399px) {
+  .u-section-6 .u-sheet-1 {
+    min-height: 772px;
+  }
+}
+
+@media (max-width: 1199px) {
+   .u-section-6 {
+    min-height: 350px;
+  }
+}
+
+@media (max-width: 767px) {
+   .u-section-6 {
+    min-height: 294px;
+  }
+
+  .u-section-6 .u-sheet-1 {
+    min-height: 499px;
+  }
+}
+
+@media (max-width: 575px) {
+   .u-section-6 {
+    min-height: 85px;
+  }
+
+  .u-section-6 .u-sheet-1 {
+    min-height: 292px;
+  }
+}.u-section-7 .u-sheet-1 {
+  min-height: 948px;
+}
+
+.u-section-7 .u-text-1 {
+  margin: 81px 50px 0 554px;
+}
+
+.u-section-7 .u-image-1 {
+  width: 457px;
+  height: 763px;
+  margin: -765px auto 2px 50px;
+}
+
+@media (max-width: 1399px) {
+  .u-section-7 .u-sheet-1 {
+    min-height: 1086px;
+  }
+
+  .u-section-7 .u-text-1 {
+    width: 766px;
+    margin-top: 652px;
+    margin-right: 113px;
+  }
+
+  .u-section-7 .u-image-1 {
+    margin-top: -838px;
+  }
+}
+
+@media (max-width: 1199px) {
+  .u-section-7 .u-text-1 {
+    margin-top: -398px;
+  }
+
+  .u-section-7 .u-image-1 {
+    margin-top: -704px;
+  }
+}
+
+@media (max-width: 767px) {
+  .u-section-7 .u-text-1 {
+    width: 640px;
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .u-section-7 .u-image-1 {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 575px) {
+  .u-section-7 .u-sheet-1 {
+    min-height: 949px;
+  }
+
+  .u-section-7 .u-text-1 {
+    width: auto;
+  }
+
+  .u-section-7 .u-image-1 {
+    width: 375px;
+    height: 626px;
+    margin-left: 0;
+  }
+} .u-section-8 {
+  background-image: none;
+}
+
+.u-section-8 .u-sheet-1 {
+  min-height: 887px;
+}
+
+.u-section-8 .u-custom-html-1 {
+  height: auto;
+  min-height: 606px;
+  width: 800px;
+  margin: 104px auto 0;
+}
+
+.u-section-8 .u-btn-1 {
+  --radius: 20px;
+  border-style: solid;
+  background-image: none;
+  margin: 49px auto 60px;
+  padding: 10px 20px 10px 19px;
+}
+
+@media (max-width: 767px) {
+  .u-section-8 .u-custom-html-1 {
+    width: 640px;
+  }
+}
+
+@media (max-width: 575px) {
+  .u-section-8 .u-custom-html-1 {
+    width: 375px;
+  }
+}
+
+/* ================================================
+   MGM CUSTOM SECTIONS — clean replacements
+   ================================================ */
+
+/* Shared container */
+.mgm-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 50px;
+}
+
+/* CTA button */
+.mgm-btn {
+  display: inline-block;
+  padding: 13px 32px;
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  text-decoration: none;
+  font-family: 'Alata', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 28px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.mgm-btn:hover {
+  background: #dd9029;
+  border-color: #dd9029;
+  color: #ffffff;
+}
+
+/* --- HERO --- */
+.mgm-hero-section {
+  position: relative;
+  background-image: url('images/Supermap_Winter_hero.jpg');
+  background-size: cover;
+  background-position: center 30%;
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mgm-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.38);
+}
+.mgm-hero-content {
+  position: relative;
+  text-align: center;
+  padding: 80px 50px;
+  max-width: 820px;
+}
+.mgm-hero-title {
+  font-family: 'Alata', sans-serif;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 400;
+  color: #ffffff;
+  line-height: 1.25;
+  margin: 0 0 20px;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
+}
+.mgm-hero-sub {
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.65;
+  margin: 0 auto 40px;
+  max-width: 620px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+}
+
+/* --- GALLERY SECTIONS --- */
+.mgm-gallery-section {
+  padding: 64px 0;
+  background: #ffffff;
+}
+.mgm-gallery-section.mgm-alt {
+  background: #f6f6f4;
+}
+.mgm-section-title {
+  font-family: 'Alata', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0 0 28px;
+}
+.mgm-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.mgm-gallery img {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  display: block;
+}
+
+/* --- BIO SECTION --- */
+.mgm-bio-section {
+  padding: 72px 0;
+  background: #f6f6f4;
+}
+.mgm-bio {
+  display: flex;
+  gap: 60px;
+  align-items: flex-start;
+}
+.mgm-bio-photo {
+  flex: 0 0 320px;
+  width: 320px;
+  height: 500px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+.mgm-bio-text {
+  flex: 1 1 auto;
+  padding-top: 8px;
+}
+.mgm-bio-text p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #333333;
+  margin: 0 0 20px;
+}
+.mgm-bio-text p:last-child {
+  margin-bottom: 0;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 991px) {
+  .mgm-container {
+    padding: 0 50px;
+  }
+  .mgm-bio {
+    flex-direction: column;
+    gap: 32px;
+  }
+  .mgm-bio-photo {
+    flex: 0 0 auto;
+    width: 100%;
+    height: 380px;
+    object-position: center 20%;
+  }
+}
+
+@media (max-width: 767px) {
+  .mgm-container {
+    padding: 0 50px;
+  }
+  .mgm-gallery {
+    grid-template-columns: 1fr;
+  }
+  .mgm-gallery img {
+    height: 260px;
+  }
+  .mgm-gallery-section {
+    padding: 48px 0;
+  }
+  .mgm-bio-section {
+    padding: 48px 0;
+  }
+}
+
+/* --- SECTION 8 (Sketchfab): reduce top gap after heading added --- */
+.u-section-8 .u-custom-html-1 {
+  margin-top: 24px !important;
+}
+
+/* --- NAV: transparent at top of page, white background after scroll --- */
+#sec-cdd0 {
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Override Nicepage's sticky white override while at top */
+#sec-cdd0.mgm-at-top,
+#sec-cdd0.mgm-at-top.u-sticky-fixed,
+.u-body.u-sticky-fixed #sec-cdd0.mgm-at-top {
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Nav link text: white at top */
+#sec-cdd0.mgm-at-top .u-nav-link,
+#sec-cdd0.mgm-at-top .u-text-custom-color-2,
+#sec-cdd0.mgm-at-top .u-hamburger-link {
+  color: #ffffff !important;
+  transition: color 0.3s ease;
+}
+
+/* Hamburger SVG bars: white at top */
+#sec-cdd0.mgm-at-top .u-svg-content rect {
+  fill: #ffffff;
+}
+
+/* Logo: swap to white version when header is transparent */
+#sec-cdd0.mgm-at-top .u-image-1 {
+  content: url('../images/Logo-white.png');
+}
+
+/* Smooth color transition on all nav links */
+.u-nav-link {
+  transition: color 0.3s ease;
+}
