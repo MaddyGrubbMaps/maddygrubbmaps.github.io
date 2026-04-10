@@ -2,7 +2,7 @@
 // Handles offline tile caching and PWA install.
 // Cache strategy: OPFS-first for tiles, cache-first for app shell, network-first for config.
 
-const APP_CACHE = 'local-maps-app-v35';
+const APP_CACHE = 'local-maps-app-v36';
 const APP_SHELL = [
   '/',
   '/index.html',

@@ -82,7 +82,7 @@ html, body {
   top: max(1rem, env(safe-area-inset-top));
   left: 0.5rem;
   right: 0.5rem;
-  z-index: 10;
+  z-index: 55; /* above all overlays so Maps button is always reachable */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -150,6 +150,11 @@ html, body {
 .status-label {
   font-size: 0.6875rem;
   color: var(--text-secondary);
+  display: none; /* hidden on mobile — dot alone is enough; text shows on tablet */
+}
+
+@media (min-width: 768px) {
+  .status-label { display: inline; }
 }
 
 /* ─── Right Controls ──────────────────────────────────────────────────────── */

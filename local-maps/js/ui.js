@@ -304,7 +304,7 @@ function buildSheet(config) {
   if (config.description) overlay.querySelector('#sheet-desc').textContent = config.description;
   if (fileExt) overlay.querySelector('#sheet-file-ext').textContent = fileExt;
   overlay.addEventListener('click', (e) => {
-    if (e.target.id === 'sheet-backdrop' || e.target.id === 'sheet-close') closeSheet();
+    if (e.target.closest('#sheet-close, #sheet-backdrop')) closeSheet();
   });
 }
 
