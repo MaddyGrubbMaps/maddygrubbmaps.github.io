@@ -1180,9 +1180,7 @@ function _renderMapsList(config) {
   listEl.innerHTML = maps.map(m => {
     const isActive   = m.code === activeCode;
     const thumbSrc   = safeUrl(m.thumbnailUrl);
-    const thumbHtml  = thumbSrc
-      ? `<img src="${thumbSrc}" alt="">`
-      : ICONS.mapPinLg;
+    const thumbHtml  = `<img src="${thumbSrc || '/assets/map-thumb-default.png'}" alt="">`;
     return `
       <div class="map-row${isActive ? ' map-row--active' : ''}" data-code="${m.code}">
         <div class="map-row-inner">
