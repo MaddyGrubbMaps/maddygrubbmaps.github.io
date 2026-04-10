@@ -1128,24 +1128,35 @@ function attachSwipeDelete(rowEl, code, onDelete) {
 
 async function openMapsSheet(config) {
   const overlay = document.getElementById('maps-overlay');
+  const count   = getMaps().length;
+  const countLabel = count === 1 ? '1 map on this device' : `${count} maps on this device`;
 
-  // Build the shell
   overlay.innerHTML = `
     <div class="maps-backdrop" id="maps-backdrop"></div>
     <div class="maps-sheet" id="maps-sheet">
       <div class="offline-handle-row"><div class="offline-handle"></div></div>
       <div class="maps-header">
-        <span class="maps-header-title font-header">My Maps</span>
-        <button class="maps-add-btn" id="maps-add-btn">+ Add map</button>
+        <div>
+          <div class="maps-header-title font-header">My Maps</div>
+          <div class="maps-header-count"></div>
+        </div>
+        <button class="maps-close-btn" id="maps-close-btn" aria-label="Close">${ICONS.close}</button>
       </div>
       <div class="maps-list" id="maps-list"></div>
+      <div class="maps-footer">
+        <button class="maps-add-btn" id="maps-add-btn">+ Add map</button>
+      </div>
     </div>
   `;
+
+  // XSS-safe count
+  overlay.querySelector('.maps-header-count').textContent = countLabel;
 
   overlay.classList.add('is-open');
   requestAnimationFrame(() => document.getElementById('maps-sheet').classList.add('is-open'));
 
   document.getElementById('maps-backdrop').addEventListener('click', closeMapsSheet);
+  document.getElementById('maps-close-btn').addEventListener('click', closeMapsSheet);
   document.getElementById('maps-add-btn').addEventListener('click', () => {
     renderCodeEntry(document.getElementById('maps-sheet'), {
       onBack: () => openMapsSheet(config),
@@ -1153,68 +1164,69 @@ async function openMapsSheet(config) {
   });
 
   _renderMapsList(config);
-
-  // Async: fill in offline badges
-  getMaps().forEach(async m => {
-    const cached = await isMapCached(m.uuid);
-    if (!cached) return;
-    const badgesEl = document.querySelector(`.map-row[data-code="${m.code}"] .map-row-badges`);
-    if (badgesEl) {
-      badgesEl.insertAdjacentHTML('beforeend',
-        `<span class="map-badge map-badge--saved">${ICONS.offline}&nbsp;Saved offline</span>`);
-    }
-  });
 }
 
 function _renderMapsList(config) {
-  const listEl   = document.getElementById('maps-list');
+  const listEl     = document.getElementById('maps-list');
   if (!listEl) return;
-  const maps     = getMaps();
-  const activeCode = getMaps().find(m => m.uuid === config.uuid)?.code ?? null;
+  const maps       = getMaps();
+  const activeCode = maps.find(m => m.uuid === config.uuid)?.code ?? null;
 
   if (maps.length === 0) {
-    listEl.innerHTML = `<p class="maps-empty">No maps saved yet.<br>Tap + Add map to get started.</p>`;
+    listEl.innerHTML = `<p class="maps-empty">No maps saved yet.</p>`;
     return;
   }
 
   listEl.innerHTML = maps.map(m => {
-    const isActive   = m.code === activeCode;
-    const thumbSrc   = safeUrl(m.thumbnailUrl);
-    const thumbHtml  = `<img src="${thumbSrc || '/assets/map-thumb-default.png'}" alt="">`;
+    const isActive  = m.code === activeCode;
+    const thumbSrc  = safeUrl(m.thumbnailUrl);
     return `
       <div class="map-row${isActive ? ' map-row--active' : ''}" data-code="${m.code}">
         <div class="map-row-inner">
-          <div class="map-row-thumb">${thumbHtml}</div>
+          <div class="map-row-thumb">
+            <img src="${thumbSrc || '/assets/map-thumb-default.png'}" alt="">
+          </div>
           <div class="map-row-info">
-            <div class="map-row-title"></div>
-            <div class="map-row-badges">
-              ${isActive ? `<span class="map-badge map-badge--active">Active</span>` : ''}
+            <div class="map-row-title-row">
+              <div class="map-row-title"></div>
+              ${isActive ? `<span class="map-badge map-badge--open">Open</span>` : ''}
             </div>
+            <div class="map-row-subtitle"></div>
+          </div>
+          <div class="map-row-actions">
+            <button class="map-row-action map-row-action--cache" data-code="${m.code}" aria-label="Save offline">
+              ${ICONS.offline}
+              <span>Cache</span>
+            </button>
+            <button class="map-row-action map-row-action--delete" aria-label="Remove map">
+              ${ICONS.trash}
+              <span>Del</span>
+            </button>
           </div>
         </div>
-        <button class="map-row-delete" aria-label="Remove map">${ICONS.trash}</button>
       </div>`;
   }).join('');
 
-  // Set titles via textContent (XSS-safe)
+  // XSS-safe text content
   maps.forEach(m => {
     const row = listEl.querySelector(`.map-row[data-code="${m.code}"]`);
     if (!row) return;
-    row.querySelector('.map-row-title').textContent = m.title;
+    row.querySelector('.map-row-title').textContent    = m.title;
+    row.querySelector('.map-row-subtitle').textContent = m.code;
 
-    // Tap row to switch map (skip if already active)
+    // Tap row body to switch map (skip if already active)
     if (m.code !== activeCode) {
-      row.querySelector('.map-row-inner').addEventListener('click', () => {
+      row.querySelector('.map-row-inner').addEventListener('click', e => {
+        if (e.target.closest('.map-row-actions')) return; // don't switch on button click
         setLastCode(m.code);
         window.location.replace(`/?map=${m.uuid}`);
       });
     }
 
-    // Swipe / click to delete
-    attachSwipeDelete(row, m.code, async () => {
+    // Delete button
+    row.querySelector('.map-row-action--delete').addEventListener('click', async () => {
       await clearMapCache(m.uuid);
       removeMap(m.code);
-      // If we just deleted the active map, go to next or show code entry
       if (m.code === activeCode) {
         const remaining = getMaps();
         if (remaining.length > 0) {
@@ -1224,10 +1236,20 @@ function _renderMapsList(config) {
           showFullScreenCodeEntry();
         }
       } else {
-        // Re-render list in place
         _renderMapsList(config);
       }
     });
+  });
+
+  // Async: update cache button state per row
+  maps.forEach(async m => {
+    const cached = await isMapCached(m.uuid);
+    const btn    = listEl.querySelector(`.map-row-action--cache[data-code="${m.code}"]`);
+    if (!btn) return;
+    if (cached) {
+      btn.classList.add('is-cached');
+      btn.querySelector('span').textContent = 'Cached';
+    }
   });
 }
 
