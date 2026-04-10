@@ -380,10 +380,10 @@ function applyHeadingToMap(heading) {
 function buildRightControls(config) {
   document.getElementById('north-arrow').innerHTML = `
     <div class="right-btn-group">
-      <button class="right-btn" id="btn-track" aria-label="Track up" disabled>
+      <button class="right-btn right-btn--dim" id="btn-track" aria-label="Track up" aria-disabled="true">
         ${ICONS.track}
       </button>
-      <button class="right-btn" id="btn-locate" aria-label="Pan to my location" disabled>
+      <button class="right-btn right-btn--dim" id="btn-locate" aria-label="Pan to my location" aria-disabled="true">
         ${ICONS.locate}
       </button>
       <button class="right-btn" id="btn-offline" aria-label="Save for offline">
@@ -396,11 +396,23 @@ function buildRightControls(config) {
     <button class="right-btn right-btn--zoom" id="btn-zoom-in"  aria-label="Zoom in">+</button>
     <button class="right-btn right-btn--zoom" id="btn-zoom-out" aria-label="Zoom out">−</button>
   `;
-  document.getElementById('btn-track').addEventListener('click', (e) => {
-    if (e.currentTarget.disabled) return;
+  document.getElementById('btn-track').addEventListener('click', () => {
+    const active = !document.getElementById('btn-track').classList.contains('right-btn--dim');
+    if (!active) {
+      // GPS not running — retry, or show help if permanently denied
+      if (_lastGPSState === 'denied') { showLocationHelp(); return; }
+      startGPS();
+      return;
+    }
     if (_trackUpActive) exitTrackUp(); else enterTrackUp();
   });
   document.getElementById('btn-locate').addEventListener('click', () => {
+    const active = !document.getElementById('btn-locate').classList.contains('right-btn--dim');
+    if (!active) {
+      if (_lastGPSState === 'denied') { showLocationHelp(); return; }
+      startGPS();
+      return;
+    }
     const map = getMap(); if (!map) return;
     const pos = getLastPosition();
     if (pos) map.panTo([pos.lat, pos.lng]);
@@ -481,8 +493,11 @@ function updateNavButtons(state) {
   if (!btnTrack) return;
   const trackOn  = state === 'active';
   const locateOn = state === 'active' || state === 'off-map';
-  btnTrack.disabled  = !trackOn;
-  btnLocate.disabled = !locateOn;
+  // Use a CSS class for visual dim — keeps buttons tappable so users can re-prompt permissions
+  btnTrack.classList.toggle('right-btn--dim', !trackOn);
+  btnTrack.setAttribute('aria-disabled', String(!trackOn));
+  btnLocate.classList.toggle('right-btn--dim', !locateOn);
+  btnLocate.setAttribute('aria-disabled', String(!locateOn));
   if (!trackOn && _trackUpActive) exitTrackUp();
 }
 
