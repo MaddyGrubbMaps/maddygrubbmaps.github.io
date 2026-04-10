@@ -1,0 +1,24 @@
+{
+  "name": "Local Maps",
+  "short_name": "Local",
+  "description": "Georeferenced field maps with live GPS — by MaddyGrubbMaps",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#1f6460",
+  "theme_color": "#297b6f",
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
