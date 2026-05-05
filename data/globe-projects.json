@@ -1,0 +1,90 @@
+[
+  {
+    "id": "lofoten",
+    "title": "Lofoten",
+    "region": "Norway",
+    "coords": [13.8794865, 68.2387358],
+    "description": "Hand-drawn map of the Lofoten archipelago.",
+    "img": "images/globe-projects/lofoten-norway.png"
+  },
+  {
+    "id": "toowoomba",
+    "title": "Toowoomba",
+    "region": "Queensland, Australia",
+    "coords": [151.9506696, -27.5598212],
+    "description": "Campus installation map for Toowoomba Anglican School.",
+    "img": "images/globe-projects/toowoomba-australia.jpg"
+  },
+  {
+    "id": "haleakala",
+    "title": "Haleakalā",
+    "region": "Maui, Hawaii",
+    "coords": [-156.248784, 20.7399647],
+    "description": "Visualizing water and land resources on Maui's tallest peak for the Nature Conservancy.",
+    "img": "images/globe-projects/haleakala-hawaii.png"
+  },
+  {
+    "id": "gaborone",
+    "title": "Gaborone",
+    "region": "Botswana",
+    "coords": [25.890049, -24.6460455],
+    "description": "Hand-drawn tourist map depicting natural and cultural sites of importance in Gaborone.",
+    "img": "images/globe-projects/gaborone-botswana.png"
+  },
+  {
+    "id": "rainier",
+    "title": "Mount Rainier",
+    "region": "Washington, USA",
+    "coords": [-121.7498559, 46.8476235],
+    "description": "Retro artistic map produced in partnership with Native Maps.",
+    "img": "images/globe-projects/mount-rainier-washington.png"
+  },
+  {
+    "id": "lake-louise",
+    "title": "Lake Louise",
+    "region": "Alberta, Canada",
+    "coords": [-116.2324528, 51.4173346],
+    "description": "General reference map produced for Gem Trek Maps.",
+    "img": "images/globe-projects/lake-louise-alberta.png"
+  },
+  {
+    "id": "grand-teton",
+    "title": "Grand Teton NP",
+    "region": "Wyoming, USA",
+    "coords": [-110.7403486, 43.7626814],
+    "description": "Scientific visualization depicting vertical ice loss across years on Middle Teton Glacier.",
+    "img": "images/globe-projects/grand-teton-wyoming.png"
+  },
+  {
+    "id": "paris",
+    "title": "Paris",
+    "region": "France",
+    "coords": [2.2774521, 48.7979987],
+    "description": "Reference map in \"The Stolen Lady\" by Laura Morelli.",
+    "img": "images/globe-projects/paris-france.png"
+  },
+  {
+    "id": "valle-rio-colorado",
+    "title": "Valle del Río Colorado",
+    "region": "Coquimbo, Chile",
+    "coords": [-69.9167913, -30.1334196],
+    "description": "Map supporting glacial inventory in the upper Elqui headwaters.",
+    "img": "images/globe-projects/valle-del-rio-colorado-chile.jpg"
+  },
+  {
+    "id": "denali",
+    "title": "Denali NP",
+    "region": "Alaska, USA",
+    "coords": [-150.7893981, 63.2827613],
+    "description": "Featuring the famous park road sights and the topography of the Alaska Range.",
+    "img": "images/globe-projects/denali-alaska.png"
+  },
+  {
+    "id": "los-angeles",
+    "title": "Los Angeles",
+    "region": "California, USA",
+    "coords": [-118.242643, 34.0549076],
+    "description": "Showing Jewish cultural, spiritual, and educational sites for the City Council.",
+    "img": "images/globe-projects/los-angeles-california.png"
+  }
+]

@@ -15,6 +15,14 @@ Format: each pause is a single section with **What**, **Where**, **My choice**, 
 - **Why I skipped asking:** Trivially reversible (`echo maddygrubbmaps.com > CNAME.txt`) and almost certainly inert. Wanted to flag because anything touching domain config deserves visibility.
 - **Status:** open
 
+### Globe-projects thumbnail images are unoptimized
+- **What:** `images/globe-projects/*.png` are HUGE — `mount-rainier-washington.png` is 22 MB, `grand-teton-wyoming.png` is 12 MB, others 2–7 MB each. Total folder ~85 MB.
+- **Where:** `images/globe-projects/`.
+- **My choice:** Commit them as-is for now (they're already in the working tree and referenced by the homepage globe section).
+- **Why I skipped asking:** Optimization is its own task and would block the migration. The site is currently loading these full-size on the homepage either way.
+- **Recommendation:** A separate cleanup pass converts each to WebP at ~1200×1200 max, target ~300–500 KB each. That's a ~99% size reduction with no visible quality loss at thumbnail size. Once optimized, original PNGs can be deleted (history bloat is permanent unless BFG-cleaned, but that's a downstream concern).
+- **Status:** open
+
 ### Prior uncommitted homepage redesign work
 - **What:** The working tree carries uncommitted edits from the previous session's homepage redesign — `index.html`, `index.css`, `brand.css` (entirely new file), `data/`, `images/divider.svg`, `images/globe-projects/`, `where.js`. There are also small uncommitted edits on `Contact.html`, `Custom-Cartography.html`, `Portfolio.html`, `Client-Types/Landowners-Ranches.html` (likely earlier brand.css `<link>` additions).
 - **Where:** Repo root + several subfolders.

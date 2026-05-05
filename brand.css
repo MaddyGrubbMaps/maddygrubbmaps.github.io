@@ -1,0 +1,1483 @@
+/* =========================================================
+   Maddy Grubb Maps — Brand CSS
+   Stage 1: Fonts only.
+   Loaded last in <head> so it wins the cascade over
+   nicepage.css and per-page CSS without touching either.
+   To revert Stage 1: remove this file + its <link> tag.
+   ========================================================= */
+
+:root {
+  --serif:   'Newsreader', Georgia, serif;
+  --sans:    'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --display: 'Newsreader', Georgia, serif;
+  --alata:   'Alata', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ── Body / default text → Manrope 400, 15px ────────────── */
+/* Sized so it sits subordinate to the navy display headings. */
+/* Paper background ensures any gap between sections (e.g.    */
+/* the hand-drawn section divider) reads as paper, not the    */
+/* default white inherited from nicepage.css.                 */
+body,
+.u-body {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  background-color: var(--paper);
+}
+
+p,
+li,
+.u-text,
+.u-paragraph,
+p.u-large-text,
+p.u-small-text,
+p:not(.u-text-variant) {
+  font-family: var(--sans);
+  font-weight: 400;
+}
+
+.u-custom-font.u-text-font {
+  font-family: var(--sans) !important;
+}
+
+/* Custom .mgm-* body / list / bio paragraphs */
+.mgm-mosaic-bio,
+.mgm-who-list li,
+.mgm-bio-text p,
+.mgm-header-sub,
+.mgm-lightbox-inner p {
+  font-family: var(--sans) !important;
+  font-weight: 400;
+}
+
+/* ── Section headings h1 / h2 → Manrope 800 ────────────── */
+/* Per brand audit: section titles are display sans, tight tracking. */
+h1, h2,
+h1.u-title,
+h2.u-subtitle,
+h1:not(.u-title),
+h2:not(.u-subtitle),
+.mgm-header-title {
+  font-family: var(--sans) !important;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+/* ── H3 → Newsreader 500 ───────────────────────────────── */
+h3 {
+  font-family: var(--serif) !important;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+}
+
+/* ── H4–H6 → Manrope 600 ───────────────────────────────── */
+h4, h5, h6,
+.mgm-what-card h4 {
+  font-family: var(--sans) !important;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* ── Heritage classes (Pinegrow custom-font) ───────────── */
+.u-custom-font.u-heading-font {
+  font-family: var(--sans) !important;
+  font-weight: 800;
+}
+
+/* ── Hero display H1 → Newsreader 600 semi-bold ─────────── */
+/* The big hero pull-line: "Maps Where Science / Meets Art". */
+/* Per Maddy 2026-05-04: weight 500 → 600 for more presence. */
+/* Size bumped +50% from index.css's clamp(2rem,3.5vw,3rem). */
+.mgm-hero-title,
+.display,
+.u-display,
+h1.display,
+h2.display,
+.pull-line,
+.u-pull-line {
+  font-family: var(--display) !important;
+  font-weight: 600;
+  font-style: normal;
+  font-size: clamp(3rem, 5.25vw, 4.5rem);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+/* Italic Newsreader inside hero via <em> only.            */
+/* Sun Orange accent on the italic word ("Art").           */
+.mgm-hero-title em,
+.display em,
+.u-display em,
+.pull-line em {
+  font-style: italic;
+  font-weight: 600;
+  color: var(--orange);
+}
+
+/* ── Lede → Newsreader italic (editorial pull-quotes) ─── */
+/* The .lede role is reserved for italic Newsreader pull-  */
+/* quotes inside long-form content. Hero / section subheads */
+/* are NOT ledes anymore — they get their own Manrope rules */
+/* in Stage 2. Per Maddy 2026-05-04.                       */
+.lede,
+.u-lede {
+  font-family: var(--serif) !important;
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none !important;
+  letter-spacing: -0.005em;
+}
+
+/* ── Section eyebrows → JetBrains Mono uppercase ───────── */
+/* Small label that sets context above section headings.    */
+.mgm-section-title,
+.eyebrow,
+.u-eyebrow,
+.meta,
+.u-meta,
+.caption,
+.u-caption,
+figcaption,
+.coordinates,
+.u-coordinates,
+.overline,
+.u-overline {
+  font-family: var(--mono) !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+/* ── Site header / top nav → mono, small, light ────────── */
+/* Per Maddy: smaller and lighter than my first pass.       */
+.u-nav-link,
+.u-nav-item > a,
+.u-header a.u-nav-link,
+.u-menu a,
+.u-hamburger-link {
+  font-family: var(--mono) !important;
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── Buttons / CTAs → JetBrains Mono uppercase ─────────── */
+/* Per brand audit: buttons are stamped mono pills.         */
+.u-btn,
+.u-button-style,
+.mgm-btn,
+button,
+input[type="submit"],
+input[type="button"] {
+  font-family: var(--mono) !important;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Form fields stay sans (mono in inputs is unfriendly)     */
+input,
+textarea,
+select {
+  font-family: var(--sans) !important;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ── Wordmark / signature lockup only → Alata ──────────── */
+/* Heritage role. Not for body, not for default headings.   */
+.wordmark,
+.u-wordmark,
+.signature,
+.u-signature,
+.logo-wordmark {
+  font-family: var(--alata) !important;
+}
+
+/* =========================================================
+   Stage 2 — color tokens, role sizing, color-on-dark rules
+   Sampled from logo per Brand Audit. Use vars, don't hardcode.
+   ========================================================= */
+
+:root {
+  /* Cream paper neutrals */
+  --paper:      #F6F1E7;
+  --paper-2:    #EFE8D8;
+  --paper-3:    #E4DAC4;
+  --rule:       #D8CFB9;
+  --ink-4:      #9A9384;
+  --ink-3:      #6B6557;
+  --ink-2:      #34455F;
+  --ink:        #122A57;
+
+  /* Core brand */
+  --navy:       #1B3D7A;
+  --navy-deep:  #122A57;
+  --navy-ink:   #0C1D3E;
+  --teal:       #3F8775;
+  --teal-deep:  #2C6457;
+  --teal-soft:  #88B5A6;
+  --orange:     #E89A3C;
+  --orange-deep:#C77D1F;
+  --orange-soft:#F5C58A;
+  --red:        #AF553D;
+  --red-deep:   #7C3A28;
+  --red-soft:   #E5A797;
+
+  /* ── Layout tokens ────────────────────────────────────── */
+  /* Standardized vertical buffer used by every content       */
+  /* section. Change this value to retune the whole page.     */
+  --section-pad-y: 72px;
+
+  /* Inter-element spacing scale. Mapped to logical text-block */
+  /* relationships rather than t-shirt sizes:                  */
+  /*   tight → eyebrow ↘ heading                               */
+  /*   snug  → heading ↘ subhead                               */
+  /*   room  → subhead ↘ body / supporting block               */
+  /*   loose → heading-block ↘ section content (grid, list)    */
+  --space-tight: 12px;
+  --space-snug:  20px;
+  --space-room:  32px;
+  --space-loose: 56px;
+
+  /* Centering / max-width scale. Heading blocks always sit at  */
+  /* --width-heading; prose blocks at the narrower --width-     */
+  /* prose for readability. Container is the outer 1140px max  */
+  /* used by .mgm-container.                                    */
+  --width-container: 1140px;
+  --width-heading:    880px;
+  --width-prose:      720px;
+}
+
+/* ── Eyebrow: small mono uppercase label above a heading ── */
+/* Typography (mono, uppercase, +0.1em tracking) is set by   */
+/* the eyebrow/meta group above. Stage 2 adds size + color   */
+/* + spacing.                                                 */
+.eyebrow,
+.u-eyebrow {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  margin: 0 0 var(--space-tight);
+  color: var(--teal);
+  text-align: center;
+}
+
+/* Eyebrows on dark hero → white per Maddy 2026-05-04.       */
+.mgm-hero-section .eyebrow {
+  color: var(--paper);
+}
+
+/* Other dark sections keep Lichen Teal-soft for warmth.     */
+.mgm-what-section .eyebrow,
+.mgm-who-section .eyebrow,
+.u-section-8 .eyebrow,
+.u-custom-color-3 .eyebrow {
+  color: var(--teal-soft);
+}
+
+/* ── Lede sizing (editorial pull-quotes only) ─────────────── */
+.lede,
+.u-lede {
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+/* ── Hero subtitle → Manrope, heading-style ──────────────── */
+/* Per Maddy 2026-05-04: this is NOT an italic lede; it's a   */
+/* secondary heading-weight kicker line in Manrope.           */
+.mgm-hero-sub {
+  font-family: var(--sans) !important;
+  font-weight: 500;
+  font-style: normal !important;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  text-transform: none !important;
+  color: var(--paper);
+}
+
+/* ── Section subhead → Manrope (already body-weight via      */
+/* Stage 1 group rule). Keep here for clarity + sizing.       */
+.mgm-header-sub {
+  font-family: var(--sans) !important;
+  font-weight: 400;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  letter-spacing: 0;
+}
+
+/* ── Section H2 + supporting subhead on dark backgrounds ── */
+/* All current uses of .mgm-header-title sit on dark photo  */
+/* or dark color sections. Centralize the white-on-dark.    */
+.mgm-header-title {
+  color: var(--paper);
+}
+
+.mgm-header-sub {
+  color: rgba(246, 241, 231, 0.85);
+}
+
+/* ── Section divider — short centered hairline ──────────── */
+/* Used between two same-toned sections (e.g. Where We Work   */
+/* → What We Make) to mark the seam without adding furniture. */
+.mgm-section-divider {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  width: 80px;
+  margin: 0 auto;
+  height: 0;
+  background: var(--paper);
+}
+
+/* ── "What We Make" — paper section, Granite cards ─────── */
+/* Paper-cream surface with dark Granite cards keeps the      */
+/* section quiet on the page and lets the cards do the work.  */
+.mgm-what-section {
+  background: var(--paper) !important;
+}
+.mgm-what-section .mgm-header-title {
+  color: var(--ink);
+}
+.mgm-what-section .mgm-header-sub {
+  color: var(--ink-2);
+}
+.mgm-what-card {
+  background: #34455F !important;
+  border: 1px solid #34455F;
+  border-radius: 0 !important;
+}
+.mgm-what-card:hover {
+  background: #283549 !important;  /* slightly deeper navy on hover */
+  border-color: #283549;
+}
+
+/* ── "Bringing Data to Life" — paper section, 3D embed ── */
+/* Same surface treatment as What We Make: paper bg, Navy-ink */
+/* headline, ink-2 supporting text. Embed is centered and    */
+/* capped at --width-heading so it sits on the same vertical */
+/* axis as the title above and CTA below.                    */
+.mgm-bringing-data-section {
+  background: var(--paper);
+  padding: var(--section-pad-y) 56px;
+  text-align: center;
+}
+.mgm-bringing-data-section .mgm-container {
+  max-width: var(--width-container);
+  margin: 0 auto;
+  padding: 0;
+}
+.mgm-bringing-data-section .mgm-header-title {
+  color: var(--ink);
+}
+.mgm-bringing-data-section .mgm-header-sub {
+  color: var(--ink-2);
+}
+.mgm-bringing-data-embed {
+  max-width: var(--width-heading);
+  margin: var(--space-loose) auto;
+}
+.mgm-bringing-data-embed .sketchfab-embed-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+}
+.mgm-bringing-data-embed .sketchfab-embed-wrapper iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ── Hand-drawn section divider art ─────────────────────── */
+/* Used between the globe and "What We Make". Source PNG is   */
+/* 2000×200 (10:1 aspect); we cap it narrow so the dashed     */
+/* line reads as editorial punctuation, not page furniture.   */
+.mgm-section-divider-art {
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  margin: 0 auto;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Card grid titles → Manrope, padded ──────────────────── */
+/* Per Maddy 2026-05-04: cards need breathing room around the */
+/* title text, and titles read better in Manrope than serif.  */
+.mgm-what-card h3 {
+  font-family: var(--sans) !important;
+  font-weight: 600;
+  font-size: 1.125rem;
+  letter-spacing: -0.01em;
+  color: var(--paper);
+  padding: 1rem 1.25rem 1.25rem;
+  margin: 0;
+}
+
+/* ── Figure / embed caption ──────────────────────────────── */
+/* Caption shares mono typography with eyebrow group, but is  */
+/* sentence-case (not uppercase) and smaller.                 */
+.caption,
+.u-caption {
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  text-transform: none !important;
+  text-align: center;
+  margin: 0 0 1.5rem;
+  color: rgba(246, 241, 231, 0.75);
+}
+
+/* ── Primary CTA (.mgm-btn) → Sun Orange pill ───────────── */
+/* Uppercase + mono treatment already applied via the         */
+/* button/CTA group above. Stage 2 adds the brand color.      */
+.mgm-btn {
+  background-color: var(--orange) !important;
+  color: var(--paper) !important;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.mgm-btn:hover,
+.mgm-btn:focus {
+  background-color: var(--orange-deep) !important;
+}
+
+/* =========================================================
+   "Where We Work" — interactive globe + project list section
+   Light/cream background sandwiched between the dark
+   "Who We Work With" above and "Bringing Data to Life" below.
+   ========================================================= */
+
+.mgm-where-section {
+  background: var(--paper);
+  color: var(--ink-2);
+  padding: var(--section-pad-y) 56px;
+}
+
+.mgm-where-section .mgm-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Eyebrow on light bg defaults to Lichen Teal — already wired by .eyebrow.    */
+/* Section title — "Section display" treatment: Newsreader 600 + Sun Orange   */
+/* italic accent. Larger and more editorial than the dark-section H2s.        */
+.mgm-where-title {
+  font-family: var(--serif) !important;
+  font-weight: 600;
+  font-style: normal;
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0 0 var(--space-loose);
+  max-width: 14ch;
+  text-wrap: pretty;
+}
+
+.mgm-where-title em {
+  font-style: italic;
+  font-weight: 600;
+  color: var(--orange);
+}
+
+/* Mosaic / About section title — same Section-display treatment   */
+/* as .mgm-where-title (Newsreader 600 + Sun Orange italic accent). */
+.mgm-about-title {
+  font-family: var(--serif) !important;
+  font-weight: 600;
+  font-style: normal;
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0 auto var(--space-room);
+  max-width: var(--width-heading);
+  text-align: center;
+  text-wrap: pretty;
+}
+
+.mgm-about-title em {
+  font-style: italic;
+  font-weight: 600;
+  color: var(--orange);
+}
+
+/* Two-column viewer layout: globe left, project list right.  */
+/* Capped at --width-heading so it visually balances under    */
+/* the centered title block and the globe + list both sit     */
+/* with symmetric breathing room from the page edges.         */
+.mgm-where-viewer {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 64px;
+  align-items: start;
+  max-width: var(--width-heading);
+  margin: 0 auto;
+}
+
+.mgm-where-globe-col {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.mgm-where-stage {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 560px;
+  justify-self: start;
+  display: grid;
+  place-items: center;
+  position: relative;
+  user-select: none;
+}
+
+canvas.mgm-where-globe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+canvas.mgm-where-globe:active { cursor: grabbing; }
+canvas.mgm-where-globe.is-pin-hover { cursor: pointer; }
+
+/* Project list ─────────────────────────────────────────── */
+.mgm-where-projects {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 0;
+  border-top: 1px solid var(--rule);
+}
+.mgm-where-project {
+  border-bottom: 1px solid var(--rule);
+}
+.mgm-where-project-row {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  padding: 5px 4px 5px 0;
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: 10px;
+  align-items: baseline;
+  color: inherit;
+  font: inherit;
+  transition: padding .25s ease;
+}
+.mgm-where-project-row:hover { padding-left: 6px; }
+.mgm-where-project-row:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}
+
+.mgm-where-project-num {
+  font-family: var(--mono) !important;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+}
+.mgm-where-project-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.mgm-where-project-title {
+  font-family: var(--sans) !important;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.mgm-where-project-region {
+  font-family: var(--mono) !important;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+  text-align: right;
+  white-space: nowrap;
+}
+.mgm-where-project[aria-expanded='true'] .mgm-where-project-title { color: var(--red); }
+
+/* Accordion body */
+.mgm-where-project-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .42s cubic-bezier(.2,.7,.2,1);
+}
+.mgm-where-project[aria-expanded='true'] .mgm-where-project-body {
+  grid-template-rows: 1fr;
+}
+.mgm-where-project-body-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+.mgm-where-project-body-content {
+  padding: 6px 0 18px 42px;
+  max-width: 56ch;
+}
+.mgm-where-project-figure {
+  margin: 6px 0 14px;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  background: var(--paper-3);
+}
+.mgm-where-project-figure-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  cursor: zoom-in;
+  transition: opacity 0.2s ease;
+}
+.mgm-where-project-figure-img:hover {
+  opacity: 0.92;
+}
+.mgm-where-project-desc {
+  font-family: var(--sans) !important;
+  font-weight: 400;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+  margin: 0;
+}
+
+/* =========================================================
+   HEADER — full Nicepage layout reset.
+
+   We're keeping the legacy markup and the existing color/state
+   rules in index.css (.mgm-at-top vs .mgm-header-scrolled), but
+   nuking every Nicepage layout primitive that touches the bar.
+   The layout below is built from scratch:
+
+     • <header.u-header> — full-width sticky band (bg/sticky from
+       index.css, untouched).
+     • .u-sheet-1 — flex row, centered cluster, fixed gap.
+     • .u-image-1 — logo, visually first via flex order.
+     • .u-menu-1 — nav block, visually second.
+     • .u-nav-1 — flex row of nav items, gap-spaced.
+
+   Mobile (≤767px) switches the flex row to space-between so the
+   logo hugs the left edge and the hamburger hugs the right edge.
+   ========================================================= */
+
+/* Outer header: only set vertical sizing; bg + position come    */
+/* from index.css. Wipe any Nicepage padding/margin that might   */
+/* offset content.                                               */
+.u-header,
+.u-header.u-sticky,
+.u-header.u-white,
+.u-header.u-sticky-b4bd {
+  padding: 0 !important;
+}
+
+/* Sheet: pure flex row, centered, capped width via Nicepage's   */
+/* responsive --theme-sheet-width vars OR full-width — we set    */
+/* width: 100% so the bar spans the viewport, and rely on        */
+/* internal padding for inset.                                   */
+.u-header .u-sheet-1 {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 40px !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 39px !important;
+  padding: 0 32px !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+}
+
+/* CRITICAL: kill .u-clearfix's ::before/::after pseudo-elements */
+/* on the sheet. In a flex container, pseudo-elements count as   */
+/* flex children — those two extra empty slots were the reason   */
+/* space-between pushed the logo away from the left edge.        */
+.u-header .u-sheet-1::before,
+.u-header .u-sheet-1::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Logo: fixed dimensions, visually first, no margin hacks.      */
+.u-header .u-image-1 {
+  order: 1 !important;
+  flex: 0 0 auto !important;
+  align-self: center !important;
+  width: 95px !important;
+  height: 19px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: static !important;
+  display: block !important;
+}
+
+/* Nav block: shrink-to-fit, no positioning, no width hacks.     */
+/* Critical: override Nicepage's .u-menu { display: table } —    */
+/* table sizing was making .u-menu-1 take more width than its    */
+/* visible content, which pushed the logo off the left edge.     */
+.u-header .u-menu-1 {
+  display: flex !important;
+  align-items: center !important;
+  order: 2 !important;
+  flex: 0 0 auto !important;
+  align-self: center !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: static !important;
+  float: none !important;
+  text-align: left !important;
+}
+
+/* Inner containers inside .u-menu-1 must not stretch — Nicepage */
+/* defaults often give .u-nav-container display:block which      */
+/* makes the nav want full width and forces a wrap.              */
+/* IMPORTANT: do NOT touch .u-nav-container-collapse — that's    */
+/* the slide-out panel and it needs Nicepage's position: fixed.  */
+.u-header .u-menu-1 > .u-nav-container,
+.u-header .u-menu-1 > .menu-collapse {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  float: none !important;
+  position: static !important;
+}
+
+/* =========================================================
+   Slide-out menu: overlay, do NOT shift the page content.
+   The nav has class u-offcanvas-shift which makes Nicepage
+   add .u-offcanvas-shifted-left/right to <body> when the menu
+   opens, animating all body children sideways. Kill that.
+   ========================================================= */
+.u-offcanvas-opened.u-offcanvas-shifted-left .u-body > *,
+.u-offcanvas-opened.u-offcanvas-shifted-left.u-body > *,
+.u-offcanvas-opened.u-offcanvas-shifted-right .u-body > *,
+.u-offcanvas-opened.u-offcanvas-shifted-right.u-body > *,
+.u-offcanvas-unshifted-left .u-body > *,
+.u-offcanvas-unshifted-left.u-body > *,
+.u-offcanvas-unshifted-right .u-body > *,
+.u-offcanvas-unshifted-right.u-body > * {
+  animation: none !important;
+  left: 0 !important;
+  right: 0 !important;
+  transform: none !important;
+}
+
+/* Top-level nav list: flex row, tight gap, reset list styles.   */
+.u-header .u-nav-1 {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  gap: 6px !important;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+.u-header .u-nav-1 > .u-nav-item {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  position: relative !important;
+}
+
+/* Anchor the dropdown popup BELOW the parent .u-nav-item.       */
+/* With .u-nav-item set to display:flex (for vertical link       */
+/* alignment), the popup's default absolute "static position"    */
+/* becomes horizontally beside the link instead of below it,     */
+/* so we pin it explicitly to top:100%, left:0.                  */
+.u-header .u-nav-container .u-nav-1 > .u-nav-item > .u-nav-popup {
+  top: 100% !important;
+  left: 0 !important;
+  right: auto !important;
+  bottom: auto !important;
+  min-width: 240px;
+}
+
+/* Top-level link padding — beats the inline style="padding:10px"*/
+.u-header .u-nav-1 > .u-nav-item > .u-nav-link,
+.u-header .u-nav-1 > .u-nav-item > .u-nav-link[style] {
+  padding: 6px 10px !important;
+  margin: 0 !important;
+}
+
+/* Top-level nav link hover.                                    */
+/*   scrolled (ink on sand)  → var(--teal)                      */
+/*   at-top   (white on hero) → #B8D4C7 (lighter mint-teal —    */
+/*     reads as desaturated against the green-tinted hero).     */
+#sec-cdd0 .u-nav-1 > .u-nav-item > .u-nav-link:hover,
+#sec-cdd0 .u-nav-1 > .u-nav-item > .u-nav-link:focus,
+body.mgm-header-scrolled #sec-cdd0 .u-nav-1 > .u-nav-item > .u-nav-link:hover {
+  color: var(--teal) !important;
+}
+#sec-cdd0.mgm-at-top .u-nav-1 > .u-nav-item > .u-nav-link:hover,
+#sec-cdd0.mgm-at-top .u-nav-1 > .u-nav-item > .u-nav-link:focus {
+  color: #B8D4C7 !important;
+}
+
+/* Hamburger trigger sizing on desktop is irrelevant (hidden);   */
+/* on mobile we want it as a clean square tap target.            */
+.u-header .menu-collapse {
+  display: none;
+}
+.u-header .u-hamburger-link-1 {
+  width: 22px !important;
+  height: 22px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.u-header .u-hamburger-link-1 .u-svg-link {
+  width: 17px !important;
+  height: 17px !important;
+}
+
+/* Mobile: collapse to hamburger, swap to space-between.         */
+@media (max-width: 767px) {
+  .u-header .u-sheet-1 {
+    justify-content: space-between !important;
+    gap: 0 !important;
+    padding: 0 20px !important;
+  }
+  .u-header .u-nav-container { display: none !important; }
+  .u-header .menu-collapse   { display: block !important; }
+  /* Journal is desktop-only per Maddy 2026-05-04 — hide its slide-out item. */
+  .u-nav-3 .mgm-nav-journal { display: none !important; }
+}
+
+/* Logo lockup: keep it left-aligned and clickable to home without disturbing
+   the existing image sizing rules. The <a> wrapper inherits flex-item slot
+   from .u-sheet-1; img keeps its absolute width via .u-image-1 declarations. */
+.u-header .mgm-logo-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  flex: 0 0 auto;
+}
+
+/* Active-page nav highlight (set by mgm-header.js on the link whose href
+   matches the current pathname). Subtle — color shift only, no underline. */
+.u-header .u-nav-1 > .u-nav-item > .u-nav-link.mgm-nav-active,
+#sec-cdd0 .u-nav-3 > .u-nav-item > .u-nav-link.mgm-nav-active {
+  color: var(--teal) !important;
+}
+#sec-cdd0.mgm-at-top .u-nav-1 > .u-nav-item > .u-nav-link.mgm-nav-active {
+  color: #B8D4C7 !important;
+}
+
+/* Hamburger SVG bars match the logo's color state — at top      */
+/* (transparent header, white logo) bars are white; on scroll    */
+/* the existing #sec-cdd0 .u-hamburger-link color rules in       */
+/* index.css already set ink (#293d7d), and Nicepage's           */
+/* .u-svg-link { fill: currentColor } picks that up.             */
+#sec-cdd0.mgm-at-top .u-hamburger-link,
+#sec-cdd0.mgm-at-top .u-hamburger-link .u-svg-link,
+#sec-cdd0.mgm-at-top .u-hamburger-link svg,
+#sec-cdd0.mgm-at-top .u-hamburger-link svg rect {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+/* =========================================================
+   Slide-out menu — brand surface, ink text, orange accent.
+   Per Maddy 2026-05-04: do NOT change fonts/weights/sizes,
+   only colors, spacing, and tap-to-expand submenu behavior.
+   ========================================================= */
+
+/* Panel: paper bg replaces legacy navy.                       */
+/* Nicepage paints the panel color via :before pseudos on TWO  */
+/* layers:                                                      */
+/*   1. .u-sidenav:before                                       */
+/*   2. .u-custom-color-2 > .u-inner-container-layout:before    */
+/* The second one targets a NESTED inner container that's a    */
+/* direct child of the sidenav. Both have to be paper.          */
+#sec-cdd0 .u-nav-container-collapse .u-sidenav,
+#sec-cdd0 .u-nav-container-collapse .u-sidenav.u-custom-color-2,
+#sec-cdd0 .u-nav-container-collapse .u-sidenav::before,
+#sec-cdd0 .u-nav-container-collapse .u-sidenav.u-custom-color-2::before,
+#sec-cdd0 .u-nav-container-collapse .u-sidenav.u-opacity::before,
+#sec-cdd0 .u-nav-container-collapse .u-sidenav.u-opacity-95::before,
+#sec-cdd0 .u-nav-container-collapse .u-sidenav .u-inner-container-layout::before,
+#sec-cdd0 .u-nav-container-collapse .u-sidenav > .u-inner-container-layout::before,
+#sec-cdd0 .u-nav-container-collapse .u-custom-color-2 > .u-inner-container-layout::before,
+#sec-cdd0 .u-nav-container-collapse .u-sidenav .u-container-layout::before {
+  background: #EFE8D8 !important;
+  background-color: #EFE8D8 !important;
+}
+
+/* Stacking: sidenav (with the menu items) MUST sit above the   */
+/* .u-menu-overlay sibling, otherwise the overlay's close-on-   */
+/* click handler intercepts taps on menu items and dismisses    */
+/* the whole slide-out the moment you interact with anything.   */
+/* Both children need positioning context for z-index to apply. */
+#sec-cdd0 .u-nav-container-collapse .u-sidenav {
+  position: relative !important;
+  z-index: 10 !important;
+}
+#sec-cdd0 .u-nav-container-collapse .u-menu-overlay {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Force pointer-events on every interactive surface inside the */
+/* slide-out so Nicepage's pointer-events:none defaults can't   */
+/* render the menu items inert.                                 */
+#sec-cdd0 .u-nav-container-collapse,
+#sec-cdd0 .u-nav-container-collapse .u-sidenav,
+#sec-cdd0 .u-nav-container-collapse .u-sidenav-overflow,
+#sec-cdd0 .u-nav-container-collapse .u-nav,
+#sec-cdd0 .u-nav-container-collapse .u-nav-item,
+#sec-cdd0 .u-nav-container-collapse .u-nav-link,
+#sec-cdd0 .u-nav-container-collapse .u-menu-close {
+  pointer-events: auto !important;
+}
+
+/* Overlay (the dim layer behind the panel) — slight ink wash. */
+#sec-cdd0 .u-nav-container-collapse .u-menu-overlay,
+#sec-cdd0 .u-nav-container-collapse .u-menu-overlay.u-custom-color-2,
+#sec-cdd0 .u-nav-container-collapse .u-menu-overlay.u-custom-color-2::before {
+  background: rgba(18, 42, 87, 0.4) !important;
+  background-color: rgba(18, 42, 87, 0.4) !important;
+}
+
+/* Top-level mobile links: ink color, vertical breathing room. */
+#sec-cdd0 .u-nav-3 > .u-nav-item > .u-nav-link {
+  color: var(--ink) !important;
+  padding: 14px 24px;
+}
+#sec-cdd0 .u-nav-3 > .u-nav-item + .u-nav-item {
+  margin-top: 4px;
+}
+
+/* Submenu links: ink-2 color, indented under parent.          */
+#sec-cdd0 .u-nav-4 > .u-nav-item > .u-nav-link {
+  color: var(--ink-2) !important;
+  padding: 8px 24px 8px 40px;
+}
+
+/* Hover/active: teal across both levels.                      */
+#sec-cdd0 .u-nav-container-collapse .u-nav-link:hover,
+#sec-cdd0 .u-nav-container-collapse .u-nav-link:focus {
+  background: transparent !important;
+  color: var(--teal) !important;
+}
+
+/* Close button: ink color.                                    */
+#sec-cdd0 .u-menu-close {
+  color: var(--ink) !important;
+}
+
+/* =========================================================
+   Mobile submenu — tap to expand.
+   Hide submenu by default; .mgm-submenu-open on the parent
+   <li> reveals it. Toggling is wired in the inline script
+   block at the bottom of index.html.
+   ========================================================= */
+
+/* Hide submenu in slide-out by default. */
+#sec-cdd0 .u-nav-container-collapse .u-nav-item > .u-nav-popup {
+  display: none;
+}
+
+/* Show when parent has the open class.                         */
+/* Nicepage hides slide-out popups via visibility:hidden +      */
+/* pointer-events:none + max-height:0 — we have to reverse all  */
+/* three for the submenu to actually be visible AND clickable.  */
+#sec-cdd0 .u-nav-container-collapse .u-nav-item.mgm-submenu-open > .u-nav-popup {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Caret indicator on parent link, rotates on open. */
+#sec-cdd0 .u-nav-container-collapse .u-nav-item:has(> .u-nav-popup) > .u-nav-link::after {
+  content: "";
+  display: inline-block;
+  margin-left: 8px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid currentColor;
+  vertical-align: middle;
+  transition: transform 0.2s ease;
+}
+#sec-cdd0 .u-nav-container-collapse .u-nav-item.mgm-submenu-open > .u-nav-link::after {
+  transform: rotate(180deg);
+}
+
+/* =========================================================
+   Dropdown popup (.u-nav-popup) — brand colors.
+   This is the panel that holds the Custom Cartography submenu
+   in BOTH the desktop dropdown AND the mobile slide-out. The
+   existing index.css rules paint it dark navy at-top and white
+   when scrolled — replace both with paper bg + ink/orange text.
+   We also have to override the same selectors index.css uses,
+   at the same specificity, to actually win the cascade.
+   ========================================================= */
+
+/* Desktop dropdown — state-aware:                              */
+/*   at-top   → transparent bg, white text (matches white logo  */
+/*              + white top-level nav links over the hero).    */
+/*   scrolled → paper bg, ink text (matches the white bar).    */
+
+/* At-top: transparent panel, white text, orange on hover.     */
+#sec-cdd0.mgm-at-top .u-nav-popup {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+#sec-cdd0.mgm-at-top .u-nav-popup .u-nav-link,
+#sec-cdd0.mgm-at-top .u-nav-popup .u-button-style.u-white {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #ffffff !important;
+}
+#sec-cdd0.mgm-at-top .u-nav-popup .u-nav-link:hover {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #B8D4C7 !important;
+}
+
+/* Scrolled: sand panel, ink text, teal on hover, no shadow.   */
+body.mgm-header-scrolled #sec-cdd0 .u-nav-popup {
+  background: #EFE8D8 !important;
+  background-color: #EFE8D8 !important;
+  box-shadow: none !important;
+}
+body.mgm-header-scrolled #sec-cdd0 .u-nav-popup .u-nav-link,
+body.mgm-header-scrolled #sec-cdd0 .u-nav-popup .u-button-style.u-white {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--ink) !important;
+}
+body.mgm-header-scrolled #sec-cdd0 .u-nav-popup .u-nav-link:hover {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--teal) !important;
+}
+
+/* Mobile slide-out submenu popup — same paper/ink treatment.   */
+/* Paint the popup itself (and its :before, in case Nicepage    */
+/* paints color via pseudo) so submenu items read on paper.     */
+#sec-cdd0 .u-nav-container-collapse .u-nav-popup,
+#sec-cdd0 .u-nav-container-collapse .u-nav-popup::before {
+  background: #EFE8D8 !important;
+  background-color: #EFE8D8 !important;
+  box-shadow: none !important;
+}
+#sec-cdd0 .u-nav-container-collapse .u-nav-popup .u-nav-link,
+#sec-cdd0 .u-nav-container-collapse .u-nav-popup .u-button-style.u-white {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--ink-2) !important;
+}
+#sec-cdd0 .u-nav-container-collapse .u-nav-popup .u-nav-link:hover {
+  background: transparent !important;
+  color: var(--teal) !important;
+}
+
+/* ── Hero overlay → #1A453B at 40%, multiplied ─────────── */
+/* Deep forest-teal pulled from a custom hex per Maddy.       */
+/* mix-blend-mode: multiply tints the underlying winter photo */
+/* the way a Photoshop multiply layer would — highlights pick */
+/* up the green strongly, shadows go toward near-black-green. */
+/* Fixed parallax stays set on .mgm-hero-section in index.css */
+/* and is intentionally disabled on touch devices via the     */
+/* (pointer: coarse) media query (iOS doesn't render fixed    */
+/* bg-attachment cleanly).                                    */
+.mgm-hero-overlay {
+  background: rgba(26, 69, 59, 0.6) !important;
+  mix-blend-mode: multiply;
+}
+
+/* ── Centering for "Where We Work" header block ─────────── */
+.mgm-where-section .eyebrow {
+  text-align: center;
+}
+.mgm-where-title {
+  text-align: center;
+  max-width: var(--width-heading);
+  margin: 0 auto var(--space-loose);
+}
+
+/* Top-align the globe and the project list. Globe-col stays  */
+/* anchored at row-top so the layout doesn't shift vertically  */
+/* when an accordion opens — only the list grows downward.    */
+.mgm-where-viewer {
+  align-items: start;
+}
+.mgm-where-globe-col {
+  align-items: center;
+}
+.mgm-where-stage {
+  max-width: 380px;
+  position: relative;
+}
+
+/* Hint text under the globe — same caption family as the    */
+/* "Bringing Data to Life" Sketchfab caption above it.       */
+.mgm-where-globe-hint {
+  font-family: var(--mono) !important;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--ink-3);
+  margin: 0;
+  max-width: 36ch;
+}
+
+/* ── Mobile pin-popup (≤880px only) ─────────────────────── */
+/* Hidden by default; turned on by JS adding .is-open. The   */
+/* popup-layer is the absolute coordinate space; popups are  */
+/* DOM children translated into pin position each frame.     */
+.mgm-where-popup-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.mgm-where-popup {
+  position: absolute;
+  width: 240px;
+  max-width: 80vw;
+  background: var(--paper);
+  border: 2px solid var(--orange);
+  border-radius: 4px;
+  box-shadow: 0 12px 28px rgba(26, 24, 20, 0.22);
+  /* Anchored at popup's top-center; the popup hangs below this point. */
+  transform: translate(-50%, 14px);
+  z-index: 10;
+  pointer-events: auto;
+  overflow: visible;
+  /* Arrow X is set as a CSS variable by JS so the tail tracks the pin even   */
+  /* when the popup is horizontally clamped against the stage edges.          */
+  --arrow-x: 50%;
+}
+.mgm-where-popup-clip {
+  border-radius: 4px;
+  overflow: hidden;
+}
+.mgm-where-popup::after {
+  /* Tail at top of popup, pointing UP toward the pin. */
+  content: '';
+  position: absolute;
+  left: var(--arrow-x);
+  top: -8px;
+  transform: translateX(-50%) rotate(45deg);
+  width: 12px;
+  height: 12px;
+  background: var(--paper);
+  border-left: 2px solid var(--orange);
+  border-top: 2px solid var(--orange);
+}
+.mgm-where-popup-img {
+  display: block;
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  background: var(--paper-3);
+  cursor: zoom-in;
+}
+.mgm-where-popup-body {
+  padding: 8px 12px 10px;
+}
+.mgm-where-popup-title {
+  font-family: var(--sans) !important;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  margin: 0 0 1px;
+  line-height: 1.2;
+}
+.mgm-where-popup-region {
+  font-family: var(--mono) !important;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin: 0 0 4px;
+  line-height: 1.2;
+}
+.mgm-where-popup-desc {
+  font-family: var(--sans) !important;
+  font-weight: 400;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--ink-2);
+  margin: 0;
+}
+.mgm-where-popup-close {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  background: rgba(246, 241, 231, 0.92);
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 7px 4px;
+  border-radius: 3px;
+  color: var(--ink);
+  z-index: 1;
+}
+
+/* ── Lightbox: support multi-line caption (title + desc) ── */
+.mgm-lightbox-inner p {
+  white-space: pre-line;
+  max-width: 60ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Responsive ───────────────────────────────────────────── */
+@media (max-width: 880px) {
+  .mgm-where-section {
+    padding: 64px 24px 80px;
+  }
+  .mgm-where-viewer {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .mgm-where-stage {
+    max-width: 420px;
+    justify-self: center;
+  }
+  .mgm-where-project-body-content {
+    padding-left: 0;
+  }
+  .mgm-where-title {
+    margin-bottom: 40px;
+  }
+  /* Hide list on mobile — pin-tap popup carries the info */
+  .mgm-where-projects {
+    display: none;
+  }
+}
+
+/* =========================================================
+   Mobile (≤575px) padding strategy.
+
+   Section side padding tightens to 20px so cards/images sit
+   close to the page edge (visual presence). Text-bearing
+   elements get an additional ~24px inner padding so prose
+   sits ~44px from the page edge — comfortable to read.
+
+   Cards, image grids, the globe canvas, etc. don't get the
+   inner padding — they fill the section's 20px-padded width.
+   ========================================================= */
+
+@media (max-width: 575px) {
+  /* Standardize all section side paddings to 20px on mobile. */
+  .mgm-container {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  .mgm-where-section {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  .mgm-mosaic-section {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  .mgm-bringing-data-section {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  /* Mosaic intro adds its own 24px sides at ≤575 in index.css */
+  /* — zero it out so bio inherits the same total inset as     */
+  /* the where/about titles (section + 60 text padding only).  */
+  .mgm-mosaic-intro {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* Text-bearing elements get +60px inner padding so prose   */
+  /* sits at 20 + 60 = 80px from the page edge.               */
+  .mgm-where-section .eyebrow,
+  .mgm-what-section .eyebrow,
+  .mgm-who-section .eyebrow,
+  .mgm-bringing-data-section .eyebrow,
+  .mgm-mosaic-section .eyebrow,
+  .mgm-where-title,
+  .mgm-about-title,
+  .mgm-header-title,
+  .mgm-header-sub,
+  .mgm-mosaic-bio,
+  .mgm-where-globe-hint,
+  .mgm-who-list {
+    padding-left: 60px;
+    padding-right: 60px;
+  }
+}
+
+/* =========================================================
+   Standardize body/header dark text on Navy-ink (#122A57).
+   The --ink token already changed above; these overrides
+   force the legacy Nicepage nav colors to match, and swap
+   any white backgrounds in the homepage flow to paper.
+   ========================================================= */
+
+/* Header nav text — Nicepage's u-text-custom-color-2 was        */
+/* #293d7d; align it (and scrolled-state colors) to --ink.       */
+.u-text-custom-color-2,
+.u-input.u-text-custom-color-2,
+a.u-button-style.u-text-custom-color-2,
+.u-header .u-nav-link,
+body.mgm-header-scrolled #sec-cdd0 .u-nav-link,
+body.mgm-header-scrolled #sec-cdd0 .u-text-custom-color-2,
+body.mgm-header-scrolled #sec-cdd0 .u-hamburger-link,
+body.mgm-header-scrolled #sec-cdd0 .u-nav-popup .u-nav-link,
+body.mgm-header-scrolled #sec-cdd0 .u-nav-popup .u-button-style.u-white {
+  color: var(--ink) !important;
+}
+
+/* White background → paper. Targets every #ffffff bg used in    */
+/* the homepage flow: scrolled header bar, scrolled dropdown,    */
+/* and the bio/mosaic section.                                   */
+.mgm-mosaic-section {
+  background: var(--paper) !important;
+  padding-top: var(--section-pad-y) !important;
+  padding-bottom: var(--section-pad-y) !important;
+}
+
+/* ── Standardize inter-element spacing across the page ── */
+/* Each rule below maps a legacy one-off value to one of    */
+/* the four spacing tokens. Edit the tokens in :root above  */
+/* to retune the page rhythm.                               */
+
+/* Hero: H1 → subhead → CTA. */
+.mgm-hero-title {
+  margin-bottom: var(--space-snug) !important;   /* was 20px */
+}
+.mgm-hero-sub {
+  margin-bottom: var(--space-room) !important;   /* was 40px */
+}
+
+/* Dark-section H2 (What We Make / Who We Work With / etc.) → subhead */
+/* Centered as a heading block — see "Centering rules" below.          */
+.mgm-header-title {
+  margin-bottom: var(--space-snug) !important;   /* was 12px */
+  max-width: var(--width-heading) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.mgm-header-sub {
+  max-width: var(--width-prose) !important;      /* was 600px */
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Mosaic intro block (eyebrow + h2 + bio) → image grid below */
+.mgm-mosaic-intro {
+  max-width: var(--width-heading) !important;    /* was 780px */
+  margin: 0 auto var(--space-loose) !important;  /* was 0 auto 60px */
+}
+
+/* Subhead → grid / list (heading-block → section content) */
+.mgm-what-grid {
+  margin-top: var(--space-room) !important;      /* was 40px */
+}
+.mgm-who-list {
+  margin-top: var(--space-room) !important;      /* was 28px */
+}
+
+/* Who We Work With — cap the 2-column block at --width-heading */
+/* so the list + logos sit symmetrically around the page center */
+/* (matches the where-viewer pattern).                          */
+.mgm-who-layout {
+  max-width: var(--width-heading) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* The Nicepage stylesheet stacks .mgm-who-layout at ≤991px.    */
+/* Push that stacking break down to 880px so the 2-col persists */
+/* through normal desktop tablet widths.                        */
+@media (max-width: 991px) and (min-width: 881px) {
+  .mgm-who-layout {
+    flex-direction: row !important;
+    gap: 80px !important;
+  }
+  .mgm-who-left {
+    flex: 0 0 360px !important;
+    width: auto !important;
+  }
+  .mgm-who-logos {
+    padding-top: 52px !important;
+  }
+}
+
+/* When the layout DOES stack (≤880px), cap each stacked block  */
+/* to a centered narrow column so list dividers and the logo    */
+/* grid stop sprawling past their content.                      */
+@media (max-width: 880px) {
+  .mgm-who-left {
+    max-width: 480px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .mgm-who-logos {
+    max-width: var(--width-prose);
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+  }
+}
+/* Mosaic bio body color was hardcoded #555555 in index.css —    */
+/* shift it to teal so it standardizes with the rest of the      */
+/* secondary text on the page.                                   */
+.mgm-mosaic-bio {
+  color: var(--ink-2) !important;
+  font-size: 0.9375rem !important;
+  max-width: var(--width-prose) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+body.mgm-header-scrolled #sec-cdd0 {
+  background-color: #EFE8D8 !important;
+}
+body.mgm-header-scrolled #sec-cdd0 .u-nav-popup {
+  background-color: #EFE8D8 !important;
+}
+body.mgm-header-scrolled #sec-cdd0 .u-nav-popup .u-nav-link,
+body.mgm-header-scrolled #sec-cdd0 .u-nav-popup .u-button-style.u-white {
+  background-color: transparent !important;
+}

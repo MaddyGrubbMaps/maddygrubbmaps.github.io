@@ -14,7 +14,12 @@
         <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
         <meta name="generator" content="Nicepage 8.1.4, nicepage.com">
         <link rel="icon" href="images/favicon.png">
-        <link id="u-page-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Alata:wght@400">
+        <link id="u-page-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Alata:wght@400&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500;1,6..72,600&amp;family=Manrope:wght@300;500;600;800&amp;family=JetBrains+Mono:wght@400;500;600">
+        <link rel="stylesheet" href="brand.css" media="screen">
+        <script src="https://cdn.jsdelivr.net/npm/d3-array@3" defer=""></script>
+        <script src="https://cdn.jsdelivr.net/npm/d3-geo@3" defer=""></script>
+        <script src="https://cdn.jsdelivr.net/npm/topojson-client@3" defer=""></script>
+        <script src="where.js" defer=""></script>
         <script type="application/ld+json">{
 	"@context": "http://schema.org",
 	"@type": "Organization",
@@ -134,123 +139,9 @@
         <meta data-intl-tel-input-cdn-path="intlTelInput/">
     </head>
     <body data-home-page="About.html" data-home-page-title="About" data-path-to-root="./" data-include-products="false" class="u-body u-clearfix u-overlap u-overlap-contrast u-overlap-transparent u-xxl-mode" data-lang="en">
-        <header class="u-clearfix u-header u-sticky u-sticky-b4bd u-white u-header mgm-at-top" id="sec-cdd0">
-            <div class="u-clearfix u-sheet u-valign-middle-lg u-valign-middle-md u-valign-middle-xl u-sheet-1">
-                <nav class="u-align-left-lg u-align-left-md u-align-left-sm u-align-left-xl u-align-left-xxl u-align-right-xs u-menu u-menu-dropdown u-offcanvas u-offcanvas-shift u-menu-1" data-responsive-from="SM" role="navigation">
-                    <div class="menu-collapse" style="font-weight: 700;">
-                        <a class="u-button-style u-custom-border u-custom-text-active-color u-custom-text-color u-custom-text-hover-color u-hamburger-link u-nav-link u-text-custom-color-2 u-hamburger-link-1" href="#" tabindex="-1" aria-label="Open menu" aria-controls="87f2"> <svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 302 302" style="">
-                                <use xlink:href="#svg-5c50"></use>
-                            </svg> <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="svg-5c50" x="0px" y="0px" viewBox="0 0 302 302" style="enable-background:new 0 0 302 302;" xml:space="preserve" class="u-svg-content">
-                                <g>
-                                    <rect y="36" width="302" height="30"></rect>
-                                    <rect y="236" width="302" height="30"></rect>
-                                    <rect y="136" width="302" height="30"></rect>
-                                </g>
-                                <g></g>
-                                <g></g>
-                                <g></g>
-                                <g></g>
-                                <g></g>
-                                <g></g>
-                                <g></g>
-                                <g></g>
-                                <g></g>
-                                <g></g>
-                                <g></g>
-                                <g></g>
-                                <g></g>
-                                <g></g>
-                                <g></g>
-                            </svg> </a>
-                    </div>
-                    <div class="u-custom-menu u-nav-container">
-                        <ul role="menubar" class="u-custom-font u-heading-font u-nav u-spacing-20 u-unstyled u-nav-1">
-                            <li role="none" class="u-nav-item">
-                                <a role="menuitem" class="u-button-style u-nav-link u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3" href="Portfolio.html" style="padding: 10px;">Portfolio</a>
-                            </li>
-                            <li role="none" class="u-nav-item">
-                                <a role="menuitem" class="u-button-style u-nav-link u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3" href="Custom-Cartography.html" style="padding: 10px;">Custom Cartography</a>
-                                <div class="u-nav-popup">
-                                    <ul role="menu" class="u-h-spacing-10 u-nav u-unstyled u-v-spacing-10 u-nav-2" aria-label="Custom Cartography menu">
-                                        <li role="none" class="u-nav-item">
-                                            <a role="menuitem" class="u-active-custom-color-7 u-button-style u-hover-custom-color-3 u-nav-link u-text-custom-color-2 u-text-hover-white u-white" href="Client-Types/Climate-Conservation-Community.html">Maps for Conservation &amp; Science</a>
-                                        </li>
-                                        <li role="none" class="u-nav-item">
-                                            <a role="menuitem" class="u-active-custom-color-7 u-button-style u-hover-custom-color-3 u-nav-link u-text-custom-color-2 u-text-hover-white u-white" href="Client-Types/Outdoor-Recreation.html">Maps for Outdoor Recreation</a>
-                                        </li>
-                                        <li role="none" class="u-nav-item">
-                                            <a role="menuitem" class="u-active-custom-color-7 u-button-style u-hover-custom-color-3 u-nav-link u-text-custom-color-2 u-text-hover-white u-white" href="Client-Types/Landowners-Ranches.html">Maps for Landowners &amp; Ranches</a>
-                                        </li>
-                                        <li role="none" class="u-nav-item">
-                                            <a role="menuitem" class="u-active-custom-color-7 u-button-style u-hover-custom-color-3 u-nav-link u-text-custom-color-2 u-text-hover-white u-white" href="Client-Types/Snow-Skiing.html">Maps for Snow &amp; Ski Areas</a>
-                                        </li>
-                                        <li role="none" class="u-nav-item">
-                                            <a role="menuitem" class="u-active-custom-color-7 u-button-style u-hover-custom-color-3 u-nav-link u-text-custom-color-2 u-text-hover-white u-white" href="Client-Types/Art.html">Maps for Art</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li role="none" class="u-nav-item">
-                                <a role="menuitem" class="u-button-style u-nav-link u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3" href="Journal.html" style="padding: 10px;">Journal</a>
-                            </li>
-                            <li role="none" class="u-nav-item">
-                                <a tabindex="-1" role="menuitem" class="u-button-style u-nav-link u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3" href="https://maddygrubbmaps.etsy.com" target="_blank" style="padding: 10px;">Etsy</a>
-                            </li>
-                            <li role="none" class="u-nav-item">
-                                <a role="menuitem" class="u-button-style u-nav-link u-text-active-custom-color-7 u-text-custom-color-2 u-text-hover-custom-color-3" href="Contact.html" target="_blank" style="padding: 10px;">Contact</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="u-custom-menu u-nav-container-collapse" id="87f2" role="region" aria-label="Menu panel">
-                        <div class="u-align-center u-container-align-center u-container-style u-custom-color-2 u-inner-container-layout u-opacity u-opacity-95 u-sidenav">
-                            <div class="u-inner-container-layout u-sidenav-overflow">
-                                <div class="u-menu-close" tabindex="-1" aria-label="Close menu"></div>
-                                <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-3" role="menubar">
-                                    <li role="none" class="u-nav-item">
-                                        <a role="menuitem" class="u-button-style u-nav-link" href="Portfolio.html">Portfolio</a>
-                                    </li>
-                                    <li role="none" class="u-nav-item">
-                                        <a role="menuitem" class="u-button-style u-nav-link" href="Custom-Cartography.html">Custom Cartography</a>
-                                        <div class="u-nav-popup">
-                                            <ul role="menu" class="u-h-spacing-10 u-nav u-unstyled u-v-spacing-10 u-nav-4" aria-label="Custom Cartography menu">
-                                                <li role="none" class="u-nav-item">
-                                                    <a role="menuitem" class="u-button-style u-nav-link" href="Client-Types/Climate-Conservation-Community.html">Maps for Conservation &amp; Science</a>
-                                                </li>
-                                                <li role="none" class="u-nav-item">
-                                                    <a role="menuitem" class="u-button-style u-nav-link" href="Client-Types/Outdoor-Recreation.html">Maps for Outdoor Recreation</a>
-                                                </li>
-                                                <li role="none" class="u-nav-item">
-                                                    <a role="menuitem" class="u-button-style u-nav-link" href="Client-Types/Landowners-Ranches.html">Maps for Landowners &amp; Ranches</a>
-                                                </li>
-                                                <li role="none" class="u-nav-item">
-                                                    <a role="menuitem" class="u-button-style u-nav-link" href="Client-Types/Snow-Skiing.html">Maps for Snow &amp; Ski Areas</a>
-                                                </li>
-                                                <li role="none" class="u-nav-item">
-                                                    <a role="menuitem" class="u-button-style u-nav-link" href="Client-Types/Art.html">Maps for Art</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li role="none" class="u-nav-item">
-                                        <a role="menuitem" class="u-button-style u-nav-link" href="Journal.html">Journal</a>
-                                    </li>
-                                    <li role="none" class="u-nav-item">
-                                        <a tabindex="-1" role="menuitem" class="u-button-style u-nav-link" href="https://maddygrubbmaps.etsy.com" target="_blank">Etsy</a>
-                                    </li>
-                                    <li role="none" class="u-nav-item">
-                                        <a role="menuitem" class="u-button-style u-nav-link" href="Contact.html" target="_blank">Contact</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="u-custom-color-2 u-menu-overlay u-opacity u-opacity-var" style="--opacity: 0.5;"></div>
-                    </div>
-                    <style class="menu-style">@media (max-width: 767px) { [data-responsive-from="SM"] .u-nav-container {  display: none; }  [data-responsive-from="SM"] .menu-collapse {  display: block; } }</style>
-                </nav>
-                <img class="u-align-left-xs u-image u-image-contain u-image-default u-image-1" src="images/Logo.png" alt="Maddy Grubb Maps logo" data-image-width="1269" data-image-height="182" data-href="./" data-page-id="566602774" title="About">
-            </div>
-            <style class="u-sticky-style" data-style-id="b4bd">.u-sticky-fixed.u-sticky-b4bd, .u-body.u-sticky-fixed .u-sticky-b4bd { background-color: #ffffff !important; background-image: none !important; } .u-sticky-fixed.u-sticky-b4bd:before, .u-body.u-sticky-fixed .u-sticky-b4bd:before { background-color: unset !important; } .u-sticky-fixed.u-sticky-b4bd .u-background-video, .u-body.u-sticky-fixed .u-sticky-b4bd .u-background-video { display: none !important; }</style>
-        </header>
+        <!-- Shared header — markup lives in partials/header.html, behavior in mgm-header.js. -->
+        <header id="sec-cdd0" data-path-root="" class="u-clearfix u-header u-sticky u-sticky-b4bd u-white u-header mgm-at-top"></header>
+        <script src="mgm-header.js" defer></script>
         <section class="u-clearfix u-hidden-lg u-hidden-md u-hidden-xl u-hidden-xxl u-image u-shading u-section-1" id="sec-97ab" data-image-width="4000" data-image-height="2000">
             <div class="u-clearfix u-sheet u-sheet-1">
                 <p class="u-text u-text-default-lg u-text-default-md u-text-default-sm u-text-default-xl u-text-default-xxl u-text-1">For the best​ experience,<br>view this site on a computer​!  </p>
@@ -262,15 +153,103 @@
             </div>
         </section>
         <section id="sec-8d20" class="u-hidden-sm u-hidden-xs mgm-hero-section">
-            <div class="mgm-hero-overlay" style="background-color: rgba(0, 0, 0, 0.32);"></div>
+            <div class="mgm-hero-overlay"></div>
             <div class="mgm-hero-content">
-                <h1 class="mgm-hero-title">Maps Where Science Meets Art</h1>
-                <p class="mgm-hero-sub" style="font-size: 26px; text-transform: uppercase;">Explore the world through beautifully crafted, data-driven maps</p>
+                <p class="eyebrow">Custom Cartography · Jackson, WY</p>
+                <h1 class="mgm-hero-title display">Maps Where Science<br>Meets <em>Art</em></h1>
+                <p class="mgm-hero-sub">Explore the world through beautifully crafted, data-driven maps</p>
                 <a href="Contact.html" class="mgm-btn" target="_blank">Start Your Custom Map Today</a>
+            </div>
+        </section>
+        <section id="mgm-where-we-work" class="mgm-where-section">
+            <div class="mgm-container">
+                <p class="eyebrow">Where We Work</p>
+                <h2 class="mgm-where-title">Based in Jackson, WY, making maps of <em>the world.</em></h2>
+                <div class="mgm-where-viewer">
+                    <div class="mgm-where-globe-col">
+                        <div class="mgm-where-stage" aria-label="Interactive globe of project locations">
+                            <canvas class="mgm-where-globe"></canvas>
+                            <div class="mgm-where-popup-layer" id="mgm-where-popup-layer" aria-hidden="true"></div>
+                        </div>
+                        <p class="mgm-where-globe-hint">Drag, scroll, or click a pin to explore project locations.</p>
+                    </div>
+                    <ol class="mgm-where-projects" id="mgm-where-projects" aria-label="Project locations"></ol>
+                </div>
+            </div>
+        </section>
+        <img src="images/divider.svg" class="mgm-section-divider-art" alt="" aria-hidden="true">
+        <section id="mgm-what-we-make" class="mgm-what-section">
+            <div class="mgm-container">
+                <h2 class="mgm-header-title">What We Make</h2>
+                <p class="mgm-header-sub">Maps that showcase stunning landscapes, tell stories, aid in navigation, help make decisions, and solve complex spatial problems.</p>
+                <div class="mgm-what-grid">
+                    <div class="mgm-what-card" data-img="images/Mount_Moran_3D_View.webp" data-title="3D Perspectives &amp; Photorealistic Renders">
+                        <div class="mgm-what-img-wrap">
+                            <img src="images/Mount_Moran_3D_View.webp" alt="3D photorealistic terrain map of Mount Moran">
+                        </div>
+                        <h3>3D Perspectives &amp; Photorealistic Renders</h3>
+                    </div>
+                    <div class="mgm-what-card" data-img="images/All_Maps_adapt1.webp" data-title="Data Visualizations &amp; Science Communication">
+                        <div class="mgm-what-img-wrap">
+                            <img src="images/All_Maps_adapt1.webp" alt="Data visualization and science communication map">
+                        </div>
+                        <h3>Data Visualizations &amp; Science Communication</h3>
+                    </div>
+                    <div class="mgm-what-card" data-img="images/3D_Map_Text_Handrawn_screen.webp" data-title="Hand Painted Works of Art">
+                        <div class="mgm-what-img-wrap">
+                            <img src="images/3D_Map_Text_Handrawn_screen.webp" alt="Hand painted map artwork">
+                        </div>
+                        <h3>Hand Painted Works of Art</h3>
+                    </div>
+                    <div class="mgm-what-card" data-img="images/Moose_20240604_menors.webp" data-title="Signage &amp; Kiosks">
+                        <div class="mgm-what-img-wrap">
+                            <img src="images/Moose_20240604_menors.webp" alt="Trail signage and kiosk design">
+                        </div>
+                        <h3>Signage &amp; Kiosks</h3>
+                    </div>
+                    <div class="mgm-what-card" data-img="images/TGS_Summer_v1_300dpi.png" data-title="Trail &amp; Topographic Brochures">
+                        <div class="mgm-what-img-wrap">
+                            <img src="images/TGS_Summer_v1_300dpi.png" alt="Trail and topographic brochure map">
+                        </div>
+                        <h3>Trail &amp; Topographic Brochures</h3>
+                    </div>
+                    <div class="mgm-what-card" data-img="images/Artboard13x.webp" data-title="Activism, Conservation &amp; Storytelling">
+                        <div class="mgm-what-img-wrap">
+                            <img src="images/Artboard13x.webp" alt="Activism and conservation storytelling map">
+                        </div>
+                        <h3>Activism, Conservation &amp; Storytelling</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="mgm-who-we-work" class="mgm-who-section">
+            <div class="mgm-container">
+                <p class="eyebrow">Clients &amp; Partners</p>
+                <h2 class="mgm-header-title">Who We Work With</h2>
+                <div class="mgm-who-layout">
+                    <div class="mgm-who-left">
+                        <ul class="mgm-who-list">
+                            <li>Public Land Agencies</li>
+                            <li>Conservation Groups &amp; Non-Profits</li>
+                            <li>Scientists &amp; Academic Institutions</li>
+                            <li>Guidebook &amp; Adventure Authors</li>
+                            <li>Snow &amp; Ski Areas</li>
+                            <li>Landowners &amp; Ranches</li>
+                        </ul>
+                    </div>
+                    <div class="mgm-who-logos">
+                        <img src="images/NPSbw.png" alt="National Park Service">
+                        <img src="images/GTNPF_LOGO_Color_400x4002.png" alt="Grand Teton National Park Foundation">
+                        <img src="images/aff-logo-transparent-1.840x0.png" alt="Access Fund">
+                        <img src="images/NM_logo_split_grey.png" alt="National Monument">
+                        <img src="images/Dovetail_Trail_Consulting_RGB_large1.png" alt="Dovetail Trail Consulting">
+                    </div>
+                </div>
             </div>
         </section>
         <section id="sec-a8a8" class="mgm-mosaic-section">
             <div class="mgm-mosaic-intro">
+                <h2 class="mgm-about-title">About <em>Me</em></h2>
                 <p class="mgm-mosaic-bio">I&apos;m a freelance cartographer based in Jackson, Wyoming, former NPS Cartographic Technician at Grand Teton National Park, thru-hiker, and earth scientist. I create maps that are equal parts scientifically rigorous and visually stunning: photorealistic 3D terrain, hand-drawn watercolor, and GIS-driven analysis for the clients and landscapes that deserve something extraordinary.</p>
             </div>
             <div class="mgm-mosaic-grid">
@@ -291,87 +270,19 @@
                 </div>
             </div>
         </section>
-        <section id="mgm-what-we-make" class="mgm-what-section">
+        <section id="mgm-bringing-data" class="mgm-bringing-data-section">
             <div class="mgm-container">
-                <h2 class="mgm-header-title" style="color: #ffffff;">What We Make</h2>
-                <p class="mgm-header-sub" style="color: rgba(255,255,255,0.8);">Maps that showcase stunning landscapes, tell stories, aid in navigation, help make decisions, and solve complex spatial problems.</p>
-                <div class="mgm-what-grid">
-                    <div class="mgm-what-card" data-img="images/Mount_Moran_3D_View.webp" data-title="3D Perspectives &amp; Photorealistic Renders">
-                        <div class="mgm-what-img-wrap">
-                            <img src="images/Mount_Moran_3D_View.webp" alt="3D photorealistic terrain map of Mount Moran">
-                        </div>
-                        <h4 style="font-size: 18px;">3D Perspectives &amp; Photorealistic Renders</h4>
-                    </div>
-                    <div class="mgm-what-card" data-img="images/All_Maps_adapt1.webp" data-title="Data Visualizations &amp; Science Communication">
-                        <div class="mgm-what-img-wrap">
-                            <img src="images/All_Maps_adapt1.webp" alt="Data visualization and science communication map">
-                        </div>
-                        <h4 style="font-size: 18px;">Data Visualizations &amp; Science Communication</h4>
-                    </div>
-                    <div class="mgm-what-card" data-img="images/3D_Map_Text_Handrawn_screen.webp" data-title="Hand Painted Works of Art">
-                        <div class="mgm-what-img-wrap">
-                            <img src="images/3D_Map_Text_Handrawn_screen.webp" alt="Hand painted map artwork">
-                        </div>
-                        <h4 style="font-size: 18px;">Hand Painted Works of Art</h4>
-                    </div>
-                    <div class="mgm-what-card" data-img="images/Moose_20240604_menors.webp" data-title="Signage &amp; Kiosks">
-                        <div class="mgm-what-img-wrap">
-                            <img src="images/Moose_20240604_menors.webp" alt="Trail signage and kiosk design">
-                        </div>
-                        <h4 style="font-size: 18px;">Signage &amp; Kiosks</h4>
-                    </div>
-                    <div class="mgm-what-card" data-img="images/TGS_Summer_v1_300dpi.png" data-title="Trail &amp; Topographic Brochures">
-                        <div class="mgm-what-img-wrap">
-                            <img src="images/TGS_Summer_v1_300dpi.png" alt="Trail and topographic brochure map">
-                        </div>
-                        <h4 style="font-size: 18px;">Trail &amp; Topographic Brochures</h4>
-                    </div>
-                    <div class="mgm-what-card" data-img="images/Artboard13x.webp" data-title="Activism, Conservation &amp; Storytelling">
-                        <div class="mgm-what-img-wrap">
-                            <img src="images/Artboard13x.webp" alt="Activism and conservation storytelling map">
-                        </div>
-                        <h4 style="font-size: 18px;">Activism, Conservation &amp; Storytelling</h4>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="mgm-who-we-work" class="mgm-who-section">
-            <div class="mgm-container">
-                <div class="mgm-who-layout">
-                    <div class="mgm-who-left">
-                        <h2 class="mgm-header-title" style="color: #ffffff;">Who We Work With</h2>
-                        <ul class="mgm-who-list">
-                            <li>Public Land Agencies</li>
-                            <li>Conservation Groups &amp; Non-Profits</li>
-                            <li>Scientists &amp; Academic Institutions</li>
-                            <li>Guidebook &amp; Adventure Authors</li>
-                            <li>Snow &amp; Ski Areas</li>
-                            <li>Landowners &amp; Ranches</li>
-                        </ul>
-                    </div>
-                    <div class="mgm-who-logos">
-                        <img src="images/NPSbw.png" alt="National Park Service">
-                        <img src="images/GTNPF_LOGO_Color_400x4002.png" alt="Grand Teton National Park Foundation">
-                        <img src="images/aff-logo-transparent-1.840x0.png" alt="Access Fund">
-                        <img src="images/NM_logo_split_grey.png" alt="National Monument">
-                        <img src="images/Dovetail_Trail_Consulting_RGB_large1.png" alt="Dovetail Trail Consulting">
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="u-clearfix u-custom-color-3 u-hidden-sm u-hidden-xs u-section-8" id="sec-9ab5">
-            <div class="u-clearfix u-sheet u-valign-middle-lg u-valign-middle-md u-valign-middle-sm u-valign-middle-xl u-valign-middle-xs u-sheet-1">
-                <h2 class="mgm-header-title" style="color: #ffffff;">Bringing Data to Life...</h2>
-                <p class="u-text u-text-body-alt-color" style="text-align: center; margin-bottom: 24px; font-size: 0.95em; opacity: 0.85;">Explore this interactive 3D model of the Glaciers of Mount Moran. Drag to rotate, scroll to zoom.</p>
-                <div class="u-clearfix u-custom-html u-custom-html-1">
+                <p class="eyebrow">Interactive</p>
+                <h2 class="mgm-header-title">Bringing Data to Life...</h2>
+                <p class="mgm-header-sub">Explore this interactive 3D model of the Glaciers of Mount Moran. Drag to rotate, scroll to zoom.</p>
+                <div class="mgm-bringing-data-embed">
                     <div class="sketchfab-embed-wrapper">
-                        <iframe title="Glaciers of Mount Moran" frameborder="0" allowfullscreen="" mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking="" execution-while-out-of-viewport="" execution-while-not-rendered="" web-share="" width="800" height="600" src="https://sketchfab.com/models/2e7efb008a8d41e18da222446f30d599/embed?autostart=1"></iframe>
+                        <iframe title="Glaciers of Mount Moran" frameborder="0" allowfullscreen="" mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking="" execution-while-out-of-viewport="" execution-while-not-rendered="" web-share="" src="https://sketchfab.com/models/2e7efb008a8d41e18da222446f30d599/embed?autostart=1"></iframe>
                     </div>
                 </div>
-                <a href="Contact.html" data-page-id="67898972" class="u-active-custom-color-7 u-border-2 u-border-active-custom-color-7 u-border-hover-custom-color-7 u-border-white u-btn u-btn-round u-button-style u-hover-custom-color-3 u-none u-radius u-text-active-custom-color-7 u-text-hover-custom-color-7 u-btn-1" title="Contact" target="_blank">START YOUR CUSTOM MAP TODAY</a>
+                <a href="Contact.html" data-page-id="67898972" class="mgm-btn" title="Contact" target="_blank">Start Your Custom Map Today</a>
             </div>
         </section>
-        <style class="u-overlap-style">.u-overlap:not(.u-sticky-scroll) .u-header { transparency: 0 !important; }</style>
         <!-- Lightbox overlay -->
         <div id="mgm-lightbox" class="mgm-lightbox" role="dialog" aria-modal="true">
             <button class="mgm-lightbox-close" id="mgm-lightbox-close" aria-label="Close">&times;</button>
@@ -381,24 +292,8 @@
             </div>
         </div>
         <script>
-        /* --- Scroll nav --- */
-        (function () {
-            var header = document.getElementById('sec-cdd0');
-            if (!header) return;
-            function update() {
-                if (window.scrollY > 60) {
-                    header.classList.remove('mgm-at-top');
-                    document.body.classList.add('mgm-header-scrolled');
-                } else {
-                    header.classList.add('mgm-at-top');
-                    document.body.classList.remove('mgm-header-scrolled');
-                }
-            }
-            window.addEventListener('scroll', update, { passive: true });
-            update();
-        })();
-
-        /* --- Lightbox --- */
+        /* Lightbox — homepage-specific, bound to .mgm-what-card cards. Header
+           interactivity (scroll state, tap-to-expand) lives in mgm-header.js. */
         (function () {
             var lb     = document.getElementById('mgm-lightbox');
             var lbImg  = document.getElementById('mgm-lightbox-img');

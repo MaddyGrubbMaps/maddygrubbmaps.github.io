@@ -551,7 +551,8 @@
   background-size: cover;
   background-position: center 30%;
   background-attachment: fixed;
-  min-height: 85vh;
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -574,7 +575,6 @@
   color: #ffffff;
   line-height: 1.25;
   margin: 0 0 20px;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
 }
 .mgm-hero-sub {
   font-size: clamp(1rem, 1.4vw, 1.15rem);
@@ -582,7 +582,6 @@
   line-height: 1.65;
   margin: 0 auto 40px;
   max-width: 620px;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
 }
 
 /* --- GALLERY SECTIONS --- */
@@ -982,9 +981,12 @@
   margin-top: 24px !important;
 }
 
-/* --- NAV: transparent at top, white + navy on scroll --- */
+/* --- NAV: sand by default, transparent over hero, sand on scroll --- */
 #sec-cdd0 {
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #EFE8D8 !important;
+  background-image: none !important;
+  box-shadow: none !important;
 }
 
 /* === AT TOP: transparent (overrides Nicepage u-white + u-overlap-transparent) === */
@@ -1012,26 +1014,17 @@
   content: url('images/Logo-white.png');
 }
 
-/* Dropdown at top: dark panel so white text is readable */
-#sec-cdd0.mgm-at-top .u-nav-popup {
-  background-color: rgba(15, 25, 55, 0.9) !important;
-}
-#sec-cdd0.mgm-at-top .u-nav-popup .u-nav-link,
-#sec-cdd0.mgm-at-top .u-nav-popup .u-button-style.u-white {
-  background-color: transparent !important;
-  color: #ffffff !important;
-}
-#sec-cdd0.mgm-at-top .u-nav-popup .u-nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  color: #ffffff !important;
-}
+/* Dropdown at-top + scrolled colors are managed in brand.css   */
+/* (single source of truth for popup bg/text/hover). Removed    */
+/* the navy-panel + white-on-white legacy rules that used to    */
+/* live here so brand.css wins cleanly.                          */
 
 /* === SCROLLED: white bar, navy text === */
 /* Use mgm-scrolled class (set by JS) to beat u-overlap-transparent specificity */
 body.mgm-header-scrolled #sec-cdd0 {
-  background-color: #ffffff !important;
+  background-color: #EFE8D8 !important;
   background-image: none !important;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
+  box-shadow: none !important;
 }
 body.mgm-header-scrolled #sec-cdd0 .u-nav-link,
 body.mgm-header-scrolled #sec-cdd0 .u-text-custom-color-2,
@@ -1040,20 +1033,9 @@ body.mgm-header-scrolled #sec-cdd0 .u-hamburger-link {
   transition: color 0.3s ease;
 }
 
-/* Dropdown scrolled: white panel, navy text */
-body.mgm-header-scrolled #sec-cdd0 .u-nav-popup {
-  background-color: #ffffff !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
-}
-body.mgm-header-scrolled #sec-cdd0 .u-nav-popup .u-nav-link,
-body.mgm-header-scrolled #sec-cdd0 .u-nav-popup .u-button-style.u-white {
-  background-color: #ffffff !important;
-  color: #293d7d !important;
-}
-body.mgm-header-scrolled #sec-cdd0 .u-nav-popup .u-nav-link:hover {
-  background-color: #f0f3fa !important;
-  color: #293d7d !important;
-}
+/* Dropdown scrolled colors are managed in brand.css (#EFE8D8   */
+/* panel, ink text, var(--teal) hover). Legacy white+navy rules */
+/* removed here to avoid cascade conflicts.                      */
 
 /* ================================================
    RESPONSIVE SYSTEM FIXES
@@ -1076,10 +1058,11 @@ body.mgm-header-scrolled #sec-cdd0 .u-nav-popup .u-nav-link:hover {
   }
 }
 
-/* Reduce hero height on phones */
+/* Phone-specific tweaks — hero stays full viewport. */
 @media (max-width: 599px) {
   .mgm-hero-section {
-    min-height: 70vh;
+    min-height: 100vh;
+    min-height: 100dvh;
   }
   .mgm-hero-content {
     padding: 48px 32px;
