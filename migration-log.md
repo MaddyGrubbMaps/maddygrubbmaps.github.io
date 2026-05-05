@@ -6,6 +6,13 @@ Running ledger of design decisions, token additions, pattern changes, and notabl
 
 ## 2026-05-04
 
+### Step 7 — Portfolio (Pattern A only) ✅
+- Replaced inline header with shared placeholder (`data-path-root=""`).
+- brand.css link + brand fonts URL were already in place from the homepage baseline commit (Step 2).
+- **Pattern C (gallery rebuild) deferred** — see `migration-pauses.md`. The 4 gallery sections still use Nicepage's `u-gallery` lightbox driven by `nicepage.js`. Functional, just not on the brand system yet.
+
+---
+
 ### Step 6 — Client-Types pages (Pattern A) ✅
 - Applied Pattern A (typography + shared header) to all 5 Client-Types pages: Climate-Conservation-Community, Outdoor-Recreation, Landowners-Ranches, Snow-Skiing, Art.
 - **Decision:** Shipped Pattern A instead of the planned Pattern B. See `migration-pauses.md` for rationale and Step 6b followup.

@@ -8,6 +8,13 @@ Format: each pause is a single section with **What**, **Where**, **My choice**, 
 
 ## Open
 
+### Portfolio gallery: Pattern A shipped, Pattern C deferred
+- **What:** Portfolio.html shipped with Pattern A (header replacement). The 4 `u-gallery` lightbox sections (3D, Painted, Inked, Scientific — ~40 image items total) still use Nicepage's gallery markup driven by `nicepage.js`.
+- **Where:** `Portfolio.html` lines ~150–500.
+- **My choice:** Defer Pattern C (rebuild as `mgm-gallery-item` + extend `mgm-lightbox` JS).
+- **Why I skipped asking:** ~40 items × 6 attribute changes each = ~240 mechanical edits, plus extending the homepage's lightbox JS to bind a new selector, plus restyling the gallery grids. Worth doing but better as a focused session where Maddy can review the gallery interaction (zoom-on-hover vs static, lightbox transition style, mobile gallery layout decisions) rather than stuffing it into the foundation pass.
+- **Status:** open
+
 ### Client-Types pages: Pattern A vs Pattern B
 - **What:** Shipped Step 6 with Pattern A (typography + shared header) instead of the originally planned Pattern B (full section restyle).
 - **Where:** All 5 `Client-Types/*.html` pages (Climate-Conservation-Community, Outdoor-Recreation, Landowners-Ranches, Snow-Skiing, Art).
