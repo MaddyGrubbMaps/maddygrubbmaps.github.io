@@ -1481,3 +1481,170 @@ body.mgm-header-scrolled #sec-cdd0 .u-nav-popup .u-nav-link,
 body.mgm-header-scrolled #sec-cdd0 .u-nav-popup .u-button-style.u-white {
   background-color: transparent !important;
 }
+
+/* =========================================================
+   Journal page — adventure post grid + Substack callout
+   ========================================================= */
+
+/* Adventure post grid */
+.mgm-journal-section {
+  background: var(--paper);
+  padding: var(--section-pad-y) 0;
+}
+.mgm-journal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+.mgm-journal-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 220ms ease-out;
+}
+.mgm-journal-card:hover {
+  transform: translateY(-4px);
+}
+.mgm-journal-card-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  margin-bottom: var(--space-snug);
+}
+/* Override centered .eyebrow → left-align inside cards */
+.mgm-journal-card .eyebrow,
+.mgm-substack-card-body .eyebrow {
+  text-align: left;
+}
+.mgm-journal-card .eyebrow {
+  color: var(--teal-deep);
+}
+.mgm-journal-card-title {
+  font-family: var(--display) !important;
+  font-weight: 500;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  color: var(--ink);
+  margin: 0 0 var(--space-tight);
+  transition: color 220ms ease-out;
+}
+.mgm-journal-card-excerpt {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+  margin: 0;
+}
+.mgm-journal-card:hover .mgm-journal-card-title {
+  color: var(--teal);
+}
+
+/* Substack featured callout */
+.mgm-substack-section {
+  background: var(--paper-2);
+  padding: var(--section-pad-y) 0;
+}
+.mgm-substack-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+.mgm-substack-card-img img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.mgm-substack-card-body .eyebrow {
+  color: var(--orange-deep);
+}
+.mgm-substack-card-title {
+  font-family: var(--display) !important;
+  font-weight: 500;
+  font-size: 2.25rem;
+  line-height: 1.15;
+  color: var(--ink);
+  margin: 0 0 var(--space-tight);
+  transition: color 220ms ease-out;
+}
+.mgm-substack-card:hover .mgm-substack-card-title {
+  color: var(--orange-deep);
+}
+.mgm-substack-card-meta {
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  color: var(--ink-3);
+  margin: 0 0 var(--space-snug);
+}
+.mgm-substack-card-excerpt {
+  font-family: var(--sans);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+  margin: 0 0 var(--space-room);
+}
+.mgm-substack-card-cta {
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: gap 220ms ease-out;
+}
+.mgm-substack-card:hover .mgm-substack-card-cta {
+  gap: 14px;
+}
+
+@media (max-width: 767px) {
+  .mgm-journal-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .mgm-substack-card {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .mgm-substack-card-title {
+    font-size: 1.625rem;
+  }
+}
+
+/* =========================================================
+   Generic hero pattern — shared across pages (homepage,
+   Journal, Client-Types, etc.). Per-page CSS sets the bg-image,
+   bg-position, and min-height. brand.css handles structure
+   (flex centering, overlay, content sizing, white-on-dark text).
+   ========================================================= */
+.mgm-hero-section {
+  position: relative;
+  background-size: cover;
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+}
+.mgm-hero-section .mgm-hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 80px 50px;
+  max-width: 820px;
+  width: 100%;
+}
+.mgm-hero-section .mgm-hero-title {
+  color: #ffffff;
+}
+/* iOS / touch devices don't render fixed bg-attachment well —
+   fall back to scroll so the photo doesn't tile or jitter. */
+@media (pointer: coarse) {
+  .mgm-hero-section { background-attachment: scroll; }
+}

@@ -6,6 +6,22 @@ Running ledger of design decisions, token additions, pattern changes, and notabl
 
 ## 2026-05-04
 
+### Step 5 — Journal restyle ✅
+- Full Pattern B conversion of `Journal.html` — three pages of design ground laid down for the rest of the migration to consume.
+- **Hero (`#sec-87f9`):** legacy single `<p>` with bg-image → `mgm-hero-section` + `mgm-journal-hero` modifier with eyebrow ("Journal") + h1 ("I like to go on adventures.") + sub ("Sometimes I make maps and art about these trips."). User-written copy preserved verbatim, just typographically restructured into role-appropriate elements per brand system.
+- **Adventure post grid (`#sec-13d6` first list):** Nicepage `u-list/u-repeater/u-list-item` markup → semantic `<a class="mgm-journal-card">` with edge-to-edge photo + eyebrow date + Newsreader title + body excerpt. New pattern lives in brand.css. Card excerpts cleaned (e.g. "April 2024 - Two weeks…" → eyebrow "April 2024" + excerpt "Two weeks…").
+- **Substack callout (`#sec-13d6` second list):** standalone two-column featured callout (`mgm-substack-card`) on `--paper-2` surface with orange-deep hover accent. New pattern, distinct from the post grid because it's an external link to ongoing series (different IA from a single post).
+- **Generic hero pattern:** moved `.mgm-hero-section` structural rules (position, flex centering, content sizing, white title color, parallax with iOS fallback) from `index.css` (homepage-only) → `brand.css` so any page can build a hero. `index.css` keeps homepage-specific bg-image; `Journal.css` shrinks to just bg-image + min-height for the editorial-scale hero (266 lines → 9 lines).
+- **Design decisions made (executive):**
+  - Card title font: Newsreader 500 (editorial feel for a journal context — different from `mgm-what-card`'s sans).
+  - Card title hover color: `var(--teal)` for posts, `var(--orange-deep)` for Substack — orange marks the off-site/ongoing-series treatment.
+  - Eyebrow color: `var(--teal-deep)` for posts, `var(--orange-deep)` for Substack.
+  - Substack CTA: arrow that grows wider gap on hover (8px → 14px) — small interaction reward.
+  - Section padding: standard `var(--section-pad-y)` (72px) on both subsections.
+  - Substack section: `var(--paper-2)` surface to differentiate from the white-on-paper post grid.
+
+---
+
 ### Step 4 — Map-Pages (Pattern A) ✅
 - Converted `Map-Pages/photorealistic_blender_maps.html` using Pattern A (typography-only).
 - **Decision:** chose Pattern A over Pattern B because the existing layout (hero with 3 anchor jumps + 3 case-study sections) reads cleanly with brand typography alone. No need for premium section restyling on a low-traffic detail page; can revisit if Maddy wants polish later.
