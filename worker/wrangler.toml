@@ -1,0 +1,18 @@
+name = "maddygrubbmaps-contact"
+main = "contact.js"
+compatibility_date = "2026-05-01"
+
+# Public origin allowed to POST to this Worker. Override per environment if needed.
+[vars]
+ALLOWED_ORIGIN = "https://maddygrubbmaps.com"
+
+# Local development override — when running `wrangler dev`, allow the
+# python http.server origin so end-to-end testing works locally.
+[env.dev.vars]
+ALLOWED_ORIGIN = "http://localhost:8765"
+
+# Secrets are NOT in this file. Set them with `wrangler secret put`:
+#   wrangler secret put BREVO_API_KEY
+#   wrangler secret put BREVO_SENDER_EMAIL
+#   wrangler secret put BREVO_TO_EMAIL
+#   wrangler secret put TURNSTILE_SECRET_KEY   # optional

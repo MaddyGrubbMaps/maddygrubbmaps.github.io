@@ -6,6 +6,20 @@ Running ledger of design decisions, token additions, pattern changes, and notabl
 
 ## 2026-05-04
 
+### Step 9 — Brevo Worker (code written, awaiting deployment) ✅
+- Wrote a Cloudflare Worker (`worker/contact.js`) that receives POST requests from the contact form, validates name/email/message, runs an optional Turnstile spam check, and relays the message via Brevo's transactional email API (`POST /v3/smtp/email`).
+- **Validation:** required fields, email format, max-length, honeypot (`website` field — bots fill it, real users don't see it).
+- **Security:** API key never in client-side code; lives only as a Worker secret. CORS scoped to `https://maddygrubbmaps.com` (override `ALLOWED_ORIGIN` for dev/staging).
+- **Error UX:** Worker returns `{ok:true}` or `{ok:false, error:...}` with appropriate HTTP status. The contact form will surface these messages via an `aria-live` region.
+- **Email body:** branded HTML (paper bg, navy headings, teal accent rule).
+- **Files added:**
+  - `worker/contact.js` — the Worker code.
+  - `worker/wrangler.toml` — config (name, compat date, allowed origin).
+  - `worker/README.md` — step-by-step setup guide for Maddy: Brevo signup → verified sender → API key → `wrangler secret put` → `wrangler deploy`.
+- **Action required from Maddy:** run the steps in `worker/README.md`. Until then, the contact form (rewritten in Step 10) won't actually deliver — but the Worker URL is configurable via a single line in `Contact.html`.
+
+---
+
 ### Step 8 — Custom-Cartography (Pattern A only) ✅
 - Replaced inline header with shared placeholder (`data-path-root=""`).
 - brand.css link + brand fonts URL already in place from the Step 2 homepage baseline.
