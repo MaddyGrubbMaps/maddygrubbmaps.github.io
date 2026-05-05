@@ -6,6 +6,23 @@ Running ledger of design decisions, token additions, pattern changes, and notabl
 
 ## 2026-05-04
 
+### Step 10 — Contact form rewrite ✅
+- Stripped all reCAPTCHA scripts (~200 lines), Nicepage form processor markup, and the now-unused Contact.css.
+- New form is 4 fields (name, email, message, hidden honeypot) + status region with `aria-live="polite"`.
+- Submit handler: client-side validate, disable button + show "Sending…", `fetch()` JSON to the Brevo Worker, surface success or error message in the status region.
+- **Worker URL placeholder:** Maddy edits one line in `Contact.html` (line ~126, search `BREVO_WORKER_URL`) after deploying the Worker per `worker/README.md`.
+- **Brand styling** (added to brand.css):
+  - Form on paper bg, max-width 560px, vertically stacked rows.
+  - Labels: mono uppercase 11px (matches eyebrow scale).
+  - Inputs: hairline `--rule` border, focus → `--teal` border + faint teal tint.
+  - Submit: existing `.mgm-btn` (orange pill).
+  - Status: success → teal-tinted block w/ teal-deep text + teal left rule; error → red-tinted block w/ red-deep text + red left rule.
+  - Honeypot: absolutely positioned off-screen (`left: -10000px`) so screen readers reading sequentially can pick it up but real users never see it.
+  - "Prefer email or phone?" direct contact links below form, mono eyebrow + body sans links with teal underline on hover.
+- **Line accounting:** Contact.html 384 → 159 lines. Contact.css 87 → deleted.
+
+---
+
 ### Step 9 — Brevo Worker (code written, awaiting deployment) ✅
 - Wrote a Cloudflare Worker (`worker/contact.js`) that receives POST requests from the contact form, validates name/email/message, runs an optional Turnstile spam check, and relays the message via Brevo's transactional email API (`POST /v3/smtp/email`).
 - **Validation:** required fields, email format, max-length, honeypot (`website` field — bots fill it, real users don't see it).
