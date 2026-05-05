@@ -6,6 +6,14 @@ Running ledger of design decisions, token additions, pattern changes, and notabl
 
 ## 2026-05-04
 
+### Step 4 — Map-Pages (Pattern A) ✅
+- Converted `Map-Pages/photorealistic_blender_maps.html` using Pattern A (typography-only).
+- **Decision:** chose Pattern A over Pattern B because the existing layout (hero with 3 anchor jumps + 3 case-study sections) reads cleanly with brand typography alone. No need for premium section restyling on a low-traffic detail page; can revisit if Maddy wants polish later.
+- Same per-file edits as Adventure posts: header replacement, brand fonts, brand.css link.
+- CSS sweep: 0 white-background substitutions (same inheritance pattern — paper now applies via global `body` rule).
+
+---
+
 ### Step 3 — Adventure posts (Pattern A) ✅
 - Applied Pattern A (typography-only conversion) to all 7 Adventure posts.
 - **Method:** I converted Greece-Roadtrip.html by hand to validate the pattern in subfolder context, then ran a perl batch on the other 6 (arizona-trail, Sinks-Canyon-50k, Kerry-Way, Colorado-Trail, A-Teton-Winter, The-Cretan-Way). Faster than briefing an agent for what's mechanical search-and-replace.
