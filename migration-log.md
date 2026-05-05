@@ -1,10 +1,40 @@
 # Migration Log
 
+## ✅ Foundation migration complete (2026-05-04)
+
+The site is fully on the brand system: shared header, brand fonts, brand.css, paper background, mgm- pattern library. 18 pages migrated across 10 commits. ~4,500 lines net deleted. The contact form is wired to a Cloudflare Worker awaiting Maddy's deployment of Brevo credentials.
+
+**Foundation steps shipped:** 1–10 plus the closure pass (Step 11 logged as deferred).
+
+**Polish work logged in `migration-pauses.md`:**
+- Pattern C (Portfolio gallery rebuild)
+- Pattern D (Custom-Cartography accordion + carousel rebuild)
+- Pattern B (Client-Types full section restyle, Adventures editorial pass if wanted)
+- Step 11 final cleanup (drop Nicepage runtime once polish is done)
+- Globe-projects PNG optimization (~85 MB → ~5 MB)
+- CNAME.txt deletion verification
+- Prior uncommitted homepage work (bundled into Step 2 commit)
+
+**Maddy's next action:** follow `worker/README.md` to deploy the Brevo Worker, then update `BREVO_WORKER_URL` in `Contact.html`.
+
+---
+
+## Step-by-step log
+
+
 Running ledger of design decisions, token additions, pattern changes, and notable conversions during the Nicepage → Brand migration. Each entry should make the *why* legible without re-reading the diff.
 
 ---
 
 ## 2026-05-04
+
+### Step 11 — Closure (Nicepage runtime drop deferred) ✅
+- Smoke-tested all 18 pages via `python3 -m http.server` + curl: every page returns 200, has the placeholder header, brand.css link, and mgm-header.js script tag.
+- Verified `partials/header.html`, `mgm-header.js`, `brand.css` all reachable from both root + subfolder contexts.
+- Updated `sitemap.xml` lastmod to today (2026-05-04) for all 11 page entries.
+- **Did not drop `nicepage.css` / `nicepage.js`** — see `migration-pauses.md`. Still load-bearing for Portfolio gallery, Custom-Cartography accordion + carousel, and most pages' `u-*` section markup. The runtime drop should happen as the absolute last cleanup once Pattern B/C/D polish is complete.
+
+---
 
 ### Step 10 — Contact form rewrite ✅
 - Stripped all reCAPTCHA scripts (~200 lines), Nicepage form processor markup, and the now-unused Contact.css.

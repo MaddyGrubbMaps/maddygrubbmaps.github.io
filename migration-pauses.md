@@ -8,6 +8,18 @@ Format: each pause is a single section with **What**, **Where**, **My choice**, 
 
 ## Open
 
+### Step 11 — Drop Nicepage runtime — deferred until polish passes complete
+- **What:** The original Step 11 was to drop `nicepage.js` (437 KB) and `nicepage.css` (1.66 MB) once no page needed them. They're still loaded by every page.
+- **Why deferred:** Most pages still use legacy `u-*` markup that nicepage.css styles, and `nicepage.js` drives Portfolio's `u-gallery` lightbox + Custom-Cartography's accordion + carousel. Removing runtime now would break those widgets.
+- **What's needed first:**
+  - Pattern C polish on Portfolio (gallery rebuild)
+  - Pattern D polish on Custom-Cartography (accordion + carousel rebuild)
+  - Pattern B polish on Client-Types pages (full section restyle)
+  - Pattern B polish on Map-Pages, Adventure posts (optional — they're functional with current treatment)
+  - Audit each page for remaining `u-*` selector usage
+- **Recommendation:** queue this as the absolute last task once all polish passes are complete. At that point we can also clean up `data-page-id`, `data-path-to-root`, `u-clearfix`, `u-xxl-mode` body class clutter — all dead Pinegrow attributes.
+- **Status:** open
+
 ### Custom-Cartography: Pattern A shipped, Pattern B + D widget rebuilds deferred
 - **What:** Custom-Cartography.html shipped with Pattern A. Three large widgets remain on legacy Nicepage markup driven by `nicepage.js`:
   - 3-card "what we do" grid (3D / Hand-drawn / Scientific)
