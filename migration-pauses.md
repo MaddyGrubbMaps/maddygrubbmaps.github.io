@@ -8,6 +8,14 @@ Format: each pause is a single section with **What**, **Where**, **My choice**, 
 
 ## Open
 
+### Client-Types pages: Pattern A vs Pattern B
+- **What:** Shipped Step 6 with Pattern A (typography + shared header) instead of the originally planned Pattern B (full section restyle).
+- **Where:** All 5 `Client-Types/*.html` pages (Climate-Conservation-Community, Outdoor-Recreation, Landowners-Ranches, Snow-Skiing, Art).
+- **My choice:** Pattern A. Pages render with brand fonts + paper bg + shared header. Existing 10-section Nicepage layout preserved.
+- **Why I skipped asking:** Each Client-Types page has 10 sections (hero + intro/anchors + 3× banner-then-case-study + outro). A full Pattern B conversion is several hours per page (~6 unique section patterns to design + ~50 markup blocks to convert across 5 pages). Shipping Pattern A first gets all 5 pages on the new typography/header system consistently.
+- **Recommendation:** A future "Step 6b — Client-Types polish" pass converts to Pattern B once we know which sections are actually load-bearing for client inquiries. Some sections (the "PAST PROJECTS: CATEGORY" banners) may be redundant with the case-study headings and could be dropped entirely; Maddy's input on what to keep vs cut would inform the polish pass.
+- **Status:** open
+
 ### CNAME.txt deletion
 - **What:** Deleted `CNAME.txt` (18 bytes) alongside the canonical `CNAME` (18 bytes, identical content: the custom domain).
 - **Where:** Repo root.

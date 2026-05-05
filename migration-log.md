@@ -6,6 +6,14 @@ Running ledger of design decisions, token additions, pattern changes, and notabl
 
 ## 2026-05-04
 
+### Step 6 — Client-Types pages (Pattern A) ✅
+- Applied Pattern A (typography + shared header) to all 5 Client-Types pages: Climate-Conservation-Community, Outdoor-Recreation, Landowners-Ranches, Snow-Skiing, Art.
+- **Decision:** Shipped Pattern A instead of the planned Pattern B. See `migration-pauses.md` for rationale and Step 6b followup.
+- Same per-file edits as Adventures + Map-Pages: header replacement (`data-path-root="../"`), brand fonts URL, brand.css link, white-bg sweep on per-page CSS (mostly no-ops since pages inherit from nicepage.css's `.u-body` rule which brand.css now overrides).
+- All 5 verified via grep + live curl: 1 placeholder, 0 legacy headers, 1 brand.css link each.
+
+---
+
 ### Step 5 — Journal restyle ✅
 - Full Pattern B conversion of `Journal.html` — three pages of design ground laid down for the rest of the migration to consume.
 - **Hero (`#sec-87f9`):** legacy single `<p>` with bg-image → `mgm-hero-section` + `mgm-journal-hero` modifier with eyebrow ("Journal") + h1 ("I like to go on adventures.") + sub ("Sometimes I make maps and art about these trips."). User-written copy preserved verbatim, just typographically restructured into role-appropriate elements per brand system.
