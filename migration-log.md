@@ -6,6 +6,20 @@ Running ledger of design decisions, token additions, pattern changes, and notabl
 
 ## 2026-05-04
 
+### Step 3 — Adventure posts (Pattern A) ✅
+- Applied Pattern A (typography-only conversion) to all 7 Adventure posts.
+- **Method:** I converted Greece-Roadtrip.html by hand to validate the pattern in subfolder context, then ran a perl batch on the other 6 (arizona-trail, Sinks-Canyon-50k, Kerry-Way, Colorado-Trail, A-Teton-Winter, The-Cretan-Way). Faster than briefing an agent for what's mechanical search-and-replace.
+- **Per file:**
+  - Inline header markup (~60 lines) → 3-line placeholder + script tag with `data-path-root="../"`.
+  - Google Fonts URL: Alata-only → all 4 brand fonts (Newsreader / Manrope / JetBrains Mono / Alata).
+  - Added `<link rel="stylesheet" href="../brand.css" media="screen">`.
+- **CSS white-bg sweep:** ran a regex over all 7 page-CSS files (`background(-color)?: #fff/#ffffff/white` → `var(--paper)`). Result: zero substitutions across all 7. Adventure posts never set body or section backgrounds explicitly — they were inheriting white from `nicepage.css`'s `.u-body { background-color: white }`. Now that brand.css overrides with `var(--paper)`, all 7 pages inherit paper automatically.
+- **Footers** were already removed in Step 1.
+- **Validation:** all 7 confirmed to have exactly 1 placeholder, 0 legacy headers, 1 brand.css link. Subfolder asset resolution verified via local server (`partials/header.html`, `mgm-header.js`, `brand.css` all 200 OK from subfolder context).
+- **Line counts:** 1531 lines → 991 lines across 7 posts (~540 lines of duplicated nav markup eliminated).
+
+---
+
 ### Step 2 — shared header extraction ✅
 - **Created `partials/header.html`** — single source of truth for the site nav. Uses `{{path}}` token everywhere a root-relative path is needed. Resolves cleanly for both root pages (`""`) and subfolder pages (`"../"`).
 - **Created `mgm-header.js`** — fetches the partial, substitutes tokens, injects into `<header id="sec-cdd0">` placeholder, then rebinds all interactivity: hamburger open/close/overlay click, scroll state (`mgm-at-top` ↔ `body.mgm-header-scrolled` at 60px), mobile submenu tap-to-expand (capture phase + `stopImmediatePropagation`), and active-page nav highlight.
