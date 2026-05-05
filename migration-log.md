@@ -6,6 +6,13 @@ Running ledger of design decisions, token additions, pattern changes, and notabl
 
 ## 2026-05-04
 
+### Step 8 — Custom-Cartography (Pattern A only) ✅
+- Replaced inline header with shared placeholder (`data-path-root=""`).
+- brand.css link + brand fonts URL already in place from the Step 2 homepage baseline.
+- **Pattern B + D (widget rebuilds) deferred** — see `migration-pauses.md`. The 3-card grid, FAQ accordion (13 items), and testimonial carousel still use Nicepage's widgets driven by `nicepage.js`. Functional, just not on the brand system yet.
+
+---
+
 ### Step 7 — Portfolio (Pattern A only) ✅
 - Replaced inline header with shared placeholder (`data-path-root=""`).
 - brand.css link + brand fonts URL were already in place from the homepage baseline commit (Step 2).

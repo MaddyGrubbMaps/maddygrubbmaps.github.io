@@ -8,6 +8,16 @@ Format: each pause is a single section with **What**, **Where**, **My choice**, 
 
 ## Open
 
+### Custom-Cartography: Pattern A shipped, Pattern B + D widget rebuilds deferred
+- **What:** Custom-Cartography.html shipped with Pattern A. Three large widgets remain on legacy Nicepage markup driven by `nicepage.js`:
+  - 3-card "what we do" grid (3D / Hand-drawn / Scientific)
+  - 13-item FAQ accordion (`u-accordion`)
+  - 5-item testimonial carousel with prev/next nav (`u-gallery-nav`)
+- **Where:** `Custom-Cartography.html`.
+- **My choice:** Defer Pattern B + D widget conversion.
+- **Why I skipped asking:** Each widget is its own design conversation. Accordion → semantic `<details>/<summary>` is mechanical. Carousel → CSS scroll-snap is straightforward but Maddy might prefer prev/next OR snap-only. The 3-card grid wants `mgm-what-card` pattern but copy is currently more verbose than homepage cards — needs an editorial decision on what to keep. Better as a focused session with Maddy reviewing each widget interaction.
+- **Status:** open
+
 ### Portfolio gallery: Pattern A shipped, Pattern C deferred
 - **What:** Portfolio.html shipped with Pattern A (header replacement). The 4 `u-gallery` lightbox sections (3D, Painted, Inked, Scientific — ~40 image items total) still use Nicepage's gallery markup driven by `nicepage.js`.
 - **Where:** `Portfolio.html` lines ~150–500.
