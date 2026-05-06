@@ -1,9 +1,7 @@
-/* Journal page — only the hero bg image and dimension is truly page-specific.
-   Hero structure, overlay, and editorial copy live in brand.css's generic
-   .mgm-hero-section + .mgm-journal-* rules. */
+/* Journal page — only the hero bg image is page-specific.
+   Hero structure (full viewport, parallax, overlay, white title)
+   lives in brand.css's generic .mgm-hero-section rules. */
 .mgm-journal-hero {
   background-image: url("images/DSC02675.jpeg");
   background-position: 50% 30%;
-  /* Editorial-scale hero (smaller than homepage's full-viewport). */
-  min-height: clamp(420px, 55vh, 600px);
 }

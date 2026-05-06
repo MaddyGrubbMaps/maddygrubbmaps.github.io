@@ -85,58 +85,22 @@
 		]
 	}
 }</script>
-        <meta name="theme-color" content="#478ac9">
+        <meta name="theme-color" content="#1B3D7A">
         <meta property="og:title" content="Custom Cartography & GIS Map Design | Maddy Grubb Maps">
         <meta property="og:description" content="Freelance cartographer and GIS analyst specializing in photorealistic 3D maps, hand-drawn cartography, and scientific map design for national parks, trail networks, ski resorts, and conservation.">
         <meta property="og:type" content="website">
         <meta property="og:url" content="https://maddygrubbmaps.com/">
         <meta property="og:image" content="https://maddygrubbmaps.com/images/Supermap_Winter20250311.jpg">
         <link rel="canonical" href="https://maddygrubbmaps.com/">
+        <!-- Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-YHXQ8YB4JK"></script>
         <script>
-    (function() {
-    function gdprConfirmed() {
-        return true;
-    }
-
-    var added = false;
-    var currentScript = document.currentScript;
-
-    function insertHTML(html) {
-        var container = document.createElement('div');
-        container.innerHTML = html;
-        container.querySelectorAll('script').forEach(s => {
-            const ns = document.createElement('script');
-            ns.async = s.async;
-            if (s.src) {
-                ns.src = s.src;
-            } else {
-                ns.textContent = s.textContent;
-            }
-            s.replaceWith(ns);
-        });
-
-            var fragment = document.createDocumentFragment();
-            fragment.append(...container.childNodes);
-
-            if (currentScript && currentScript.parentNode) {
-                currentScript.after(fragment);
-            }
-    }
-
-    window._npAddGAnalytics = function () {
-        if (gdprConfirmed() && !added) {
-            var gaBody = "<!-- Google Analytics -->\n    <gascript async src=\"https://www.googletagmanager.com/gtag/js?id=G-YHXQ8YB4JK\"></gascript>\n    <gascript>\n        window.dataLayer = window.dataLayer || [];\n        function gtag(){dataLayer.push(arguments);}\n        gtag('js', new Date());\n        gtag('config', 'G-YHXQ8YB4JK');\n    </gascript>\n    <!-- End Google Analytics -->";
-            var replacedBody = gaBody.replace(/gascript/g, 'script');
-            insertHTML(replacedBody);
-            added = true;
-        }
-    }
-
-    window._npAddGAnalytics();
-    })();
-    </script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YHXQ8YB4JK');
+        </script>
         <meta name="referrer" content="origin">
-        <meta data-intl-tel-input-cdn-path="intlTelInput/">
     </head>
     <body data-home-page="About.html" data-home-page-title="About" data-path-to-root="./" data-include-products="false" class="u-body u-clearfix u-overlap u-overlap-contrast u-overlap-transparent u-xxl-mode" data-lang="en">
         <!-- Shared header — markup lives in partials/header.html, behavior in mgm-header.js. -->
