@@ -51,13 +51,98 @@
         <p class="eyebrow">Contact</p>
         <h1 class="mgm-contact-title">Start a project or ask a question. I’m excited to hear from you.</h1>
 
+        <form id="mgm-contact-form" class="mgm-contact-form" novalidate>
+          <div class="mgm-form-row">
+            <label for="mgm-name" class="mgm-form-label">Name</label>
+            <input type="text" id="mgm-name" name="name" class="mgm-form-input" placeholder="Your name" required>
+          </div>
+          <div class="mgm-form-row">
+            <label for="mgm-email" class="mgm-form-label">Email</label>
+            <input type="email" id="mgm-email" name="email" class="mgm-form-input" placeholder="you@example.com" required>
+          </div>
+          <div class="mgm-form-row">
+            <label for="mgm-message" class="mgm-form-label">Message</label>
+            <textarea id="mgm-message" name="message" class="mgm-form-input mgm-form-textarea" rows="6" placeholder="Share any details about the location, project, or ideas you have." required></textarea>
+          </div>
+          <!-- Honeypot — hidden from real users, irresistible to bots. -->
+          <div class="mgm-form-honeypot" aria-hidden="true">
+            <label for="mgm-website">Website</label>
+            <input type="text" id="mgm-website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+          <div class="mgm-form-submit">
+            <button type="submit" class="mgm-btn">Send Message</button>
+          </div>
+          <p id="mgm-form-status" class="mgm-form-status" role="status" aria-live="polite"></p>
+        </form>
+
         <div class="mgm-contact-direct">
-          <p>The fastest way to reach me is email or phone.</p>
-          <a class="mgm-btn" href="mailto:maddygrubbmaps@gmail.com?subject=Custom%20Map%20Inquiry">Email maddygrubbmaps@gmail.com</a>
+          <p>Prefer email or phone?</p>
+          <a class="mgm-contact-link" href="mailto:maddygrubbmaps@gmail.com?subject=Reaching%20Out">maddygrubbmaps@gmail.com</a>
           <a class="mgm-contact-link" href="tel:+14252954375">+1 (425) 295&nbsp;–&nbsp;4375</a>
         </div>
       </div>
     </section>
+
+    <script>
+    /* Contact form → Brevo Worker bridge.
+       Worker code lives in worker/contact.js; deployed to Cloudflare Workers. */
+    (function () {
+      const WORKER_URL = 'https://maddygrubbmaps-contact.maddygrubbmaps.workers.dev';
+
+      const form = document.getElementById('mgm-contact-form');
+      const status = document.getElementById('mgm-form-status');
+      if (!form || !status) return;
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        status.textContent = '';
+        status.classList.remove('is-error', 'is-success');
+
+        const data = {
+          name: form.name.value.trim(),
+          email: form.email.value.trim(),
+          message: form.message.value.trim(),
+          website: form.website.value, // honeypot
+        };
+
+        if (!data.name || !data.email || !data.message) {
+          status.textContent = 'Please fill in your name, email, and a message.';
+          status.classList.add('is-error');
+          return;
+        }
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        const originalLabel = submitBtn.textContent;
+        submitBtn.textContent = 'Sending…';
+
+        try {
+          const res = await fetch(WORKER_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+          const result = await res.json().catch(() => ({ ok: false, error: 'Unexpected response.' }));
+
+          if (res.ok && result.ok) {
+            form.reset();
+            status.textContent = "Thanks — your message is on its way. I’ll get back to you within a few days.";
+            status.classList.add('is-success');
+          } else {
+            status.textContent = result.error || 'Could not send the message. Please try emailing directly at maddygrubbmaps@gmail.com.';
+            status.classList.add('is-error');
+          }
+        } catch (err) {
+          console.error(err);
+          status.textContent = "Couldn’t reach the server. Please try again, or email maddygrubbmaps@gmail.com directly.";
+          status.classList.add('is-error');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalLabel;
+        }
+      });
+    })();
+    </script>
     
     
     
