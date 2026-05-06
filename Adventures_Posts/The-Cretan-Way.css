@@ -1,3 +1,8 @@
+/* Page-specific override: plain white background instead of the site-wide paper. */
+body.u-body {
+  background-color: #fff;
+}
+
 .u-section-1 .u-sheet-1 {
   min-height: 3094px;
 }
