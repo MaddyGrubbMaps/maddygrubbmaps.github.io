@@ -853,6 +853,12 @@ canvas.mgm-where-globe.is-pin-hover { cursor: pointer; }
 .u-header.u-sticky-b4bd {
   padding: 0 !important;
   z-index: 100;
+  /* Reserve header height even before mgm-header.js injects the partial.
+     Prevents the "content jumps up then back down" layout shift on first
+     paint — without this, the empty <header> is 0px tall, content sits
+     flush to the top, then the partial loads ~50ms later and pushes
+     content down by 39px (which the browser's scroll-anchoring corrects). */
+  min-height: 39px;
 }
 
 /* Default header bg is paper-2 site-wide. Beats Nicepage's       */
