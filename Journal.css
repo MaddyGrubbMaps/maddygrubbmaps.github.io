@@ -2,6 +2,6 @@
    Hero structure (full viewport, parallax, overlay, white title)
    lives in brand.css's generic .mgm-hero-section rules. */
 .mgm-journal-hero {
-  background-image: url("images/DSC02675.jpeg");
+  background-image: url("images/DSC02675.webp");
   background-position: 50% 30%;
 }

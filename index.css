@@ -18,7 +18,7 @@
    overlay) lives in brand.css; only the photo + bg-position
    are homepage-specific. */
 .mgm-hero-section {
-  background-image: url('images/Supermap_Winter20250311.jpg');
+  background-image: url('images/Supermap_Winter20250311.webp');
   background-position: center 30%;
 }
 
