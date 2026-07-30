@@ -52,11 +52,26 @@ const TIER_Z = 5;
 // Rivers ranked 1-3 draw BOLD (1.7x). riverWidthExpr(mult) rebuilds on slider move.
 const BOLD_RANK = 3, BOLD_FACTOR = 1.35;
 
-// The 13 rivers in the native 110m dataset (what the map SHOWS below TIER_A) — labels
-// at those zooms are restricted to these. 'Chang' is NE's duplicate of the Yangtze
-// and has no 50m label feature, so it's omitted.
-const RIVERS_110M = ['Amazonas','Brahmaputra','Congo','Donau','Lena','Mekong',
+// The rivers the native 110m dataset SHOWS below TIER_A — labels at those zooms are
+// restricted to these. ENGLISH names (labels build prefers name_en; NE's 'Chang'
+// duplicate of the Yangtze folds into 'Yangtze').
+const RIVERS_110M = ['Amazon','Brahmaputra','Congo','Danube','Lena','Mekong',
   'Mississippi','Nile','Ob','Paraná','Peace','Yangtze'];
+
+// Hand-picked additions shown regardless of the global rank threshold (Maddy+Eric).
+// English names. NOTE: Tiber exists only in the 10m data (rank 7) -> appears z5+.
+const EXTRA_RIVERS = ['Ebro','Tagus','Tiber','Po','Thames','Loire','Godavari',
+  'Hudson','Chattahoochee','Savannah','Willamette'];
+const NA_RANK = 5; // North America supplement: show up to this rank (na=1 in data)
+
+// Shared river filter: global rank threshold OR named extras OR NA supplement.
+function riverFilter(v) {
+  return ['any',
+    ['<=', ['get', 'scalerank'], v],
+    ['in', ['get', 'name'], ['literal', EXTRA_RIVERS]],
+    ['all', ['==', ['get', 'na'], 1], ['<=', ['get', 'scalerank'], NA_RANK]],
+  ];
+}
 function riverWidthExpr(mult) {
   const base = ['max', 0.6 * mult,
     ['*', mult, ['+', 0.6, ['*', 0.54, ['ln', ['/', ['max', ['get', 'sw'], 0.15], 0.15]]]]]];
@@ -85,13 +100,13 @@ function riverLayers(tier, minzoom, maxzoom) {
   if (maxzoom != null) zoomProps.maxzoom = maxzoom;
   return [
     { id: `rivers-${tier}`, type: 'line', source: `rivers-${tier}`, ...zoomProps,
-      filter: ['<=', ['get', 'scalerank'], 4],
+      filter: riverFilter(4),
       paint: { 'line-color': WATER, 'line-width': riverWidthExpr(1) },
       layout: { 'line-cap': 'round', 'line-join': 'round' } },
     // Labels draw from the DISSOLVED label source (one feature per river,
     // simplified + Chaikin-smoothed + decimated) — not from the segmented river lines.
     { id: `river-labels-${tier}`, type: 'symbol', source: `riverlabels-${tier}`, ...zoomProps,
-      filter: ['<=', ['get', 'scalerank'], 4],
+      filter: riverFilter(4),
       layout: {
         'symbol-placement': 'line',
         'symbol-spacing': 700,          // at most one label per ~700px of river
@@ -202,8 +217,7 @@ const style = {
     // Graduated label reveal: z3-4 shows only rank<=3 names; full slider set from z4.
     ...(() => {
       const base = riverLayers('50m', TIER_A, 4).find(l => l.id === 'river-labels-50m');
-      return [{ ...base, id: 'river-labels-50m-lo',
-        filter: ['<=', ['get', 'scalerank'], 3] }];
+      return [{ ...base, id: 'river-labels-50m-lo', filter: riverFilter(3) }];
     })(),
     ...riverLayers('50m', 4, TIER_Z).filter(l => l.type === 'symbol'),
     ...riverLayers('10m', TIER_Z, null).filter(l => l.type === 'symbol'),
@@ -236,10 +250,9 @@ const RIVER_SYM = ['river-labels-50m', 'river-labels-10m'];
 document.getElementById('sr').addEventListener('input', e => {
   const v = +e.target.value;
   document.getElementById('srVal').textContent = v;
-  [...RIVER_LINE, ...RIVER_SYM].forEach(id =>
-    map.setFilter(id, ['<=', ['get', 'scalerank'], v]));
+  [...RIVER_LINE, ...RIVER_SYM].forEach(id => map.setFilter(id, riverFilter(v)));
   // z3-4 label layer: slider still applies but clamped to rank <=3
-  map.setFilter('river-labels-50m-lo', ['<=', ['get', 'scalerank'], Math.min(v, 3)]);
+  map.setFilter('river-labels-50m-lo', riverFilter(Math.min(v, 3)));
 });
 
 let globe = true;
