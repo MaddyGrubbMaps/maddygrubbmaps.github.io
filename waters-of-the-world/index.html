@@ -14,27 +14,23 @@
   }
   html, body { margin: 0; height: 100%; }
   #map { position: absolute; inset: 0; }
-  #panel {
-    position: absolute; top: 10px; left: 10px; z-index: 10;
-    background: rgba(255,255,255,.92); border: 1px solid #ccc; border-radius: 8px;
-    padding: 10px 14px; font: 13px/1.5 'Figtree', -apple-system, sans-serif; width: 240px;
+  #panel { position: absolute; top: 10px; left: 10px; z-index: 10;
+    display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+  #panel button {
+    font: 600 13px/1 'Figtree', -apple-system, sans-serif;
+    padding: 8px 14px; border: none; border-radius: 999px; cursor: pointer;
+    background: rgba(255,255,255,.95); color: #1b1a18;
+    box-shadow: 0 1px 4px rgba(0,0,0,.18);
   }
-  #panel label { display: block; margin-top: 8px; font-weight: 600; }
-  #panel .val { font-weight: 400; color: #555; }
-  #panel input[type=range] { width: 100%; }
-  #panel input[type=color] { width: 40px; height: 22px; border: none; padding: 0; vertical-align: middle; }
-  #panel code.hex { font: 11px/1 ui-monospace, monospace; color: #555; margin-right: 6px; }
-  #panel .row { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
-  #panel button { margin-top: 10px; width: 100%; padding: 5px; cursor: pointer; }
+  #panel button:hover { background: #fff; }
 </style>
 </head>
 <body>
 <div id="map"></div>
 <div id="panel">
-  <label>River detail (scalerank &le; <span class="val" id="srVal">4</span>)</label>
-  <input type="range" id="sr" min="0" max="12" step="1" value="4">
-  <button id="proj">Switch to Mercator</button>
-  <div class="row"><span>Zoom</span><span class="val" id="zoomVal">–</span></div>
+  <button id="proj">Globe / Mercator</button>
+  <button id="btnRivers">Rivers On / Off</button>
+  <button id="btnLabels">River Labels On / Off</button>
 </div>
 <script>
 // ---- Palette (matches globe_v2 prototype) ----
@@ -153,8 +149,12 @@ const style = {
     'lakes-10m':  { type: 'geojson', data: 'data/lakes-10m.geojson' },
     'rivers-50m': { type: 'geojson', data: 'data/rivers-50m.geojson' },
     'rivers-10m': { type: 'geojson', data: 'data/rivers-10m.geojson' },
-    'riverlabels-50m': { type: 'geojson', data: 'data/riverlabels-50m.geojson' },
-    'riverlabels-10m': { type: 'geojson', data: 'data/riverlabels-10m.geojson' },
+    // Label sources tile coarsely (maxzoom 6) with fat buffers so long baselines stay
+    // unfragmented — a split baseline can't seat a long label (Nile-vs-Uele bug).
+    'riverlabels-50m': { type: 'geojson', data: 'data/riverlabels-50m.geojson',
+      buffer: 256, maxzoom: 6 },
+    'riverlabels-10m': { type: 'geojson', data: 'data/riverlabels-10m.geojson',
+      buffer: 256, maxzoom: 6 },
     'graticule':  { type: 'geojson', data: graticule() },
     'relief':     { type: 'raster', tiles: ['tiles/relief/{z}/{x}/{y}.png'],
                     tileSize: 256, minzoom: 0, maxzoom: 6 },
@@ -229,12 +229,7 @@ const map = new maplibregl.Map({
   maxPitch: 0, attributionControl: { compact: true },
 });
 map.addControl(new maplibregl.NavigationControl({ showCompass: false }));
-window.mfmap = map; // console access for debugging
-
-const zoomVal = document.getElementById('zoomVal');
-const showZoom = () => { zoomVal.textContent = map.getZoom().toFixed(2); };
-map.on('move', showZoom);
-map.on('load', showZoom);
+window.mfmap = map; // console access for debugging (zoom readout: see URL hash)
 
 // Manual view-from-URL (?z=6&lon=8&lat=49.5), like the globe prototype's params.
 {
@@ -245,21 +240,27 @@ map.on('load', showZoom);
 
 // ---- Controls ----
 const RIVER_LINE = ['rivers-110m', 'rivers-50m', 'rivers-10m'];
-const RIVER_SYM = ['river-labels-50m', 'river-labels-10m'];
-
-document.getElementById('sr').addEventListener('input', e => {
-  const v = +e.target.value;
-  document.getElementById('srVal').textContent = v;
-  [...RIVER_LINE, ...RIVER_SYM].forEach(id => map.setFilter(id, riverFilter(v)));
-  // z3-4 label layer: slider still applies but clamped to rank <=3
-  map.setFilter('river-labels-50m-lo', riverFilter(Math.min(v, 3)));
-});
+const LABEL_LAYERS = ['river-labels-110m', 'river-labels-50m-lo',
+  'river-labels-50m', 'river-labels-10m'];
 
 let globe = true;
-document.getElementById('proj').addEventListener('click', e => {
+document.getElementById('proj').addEventListener('click', () => {
   globe = !globe;
   map.setProjection({ type: globe ? 'vertical-perspective' : 'mercator' });
-  e.target.textContent = globe ? 'Switch to Mercator' : 'Switch to Globe';
+});
+
+let riversOn = true;
+document.getElementById('btnRivers').addEventListener('click', () => {
+  riversOn = !riversOn;
+  RIVER_LINE.forEach(id => map.setLayoutProperty(id, 'visibility',
+    riversOn ? 'visible' : 'none'));
+});
+
+let labelsOn = true;
+document.getElementById('btnLabels').addEventListener('click', () => {
+  labelsOn = !labelsOn;
+  LABEL_LAYERS.forEach(id => map.setLayoutProperty(id, 'visibility',
+    labelsOn ? 'visible' : 'none'));
 });
 </script>
 </body>
