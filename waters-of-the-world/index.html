@@ -23,22 +23,34 @@
     box-shadow: 0 1px 4px rgba(0,0,0,.18);
   }
   #panel button:hover { background: #fff; }
+  /* live switch inside the on/off pills */
+  .switch { display: inline-block; width: 26px; height: 14px; border-radius: 7px;
+    background: #c9ccd1; margin-left: 9px; vertical-align: -2px; position: relative;
+    transition: background .15s; }
+  .switch::after { content: ''; position: absolute; top: 2px; left: 2px;
+    width: 10px; height: 10px; border-radius: 50%; background: #fff;
+    transition: transform .15s; }
+  button.on .switch { background: #2E8CC2; }
+  button.on .switch::after { transform: translateX(12px); }
+  /* projection pill: highlight the active word */
+  #proj .opt { color: #9aa0a6; transition: color .15s; }
+  #proj .opt.active { color: #2E8CC2; }
 </style>
 </head>
 <body>
 <div id="map"></div>
 <div id="panel">
-  <button id="proj">Globe / Mercator</button>
-  <button id="btnRivers">Rivers On / Off</button>
-  <button id="btnLabels">River Labels On / Off</button>
+  <button id="proj"><span class="opt active" id="optGlobe">Globe</span>&thinsp;/&thinsp;<span class="opt" id="optMerc">Mercator</span></button>
+  <button id="btnRivers" class="on">Rivers<span class="switch"></span></button>
+  <button id="btnLabels" class="on">Labels<span class="switch"></span></button>
 </div>
 <script>
 // ---- Palette (matches globe_v2 prototype) ----
 const OCEAN = '#B9DBEE', WATER = '#2E8CC2', LAND = '#f8f9fa';
 // Label halo = average map background WITH hillshade: mean tinted-relief color over
-// land RGB(233,227,216), composited at the fixed 50% relief opacity over LAND.
-// Recompute if LAND or the relief image changes.
-const HALO = '#f0eee9';
+// land RGB(233,227,216), composited at the fixed 35% relief opacity over LAND.
+// Recompute if LAND, relief image, or relief opacity changes.
+const HALO = '#f3f1ee';
 
 // Tier switches: 110m below TIER_A, 50m between, 10m at/above TIER_Z. Tune here.
 const TIER_A = 3;
@@ -51,8 +63,9 @@ const BOLD_RANK = 3, BOLD_FACTOR = 1.35;
 // The rivers the native 110m dataset SHOWS below TIER_A — labels at those zooms are
 // restricted to these. ENGLISH names (labels build prefers name_en; NE's 'Chang'
 // duplicate of the Yangtze folds into 'Yangtze').
+// NOTE 'Paraná River': NE's 50m name_en literally includes "River" for this one.
 const RIVERS_110M = ['Amazon','Brahmaputra','Congo','Danube','Lena','Mekong',
-  'Mississippi','Nile','Ob','Paraná','Peace','Yangtze'];
+  'Mississippi','Nile','Ob','Paraná','Paraná River','Peace','Yangtze'];
 
 // Hand-picked additions shown regardless of the global rank threshold (Maddy+Eric).
 // English names. NOTE: Tiber exists only in the 10m data (rank 7) -> appears z5+.
@@ -99,35 +112,56 @@ function riverLayers(tier, minzoom, maxzoom) {
       filter: riverFilter(4),
       paint: { 'line-color': WATER, 'line-width': riverWidthExpr(1) },
       layout: { 'line-cap': 'round', 'line-join': 'round' } },
-    // Labels draw from the DISSOLVED label source (one feature per river,
-    // simplified + Chaikin-smoothed + decimated) — not from the segmented river lines.
-    { id: `river-labels-${tier}`, type: 'symbol', source: `riverlabels-${tier}`, ...zoomProps,
-      filter: riverFilter(4),
-      layout: {
-        'symbol-placement': 'line',
-        'symbol-spacing': 700,          // at most one label per ~700px of river
-        'symbol-sort-key': ['get', 'scalerank'],  // lower rank = wins collisions
-        // " River" appended, EXCEPT names already reading as rivers
-        // ("Alsek River", "Rio Grande", "Río Negro") — same smart skip as the D3 globe.
-        'text-field': ['case',
-          ['any',
-            ['in', 'River', ['get', 'name']],
-            ['==', ['slice', ['get', 'name'], 0, 4], 'Rio '],
-            ['==', ['slice', ['get', 'name'], 0, 4], 'Río '],
-          ],
-          ['get', 'name'],
-          ['concat', ['get', 'name'], ' River']],
-        'text-font': ['Figtree SemiBold Italic'],
-        // Smaller at world view (labels span huge distances there and can't place),
-        // full size once zoomed in.
-        'text-size': ['interpolate', ['linear'], ['zoom'], 1, 8, 4, 10, 6, 11],
-        'text-letter-spacing': 0.1,
-        'text-offset': [0, -1.4],       // ems perpendicular — sits off the centerline
-        'text-max-angle': 50,
-        'text-padding': 1,              // fight harder for placement at 10m
-      },
-      paint: { 'text-color': WATER, 'text-halo-color': HALO, 'text-halo-width': 1.6 } },
   ];
+}
+
+// Zoom bands: which label source + filter serves each zoom range. Shared by the
+// label layers AND the purple guides so they can never disagree (audit 2026-07-31).
+const BAND_DEFS = [
+  { b: 'b2', tier: '110m', min: 2,     max: TIER_A, extra: ['in', ['get', 'name'], ['literal', RIVERS_110M]] },
+  // b3 rank clamp removed 2026-07-31: build-time thinning governs density now —
+  // philosophy is "divert the label somewhere calmer", not "omit the label".
+  { b: 'b3', tier: '50m', min: TIER_A, max: 4,      extra: riverFilter(4) },
+  { b: 'b4', tier: '50m', min: 4,      max: TIER_Z, extra: riverFilter(4) },
+  { b: 'b5', tier: '10m', min: TIER_Z, max: 6,      extra: riverFilter(4) },
+  { b: 'b6', tier: '10m', min: 6,      max: 7,      extra: riverFilter(4) },
+  { b: 'b7', tier: '10m', min: 7,      max: 24,     extra: riverFilter(4) },
+];
+
+// PER-BAND LABEL LAYERS. Each band's geometry is a build-time product: the river's
+// straightest window that fits the name at that zoom, pre-offset in Mercator space
+// (so runtime text-offset is 0 — sidesteps MapLibre's curved-offset bugs). The
+// engine's only remaining jobs are collision and rendering.
+function labelLayer(band, tier, minz, maxz, extraFilter) {
+  return { id: `river-labels-${band}`, type: 'symbol', source: `riverlabels-${tier}`,
+    minzoom: minz, maxzoom: maxz,
+    filter: ['all', ['==', ['get', 'zb'], band], extraFilter],
+    layout: {
+      'symbol-placement': 'line',
+      'symbol-spacing': 2000,           // windows ARE the repetition; never repeat within one
+      // " River" appended, EXCEPT names already reading as rivers — matches the
+      // display_text() logic in build-rivers.sh (window sizing assumes it).
+      'text-field': ['case',
+        ['==', ['get', 'name'], 'Grande'], 'Rio Grande',
+        ['any',
+          ['in', 'River', ['get', 'name']],
+          ['==', ['slice', ['get', 'name'], 0, 4], 'Rio '],
+          ['==', ['slice', ['get', 'name'], 0, 4], 'Río '],
+        ],
+        ['get', 'name'],
+        ['concat', ['get', 'name'], ' River']],
+      'text-font': ['Figtree SemiBold Italic'],
+      'text-size': ['interpolate', ['linear'], ['zoom'], 1, 7.5, 4, 9.35, 6, 10.3],
+      'text-letter-spacing': ['interpolate', ['linear'],
+        ['coalesce', ['get', 'len'], 3], 1, 0.08, 8, 0.15, 30, 0.28],
+      // Windows are minimum-curvature BY CONSTRUCTION, so the engine's angle gate
+      // is nearly moot — but shapely offset curves are many short segments and the
+      // adjacent-glyph check accumulates across them: 45 was silently killing most
+      // placements (measured live 2026-07-31: 45→180 doubled rendered labels).
+      'text-max-angle': 110,
+      'text-padding': 1,
+    },
+    paint: { 'text-color': WATER, 'text-halo-color': HALO, 'text-halo-width': 1.6 } };
 }
 
 const style = {
@@ -143,6 +177,7 @@ const style = {
     'ocean-10m':  { type: 'geojson', data: 'data/ocean-10m.geojson' },
     'lakes-110m': { type: 'geojson', data: 'data/lakes-110m.geojson' },
     'rivers-110m':{ type: 'geojson', data: 'data/rivers-110m.geojson' },
+    'rivers-texture': { type: 'geojson', data: 'data/rivers-texture.geojson' },
     'land-50m':   { type: 'geojson', data: 'data/land-50m.geojson' },
     'land-10m':   { type: 'geojson', data: 'data/land-10m.geojson' },
     'lakes-50m':  { type: 'geojson', data: 'data/lakes-50m.geojson' },
@@ -151,11 +186,15 @@ const style = {
     'rivers-10m': { type: 'geojson', data: 'data/rivers-10m.geojson' },
     // Label sources tile coarsely (maxzoom 6) with fat buffers so long baselines stay
     // unfragmented — a split baseline can't seat a long label (Nile-vs-Uele bug).
+    'riverlabels-110m': { type: 'geojson', data: 'data/riverlabels-110m.geojson',
+      buffer: 256, maxzoom: 6 },
     'riverlabels-50m': { type: 'geojson', data: 'data/riverlabels-50m.geojson',
       buffer: 256, maxzoom: 6 },
     'riverlabels-10m': { type: 'geojson', data: 'data/riverlabels-10m.geojson',
       buffer: 256, maxzoom: 6 },
     'graticule':  { type: 'geojson', data: graticule() },
+    'marinelabels': { type: 'geojson', data: 'data/marinelabels.geojson' },
+    'lakelabels':   { type: 'geojson', data: 'data/lakelabels.geojson' },
     'relief':     { type: 'raster', tiles: ['tiles/relief/{z}/{x}/{y}.png'],
                     tileSize: 256, minzoom: 0, maxzoom: 6 },
   },
@@ -170,7 +209,7 @@ const style = {
     // FULL unclipped PRISMA relief over the land fill; NE ocean polygons drawn ON TOP
     // cover its cream ocean (Maddy's architecture — no raster masking).
     { id: 'relief', type: 'raster', source: 'relief',
-      paint: { 'raster-opacity': 0.5, 'raster-fade-duration': 150 } },
+      paint: { 'raster-opacity': 0.35, 'raster-fade-duration': 150 } },
     { id: 'ocean-110m', type: 'fill', source: 'ocean-110m', maxzoom: TIER_A,
       paint: { 'fill-color': OCEAN } },
     { id: 'ocean-50m', type: 'fill', source: 'ocean-50m', minzoom: TIER_A, maxzoom: TIER_Z,
@@ -191,6 +230,12 @@ const style = {
         'line-width': ['case', ['==', ['get', 'eq'], 1], 1.5, 0.75] } },
     // Rivers under lakes (globe_v2 z-order: land -> rivers -> lakes)
     // 110m tier: coarse majors only (all tagged rank 1, fixed sw) — matches 110m coast
+    // World-view texture: the FULL river network, generalized, at half opacity —
+    // under the 13 full-strength majors (Maddy 2026-07-31).
+    { id: 'rivers-texture', type: 'line', source: 'rivers-texture', maxzoom: TIER_A,
+      filter: riverFilter(4),   // the map's chosen set only, not all of NE
+      paint: { 'line-color': WATER, 'line-opacity': 0.5, 'line-width': 0.6 },
+      layout: { 'line-cap': 'round', 'line-join': 'round' } },
     // Below TIER_A rivers draw at the same weight as the coastline (no taper/bold).
     { id: 'rivers-110m', type: 'line', source: 'rivers-110m', maxzoom: TIER_A,
       paint: { 'line-color': WATER, 'line-width': 1.25 },
@@ -199,37 +244,126 @@ const style = {
     // because the 110m tier has no label file of its own.
     ...riverLayers('50m', TIER_A, TIER_Z).filter(l => l.id === 'rivers-50m'),
     ...riverLayers('10m', TIER_Z, null).filter(l => l.type === 'line'),
-    { id: 'lakes-50m', type: 'fill', source: 'lakes-50m', maxzoom: TIER_Z,
+    // world view (z<3): major-major lakes full strength, everything else as
+    // half-opacity texture, matching the rivers-texture treatment (Maddy 2026-07-31)
+    { id: 'lakes-major-w', type: 'fill', source: 'lakes-10m', maxzoom: TIER_A,
+      filter: ['<=', ['get', 'scalerank'], 1], paint: { 'fill-color': OCEAN } },
+    { id: 'lakeline-major-w', type: 'line', source: 'lakes-10m', maxzoom: TIER_A,
+      filter: ['<=', ['get', 'scalerank'], 1],
+      paint: { 'line-color': WATER, 'line-width': 1.25 } },
+    { id: 'lakes-texture', type: 'fill', source: 'lakes-10m', maxzoom: TIER_A,
+      filter: ['>', ['get', 'scalerank'], 1],
+      paint: { 'fill-color': OCEAN, 'fill-opacity': 0.5 } },
+    { id: 'lakeline-texture', type: 'line', source: 'lakes-10m', maxzoom: TIER_A,
+      filter: ['>', ['get', 'scalerank'], 1],
+      paint: { 'line-color': WATER, 'line-opacity': 0.5, 'line-width': 0.6 } },
+    { id: 'lakes-50m', type: 'fill', source: 'lakes-50m', minzoom: TIER_A, maxzoom: TIER_Z,
       paint: { 'fill-color': OCEAN } },
     { id: 'lakes-10m', type: 'fill', source: 'lakes-10m', minzoom: TIER_Z,
       paint: { 'fill-color': OCEAN } },
-    { id: 'lakeline-50m', type: 'line', source: 'lakes-50m', maxzoom: TIER_Z,
+    { id: 'lakeline-50m', type: 'line', source: 'lakes-50m', minzoom: TIER_A, maxzoom: TIER_Z,
       paint: { 'line-color': WATER, 'line-width': 1.25 } },
     { id: 'lakeline-10m', type: 'line', source: 'lakes-10m', minzoom: TIER_Z,
       paint: { 'line-color': WATER, 'line-width': 1.25 } },
-    // Below TIER_A the map draws only the 110m rivers — label ONLY those (from the 50m
-    // label baselines, name-matched). Full 50m label set runs TIER_A-TIER_Z.
-    ...(() => {
-      const base = riverLayers('50m', null, TIER_A).find(l => l.id === 'river-labels-50m');
-      return [{ ...base, id: 'river-labels-110m',
-        filter: ['in', ['get', 'name'], ['literal', RIVERS_110M]] }];
-    })(),
-    // Graduated label reveal: z3-4 shows only rank<=3 names; full slider set from z4.
-    ...(() => {
-      const base = riverLayers('50m', TIER_A, 4).find(l => l.id === 'river-labels-50m');
-      return [{ ...base, id: 'river-labels-50m-lo', filter: riverFilter(3) }];
-    })(),
-    ...riverLayers('50m', 4, TIER_Z).filter(l => l.type === 'symbol'),
-    ...riverLayers('10m', TIER_Z, null).filter(l => l.type === 'symbol'),
+    // One label layer per zoom band; each band's features carry pre-windowed,
+    // pre-offset geometry built for exactly that zoom range. Graduated reveal:
+    // z2-3 majors only, z3-4 rank<=3, z4+ full set (rank 4 + extras + NA<=5).
+    ...BAND_DEFS.map(d => labelLayer(d.b, d.tier, d.min, d.max, d.extra)),
+    // OCEAN names on gentle build-time ARCS (line-center placement, curved caps);
+    // seas/gulfs/bays as point labels. NE's min_label drives reveal, <=4.5 = majors.
+    { id: 'ocean-labels', type: 'symbol', source: 'marinelabels',
+      filter: ['all', ['==', ['get', 'featurecla'], 'ocean'],
+        ['>=', ['zoom'], ['get', 'min_label']]],
+      layout: {
+        'symbol-placement': 'line-center',
+        'text-field': ['get', 'name'],
+        'text-font': ['Figtree Medium Italic'],
+        'text-transform': 'uppercase',
+        'text-letter-spacing': 0.5,
+        'text-size': ['interpolate', ['linear'], ['zoom'], 1.5, 11, 4, 16],
+        'text-max-angle': 120,
+      },
+      paint: { 'text-color': WATER,
+        'text-halo-color': OCEAN, 'text-halo-width': 1 } },
+    { id: 'sea-labels', type: 'symbol', source: 'marinelabels',
+      filter: ['all',
+        ['>=', ['zoom'], ['get', 'min_label']],
+        ['<=', ['get', 'min_label'], 4.5],
+        ['in', ['get', 'featurecla'], ['literal', ['sea', 'gulf', 'bay']]]],
+      layout: {
+        'symbol-placement': 'line-center',
+        'text-field': ['get', 'name'],
+        'text-font': ['Figtree Medium Italic'],
+        'text-transform': 'uppercase',
+        'text-letter-spacing': 0.22,
+        'text-size': ['interpolate', ['linear'], ['zoom'], 3, 8.5, 6, 11],
+        'text-max-angle': 120,
+      },
+      paint: { 'text-color': WATER,
+        'text-halo-color': OCEAN, 'text-halo-width': 1 } },
+    // MAJOR LAKES (NE rank<=2: Great Lakes / Baikal / Victoria class). NE stores
+    // bare names ("Erie", "Great Salt") — "Great X" suffixes, everything else prefixes.
+    // stacked two-line lake names (compact/round lakes; build chose stacking and
+    // computed zfit = the zoom where the 2-line block fits inside the polygon)
+    { id: 'lake-labels-pt', type: 'symbol', source: 'lakelabels', minzoom: 3.5,
+      filter: ['all', ['<=', ['get', 'scalerank'], 2], ['==', ['get', 'stack'], 1],
+        ['>=', ['zoom'], ['get', 'zfit']]],
+      layout: {
+        'text-field': ['case',
+          ['==', ['slice', ['get', 'name'], 0, 6], 'Great '],
+          ['concat', ['get', 'name'], ' Lake'],
+          ['concat', 'Lake ', ['get', 'name']]],
+        'text-font': ['Figtree Medium Italic'],
+        'text-size': ['interpolate', ['linear'], ['zoom'], 3.5, 8, 6, 10.5],
+        'text-letter-spacing': 0.12,
+        'text-max-width': ['coalesce', ['get', 'tmw'], 6],
+        'text-line-height': 1.25,
+        // beside-the-lake labels hang off the east shore, left-anchored
+        'text-anchor': ['case', ['==', ['get', 'beside'], 1], 'left', 'center'],
+        'text-justify': ['case', ['==', ['get', 'beside'], 1], 'left', 'center'],
+      },
+      paint: { 'text-color': WATER,
+        // beside = over land -> cream land halo; inside = over water -> ocean halo
+        'text-halo-color': ['case', ['==', ['get', 'beside'], 1], HALO, OCEAN],
+        'text-halo-width': 2 } },
+    { id: 'lake-labels', type: 'symbol', source: 'lakelabels', minzoom: 3.5,
+      filter: ['all', ['<=', ['get', 'scalerank'], 2], ['!=', ['get', 'stack'], 1]],
+      layout: {
+        'symbol-placement': 'line-center',
+        'text-max-angle': 120,
+        'text-field': ['case',
+          ['==', ['slice', ['get', 'name'], 0, 6], 'Great '],
+          ['concat', ['get', 'name'], ' Lake'],
+          ['concat', 'Lake ', ['get', 'name']]],
+        'text-font': ['Figtree Medium Italic'],
+        'text-size': ['interpolate', ['linear'], ['zoom'], 3.5, 8, 6, 10.5],
+        'text-letter-spacing': 0.12,
+        'text-max-width': 7,
+      },
+      paint: { 'text-color': WATER,
+        'text-halo-color': OCEAN, 'text-halo-width': 2 } },
   ],
 };
 
 const map = new maplibregl.Map({
-  container: 'map', style, center: [-98.5, 39.8], zoom: 4, minZoom: 2, hash: true,
+  container: 'map', style, center: [-98.5, 39.8], zoom: 4, minZoom: 2, maxZoom: 6, hash: true,
   maxPitch: 0, attributionControl: { compact: true },
 });
 map.addControl(new maplibregl.NavigationControl({ showCompass: false }));
 window.mfmap = map; // console access for debugging (zoom readout: see URL hash)
+
+// Debug: label baselines in purple + zoom readout — ALWAYS on localhost (review),
+// ?guides=1 elsewhere. Neither appears on the deployed site.
+if (location.hostname === 'localhost' ||
+    new URLSearchParams(location.search).get('guides') === '1') {
+  const z = document.createElement('div');
+  z.style.cssText = 'position:absolute;bottom:10px;left:10px;z-index:10;' +
+    "font:600 12px/1 'Figtree',monospace;background:rgba(255,255,255,.9);" +
+    'padding:6px 10px;border-radius:999px;box-shadow:0 1px 4px rgba(0,0,0,.18)';
+  document.body.appendChild(z);
+  const showZoom = () => { z.textContent = 'z ' + map.getZoom().toFixed(2); };
+  map.on('move', showZoom); showZoom();
+}
 
 // Manual view-from-URL (?z=6&lon=8&lat=49.5), like the globe prototype's params.
 {
@@ -239,26 +373,30 @@ window.mfmap = map; // console access for debugging (zoom readout: see URL hash)
 }
 
 // ---- Controls ----
-const RIVER_LINE = ['rivers-110m', 'rivers-50m', 'rivers-10m'];
-const LABEL_LAYERS = ['river-labels-110m', 'river-labels-50m-lo',
-  'river-labels-50m', 'river-labels-10m'];
+const RIVER_LINE = ['rivers-texture', 'rivers-110m', 'rivers-50m', 'rivers-10m'];
+const LABEL_LAYERS = ['b2','b3','b4','b5','b6','b7'].map(b => `river-labels-${b}`)
+  .concat(['ocean-labels', 'sea-labels', 'lake-labels', 'lake-labels-pt']);
 
 let globe = true;
 document.getElementById('proj').addEventListener('click', () => {
   globe = !globe;
   map.setProjection({ type: globe ? 'vertical-perspective' : 'mercator' });
+  document.getElementById('optGlobe').classList.toggle('active', globe);
+  document.getElementById('optMerc').classList.toggle('active', !globe);
 });
 
 let riversOn = true;
-document.getElementById('btnRivers').addEventListener('click', () => {
+document.getElementById('btnRivers').addEventListener('click', e => {
   riversOn = !riversOn;
+  e.currentTarget.classList.toggle('on', riversOn);
   RIVER_LINE.forEach(id => map.setLayoutProperty(id, 'visibility',
     riversOn ? 'visible' : 'none'));
 });
 
 let labelsOn = true;
-document.getElementById('btnLabels').addEventListener('click', () => {
+document.getElementById('btnLabels').addEventListener('click', e => {
   labelsOn = !labelsOn;
+  e.currentTarget.classList.toggle('on', labelsOn);
   LABEL_LAYERS.forEach(id => map.setLayoutProperty(id, 'visibility',
     labelsOn ? 'visible' : 'none'));
 });
