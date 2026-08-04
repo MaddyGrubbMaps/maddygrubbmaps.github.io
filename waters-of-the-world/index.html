@@ -32,9 +32,9 @@
     transition: transform .15s; }
   button.on .switch { background: #2E8CC2; }
   button.on .switch::after { transform: translateX(12px); }
-  /* projection pill: highlight the active word */
-  #proj .opt { color: #9aa0a6; transition: color .15s; }
-  #proj .opt.active { color: #2E8CC2; }
+  /* two-mode pills (Globe/Mercator, Color/Greyscale): highlight the active word */
+  #panel .opt { color: #9aa0a6; transition: color .15s; }
+  #panel .opt.active { color: #2E8CC2; }
 </style>
 </head>
 <body>
@@ -43,10 +43,39 @@
   <button id="proj"><span class="opt active" id="optGlobe">Globe</span>&thinsp;/&thinsp;<span class="opt" id="optMerc">Mercator</span></button>
   <button id="btnRivers" class="on">Rivers<span class="switch"></span></button>
   <button id="btnLabels" class="on">Labels<span class="switch"></span></button>
+  <button id="btnGrey"><span class="opt active" id="optColor">Color</span>&thinsp;/&thinsp;<span class="opt" id="optGrey">Greyscale</span></button>
 </div>
 <script>
 // ---- Palette (matches globe_v2 prototype) ----
-const OCEAN = '#B9DBEE', WATER = '#2E8CC2', LAND = '#f8f9fa';
+const OCEAN = '#C4E1F0', WATER = '#2E8CC2', LAND = '#f8f9fa';
+// Label ink: darker than linework ON PURPOSE — WCAG AA (4.6:1 over ocean,
+// 5.6:1 on land) with the lightened ocean; adopted from the 'middle' A/B
+// 2026-08-03. Ink and OCEAN move together; recheck ratios if either changes.
+const INK = '#1C6690';
+// coastal vignette: soft band on the WATER side of shorelines, one step
+// darker than the water fill. SHADOW_SIGN flips if the band lands on the
+// land side (depends on polygon ring winding — verify visually).
+const SHADOW = '#b4d5e8';  // lightened 50%, then 25%, then 25% again per Maddy 2026-08-04
+// ring fills: r=1 nearest shore (deepest tone) -> r=3 fades toward open-water fill.
+// blend fractions of SHADOW toward OCEAN per ring, computed from a base color.
+// global-tier taper: headwaters (line-progress 0) fade toward the land tone,
+// full ink from mid-course to the mouth (Maddy 2026-08-04)
+function riverTaperExpr(base) {
+  return ['interpolate', ['linear'], ['line-progress'],
+    0, blendHex(base, LAND, 0.55), 0.45, base, 1, base];
+}
+function vignetteColorExpr(base, target) {
+  target = target || OCEAN;   // grey mode passes GREY.OCEAN
+  // 2 rings: the former MIDDLE and OUTER tones (darkest band dropped)
+  return ['match', ['get', 'r'], 1, blendHex(base, target, 0.34),
+          2, blendHex(base, target, 0.67), target];
+}
+function blendHex(a, b, t) {
+  const p = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const [ar, ag, ab] = p(a), [br, bg, bb] = p(b);
+  const c = v => Math.round(v).toString(16).padStart(2, '0');
+  return '#' + c(ar + (br - ar) * t) + c(ag + (bg - ag) * t) + c(ab + (bb - ab) * t);
+}
 // Label halo = average map background WITH hillshade: mean tinted-relief color over
 // land RGB(233,227,216), composited at the fixed 35% relief opacity over LAND.
 // Recompute if LAND, relief image, or relief opacity changes.
@@ -73,19 +102,30 @@ const EXTRA_RIVERS = ['Ebro','Tagus','Tiber','Po','Thames','Loire','Godavari',
   'Hudson','Chattahoochee','Savannah','Willamette'];
 const NA_RANK = 5; // North America supplement: show up to this rank (na=1 in data)
 
-// Shared river filter: global rank threshold OR named extras OR NA supplement.
+// Hand-removed rivers (Maddy 2026-08-03): shown by rank but editorially cut.
+// Nanpan = the Hongshui's upstream reach; Salween is one name for its whole course.
+const EXCLUDE_RIVERS = ['Salween', 'Hongshui', 'Nanpan', 'Xi', 'Qianjiang', 'Sprague'];
+
+// Shared river filter: (rank threshold OR extras OR NA supplement) AND not excluded.
 function riverFilter(v) {
-  return ['any',
-    ['<=', ['get', 'scalerank'], v],
-    ['in', ['get', 'name'], ['literal', EXTRA_RIVERS]],
-    ['all', ['==', ['get', 'na'], 1], ['<=', ['get', 'scalerank'], NA_RANK]],
-  ];
+  return ['all',
+    ['!', ['in', ['get', 'name'], ['literal', EXCLUDE_RIVERS]]],
+    ['any',
+      ['<=', ['get', 'scalerank'], v],
+      ['in', ['get', 'name'], ['literal', EXTRA_RIVERS]],
+      ['all', ['==', ['get', 'na'], 1], ['<=', ['get', 'scalerank'], NA_RANK]],
+    ]];
 }
 function riverWidthExpr(mult) {
   const base = ['max', 0.6 * mult,
     ['*', mult, ['+', 0.6, ['*', 0.54, ['ln', ['/', ['max', ['get', 'sw'], 0.15], 0.15]]]]]];
+  // Bold FADES IN with strokeweight: headwater segments of major rivers draw at
+  // plain weight (factor ~1 at sw 0.15), full bold from sw >= 0.6 (Maddy 2026-08-03
+  // — upper reaches slightly narrower).
+  const fade = ['+', 1, ['*', BOLD_FACTOR - 1,
+    ['min', 1, ['/', ['max', ['get', 'sw'], 0.15], 0.6]]]];
   return ['case', ['<=', ['get', 'scalerank'], BOLD_RANK],
-    ['*', BOLD_FACTOR, base], base];
+    ['*', fade, base], base];
 }
 
 // 10-degree graticule, generated at load (no data file needed).
@@ -95,7 +135,9 @@ function graticule() {
     const c = []; for (let lat = -85; lat <= 85; lat += 2) c.push([lon, lat]);
     f.push({ type: 'Feature', geometry: { type: 'LineString', coordinates: c } });
   }
-  for (let lat = -80; lat <= 80; lat += 10) {
+  // parallels to +-85 so the meridian fan terminates on a ring at the poles
+  for (let lat = -85; lat <= 85; lat += 5) {
+    if (lat > -85 && lat < 85 && lat % 10 !== 0) continue;
     const c = []; for (let lon = -180; lon <= 180; lon += 2) c.push([lon, lat]);
     f.push({ type: 'Feature', properties: { eq: lat === 0 ? 1 : 0 },
       geometry: { type: 'LineString', coordinates: c } });
@@ -161,7 +203,7 @@ function labelLayer(band, tier, minz, maxz, extraFilter) {
       'text-max-angle': 110,
       'text-padding': 1,
     },
-    paint: { 'text-color': WATER, 'text-halo-color': HALO, 'text-halo-width': 1.6 } };
+    paint: { 'text-color': INK, 'text-halo-color': HALO, 'text-halo-width': 3.2 } };
 }
 
 const style = {
@@ -176,7 +218,7 @@ const style = {
     'ocean-50m':  { type: 'geojson', data: 'data/ocean-50m.geojson' },
     'ocean-10m':  { type: 'geojson', data: 'data/ocean-10m.geojson' },
     'lakes-110m': { type: 'geojson', data: 'data/lakes-110m.geojson' },
-    'rivers-110m':{ type: 'geojson', data: 'data/rivers-110m.geojson' },
+    'rivers-110m':{ type: 'geojson', data: 'data/rivers-110m.geojson', lineMetrics: true },
     'rivers-texture': { type: 'geojson', data: 'data/rivers-texture.geojson' },
     'land-50m':   { type: 'geojson', data: 'data/land-50m.geojson' },
     'land-10m':   { type: 'geojson', data: 'data/land-10m.geojson' },
@@ -186,15 +228,31 @@ const style = {
     'rivers-10m': { type: 'geojson', data: 'data/rivers-10m.geojson' },
     // Label sources tile coarsely (maxzoom 6) with fat buffers so long baselines stay
     // unfragmented — a split baseline can't seat a long label (Nile-vs-Uele bug).
+    // COARSE tiling — label lines must stay whole per tile: a window clipped at
+    // a tile edge leaves fragments too short for line-center, and the label
+    // silently never renders (Congo b2, Brahmaputra — 2026-08-04)
+    // tolerance 0 is REQUIRED here: tile simplification kinks the smooth
+    // windows and text-max-angle then rejects the whole label (2026-08-04)
     'riverlabels-110m': { type: 'geojson', data: 'data/riverlabels-110m.geojson',
-      buffer: 256, maxzoom: 6 },
+      buffer: 512, maxzoom: 4, tolerance: 0 },
     'riverlabels-50m': { type: 'geojson', data: 'data/riverlabels-50m.geojson',
-      buffer: 256, maxzoom: 6 },
+      buffer: 512, maxzoom: 5, tolerance: 0 },
     'riverlabels-10m': { type: 'geojson', data: 'data/riverlabels-10m.geojson',
-      buffer: 256, maxzoom: 6 },
+      buffer: 512, maxzoom: 6, tolerance: 0 },
+    'vignette-110m': { type: 'geojson', data: 'data/vignette-110m.geojson' },
+    'vignette-50m':  { type: 'geojson', data: 'data/vignette-50m.geojson' },
+    'vignette-10m':  { type: 'geojson', data: 'data/vignette-10m.geojson' },
+    'dynlabels': { type: 'geojson', buffer: 512, maxzoom: 4,
+      data: { type: 'FeatureCollection', features: [] } },
+    'vignette-lakes-50m': { type: 'geojson', data: 'data/vignette-lakes-50m.geojson' },
+    'vignette-lakes-10m': { type: 'geojson', data: 'data/vignette-lakes-10m.geojson' },
     'graticule':  { type: 'geojson', data: graticule() },
-    'marinelabels': { type: 'geojson', data: 'data/marinelabels.geojson' },
-    'lakelabels':   { type: 'geojson', data: 'data/lakelabels.geojson' },
+    // coarse tiling so long label lines stay WHOLE — fragments each place
+    // their own line-center label (duplicate ATLANTIC OCEAN bug, 2026-08-04)
+    'marinelabels': { type: 'geojson', data: 'data/marinelabels.geojson',
+      buffer: 512, maxzoom: 2 },
+    'lakelabels':   { type: 'geojson', data: 'data/lakelabels.geojson',
+      buffer: 256, maxzoom: 3 },
     'relief':     { type: 'raster', tiles: ['tiles/relief/{z}/{x}/{y}.png'],
                     tileSize: 256, minzoom: 0, maxzoom: 6 },
   },
@@ -216,6 +274,14 @@ const style = {
       paint: { 'fill-color': OCEAN } },
     { id: 'ocean-10m', type: 'fill', source: 'ocean-10m', minzoom: TIER_Z,
       paint: { 'fill-color': OCEAN } },
+    // coastal vignette: build-time buffered RING FILLS (solid — cannot composite-
+    // darken like the failed line/blur version). r=1 nearest shore, fading to OCEAN.
+    { id: 'vignette-110m', type: 'fill', source: 'vignette-110m', maxzoom: TIER_A,
+      paint: { 'fill-color': vignetteColorExpr(SHADOW) } },
+    { id: 'vignette-50m', type: 'fill', source: 'vignette-50m', minzoom: TIER_A, maxzoom: TIER_Z,
+      paint: { 'fill-color': vignetteColorExpr(SHADOW) } },
+    { id: 'vignette-10m', type: 'fill', source: 'vignette-10m', minzoom: TIER_Z,
+      paint: { 'fill-color': vignetteColorExpr(SHADOW) } },
     { id: 'coast-110m', type: 'line', source: 'land-110m', maxzoom: TIER_A,
       paint: { 'line-color': WATER, 'line-width': 1.25 } },
     { id: 'coast-50m', type: 'line', source: 'land-50m', minzoom: TIER_A, maxzoom: TIER_Z,
@@ -234,34 +300,36 @@ const style = {
     // under the 13 full-strength majors (Maddy 2026-07-31).
     { id: 'rivers-texture', type: 'line', source: 'rivers-texture', maxzoom: TIER_A,
       filter: riverFilter(4),   // the map's chosen set only, not all of NE
-      paint: { 'line-color': WATER, 'line-opacity': 0.5, 'line-width': 0.6 },
+      // headwater reaches of the majors (the same low-sw segments whose line width
+      // fades) get a compensating opacity LIFT in the world texture: 0.5 base up to
+      // ~0.65 at the thinnest rank<=3 segments (Maddy 2026-08-03).
+      paint: { 'line-color': WATER,
+        'line-opacity': ['case', ['<=', ['get', 'scalerank'], BOLD_RANK],
+          ['+', 0.5, ['*', 0.15,
+            ['-', 1, ['min', 1, ['/', ['max', ['get', 'sw'], 0.15], 0.6]]]]],
+          0.5],
+        'line-width': 0.6 },
       layout: { 'line-cap': 'round', 'line-join': 'round' } },
     // Below TIER_A rivers draw at the same weight as the coastline (no taper/bold).
     { id: 'rivers-110m', type: 'line', source: 'rivers-110m', maxzoom: TIER_A,
-      paint: { 'line-color': WATER, 'line-width': 1.25 },
+      paint: { 'line-color': WATER, 'line-width': 1.25,
+        // upper reaches taper lighter: geometry is oriented source->mouth
+        'line-gradient': riverTaperExpr(WATER) },
       layout: { 'line-cap': 'round', 'line-join': 'round' } },
     // 50m river LINES only above TIER_A (110m lines below); labels span 2-5
     // because the 110m tier has no label file of its own.
     ...riverLayers('50m', TIER_A, TIER_Z).filter(l => l.id === 'rivers-50m'),
     ...riverLayers('10m', TIER_Z, null).filter(l => l.type === 'line'),
-    // world view (z<3): major-major lakes full strength, everything else as
-    // half-opacity texture, matching the rivers-texture treatment (Maddy 2026-07-31)
-    { id: 'lakes-major-w', type: 'fill', source: 'lakes-10m', maxzoom: TIER_A,
-      filter: ['<=', ['get', 'scalerank'], 1], paint: { 'fill-color': OCEAN } },
-    { id: 'lakeline-major-w', type: 'line', source: 'lakes-10m', maxzoom: TIER_A,
-      filter: ['<=', ['get', 'scalerank'], 1],
-      paint: { 'line-color': WATER, 'line-width': 1.25 } },
-    { id: 'lakes-texture', type: 'fill', source: 'lakes-10m', maxzoom: TIER_A,
-      filter: ['>', ['get', 'scalerank'], 1],
-      paint: { 'fill-color': OCEAN, 'fill-opacity': 0.5 } },
-    { id: 'lakeline-texture', type: 'line', source: 'lakes-10m', maxzoom: TIER_A,
-      filter: ['>', ['get', 'scalerank'], 1],
-      paint: { 'line-color': WATER, 'line-opacity': 0.5, 'line-width': 0.6 } },
-    { id: 'lakes-50m', type: 'fill', source: 'lakes-50m', minzoom: TIER_A, maxzoom: TIER_Z,
+    { id: 'lakes-50m', type: 'fill', source: 'lakes-50m', maxzoom: TIER_Z,
       paint: { 'fill-color': OCEAN } },
     { id: 'lakes-10m', type: 'fill', source: 'lakes-10m', minzoom: TIER_Z,
       paint: { 'fill-color': OCEAN } },
-    { id: 'lakeline-50m', type: 'line', source: 'lakes-50m', minzoom: TIER_A, maxzoom: TIER_Z,
+    // lake vignette: same inward bands, drawn over the lake fill, under shorelines
+    { id: 'vignette-lakes-50m', type: 'fill', source: 'vignette-lakes-50m', maxzoom: TIER_Z,
+      paint: { 'fill-color': vignetteColorExpr(SHADOW) } },
+    { id: 'vignette-lakes-10m', type: 'fill', source: 'vignette-lakes-10m', minzoom: TIER_Z,
+      paint: { 'fill-color': vignetteColorExpr(SHADOW) } },
+    { id: 'lakeline-50m', type: 'line', source: 'lakes-50m', maxzoom: TIER_Z,
       paint: { 'line-color': WATER, 'line-width': 1.25 } },
     { id: 'lakeline-10m', type: 'line', source: 'lakes-10m', minzoom: TIER_Z,
       paint: { 'line-color': WATER, 'line-width': 1.25 } },
@@ -283,8 +351,8 @@ const style = {
         'text-size': ['interpolate', ['linear'], ['zoom'], 1.5, 11, 4, 16],
         'text-max-angle': 120,
       },
-      paint: { 'text-color': WATER,
-        'text-halo-color': OCEAN, 'text-halo-width': 1 } },
+      paint: { 'text-color': INK,
+        'text-halo-color': OCEAN, 'text-halo-width': 2 } },
     { id: 'sea-labels', type: 'symbol', source: 'marinelabels',
       filter: ['all',
         ['>=', ['zoom'], ['get', 'min_label']],
@@ -299,8 +367,28 @@ const style = {
         'text-size': ['interpolate', ['linear'], ['zoom'], 3, 8.5, 6, 11],
         'text-max-angle': 120,
       },
-      paint: { 'text-color': WATER,
-        'text-halo-color': OCEAN, 'text-halo-width': 1 } },
+      paint: { 'text-color': INK,
+        'text-halo-color': OCEAN, 'text-halo-width': 2 } },
+    // DEMO — moveend engine: viewport-clipped labels for water bodies whose
+    // static label line is off-screen (candidate approach for MapForge regions)
+    { id: 'dyn-marine-labels', type: 'symbol', source: 'dynlabels',
+      layout: {
+        'symbol-placement': 'line-center',
+        'text-field': ['get', 'name'],
+        'text-font': ['Figtree Medium Italic'],
+        'text-transform': 'uppercase',
+        'text-letter-spacing': ['case', ['==', ['get', 'featurecla'], 'ocean'], 0.5, 0.22],
+        // zoom interpolate must be TOP-LEVEL (blank-map trap): one ramp,
+        // per-stop case picks the ocean vs sea value
+        'text-size': ['interpolate', ['linear'], ['zoom'],
+          1.5, ['case', ['==', ['get', 'featurecla'], 'ocean'], 11, 8.5],
+          3,   ['case', ['==', ['get', 'featurecla'], 'ocean'], 14, 8.5],
+          4,   ['case', ['==', ['get', 'featurecla'], 'ocean'], 16, 9.3],
+          6,   ['case', ['==', ['get', 'featurecla'], 'ocean'], 16, 11]],
+        'text-max-angle': 120,
+      },
+      paint: { 'text-color': INK,
+        'text-halo-color': OCEAN, 'text-halo-width': 2 } },
     // MAJOR LAKES (NE rank<=2: Great Lakes / Baikal / Victoria class). NE stores
     // bare names ("Erie", "Great Salt") — "Great X" suffixes, everything else prefixes.
     // stacked two-line lake names (compact/round lakes; build chose stacking and
@@ -322,10 +410,10 @@ const style = {
         'text-anchor': ['case', ['==', ['get', 'beside'], 1], 'left', 'center'],
         'text-justify': ['case', ['==', ['get', 'beside'], 1], 'left', 'center'],
       },
-      paint: { 'text-color': WATER,
+      paint: { 'text-color': INK,
         // beside = over land -> cream land halo; inside = over water -> ocean halo
         'text-halo-color': ['case', ['==', ['get', 'beside'], 1], HALO, OCEAN],
-        'text-halo-width': 2 } },
+        'text-halo-width': 4 } },
     { id: 'lake-labels', type: 'symbol', source: 'lakelabels', minzoom: 3.5,
       filter: ['all', ['<=', ['get', 'scalerank'], 2], ['!=', ['get', 'stack'], 1]],
       layout: {
@@ -340,8 +428,8 @@ const style = {
         'text-letter-spacing': 0.12,
         'text-max-width': 7,
       },
-      paint: { 'text-color': WATER,
-        'text-halo-color': OCEAN, 'text-halo-width': 2 } },
+      paint: { 'text-color': INK,
+        'text-halo-color': OCEAN, 'text-halo-width': 4 } },
   ],
 };
 
@@ -374,8 +462,54 @@ if (location.hostname === 'localhost' ||
 
 // ---- Controls ----
 const RIVER_LINE = ['rivers-texture', 'rivers-110m', 'rivers-50m', 'rivers-10m'];
-const LABEL_LAYERS = ['b2','b3','b4','b5','b6','b7'].map(b => `river-labels-${b}`)
-  .concat(['ocean-labels', 'sea-labels', 'lake-labels', 'lake-labels-pt']);
+// Labels toggle: water-body names follow it alone; river labels additionally
+// require the Rivers toggle (no labels on invisible rivers — Maddy 2026-08-04)
+const WATER_LABELS = ['ocean-labels', 'sea-labels', 'lake-labels', 'lake-labels-pt',
+                      'dyn-marine-labels'];
+const RIVER_LABELS = ['b2','b3','b4','b5','b6','b7'].map(b => `river-labels-${b}`);
+
+
+// GREYSCALE mode: every color swapped for its LUMINANCE-MATCHED grey, so WCAG
+// contrast ratios are preserved exactly (contrast is pure luminance math).
+// Greys computed from the adopted palette 2026-08-03 — recompute if palette moves.
+const GREY = { OCEAN: '#dcdcdc', WATER: '#424242', INK: '#303030', SHADOW: '#c8c8c8',
+               LAND: '#f9f9f9', HALO: '#f1f1f1' };
+const FILL_OCEAN = ['ocean-110m','ocean-50m','ocean-10m','lakes-50m','lakes-10m'];
+const FILL_LAND  = ['land-110m','land-50m','land-10m'];
+const LINES_W    = ['coast-110m','coast-50m','coast-10m','lakeline-50m','lakeline-10m',
+                    'rivers-texture','rivers-110m','rivers-50m','rivers-10m'];
+const RIVER_LBL  = ['b2','b3','b4','b5','b6','b7'].map(b => `river-labels-${b}`);
+let greyOn = false;
+document.getElementById('btnGrey').addEventListener('click', () => {
+  greyOn = !greyOn;
+  document.getElementById('optColor').classList.toggle('active', !greyOn);
+  document.getElementById('optGrey').classList.toggle('active', greyOn);
+  const ocean = greyOn ? GREY.OCEAN : OCEAN, water = greyOn ? GREY.WATER : WATER;
+  const ink = greyOn ? GREY.INK : INK, land = greyOn ? GREY.LAND : LAND;
+  const halo = greyOn ? GREY.HALO : HALO;
+  map.setPaintProperty('background', 'background-color', ocean);
+  FILL_OCEAN.forEach(id => map.getLayer(id) && map.setPaintProperty(id, 'fill-color', ocean));
+  FILL_LAND.forEach(id => map.getLayer(id) && map.setPaintProperty(id, 'fill-color', land));
+  LINES_W.forEach(id => map.getLayer(id) && map.setPaintProperty(id, 'line-color', water));
+  RIVER_LBL.forEach(id => { if (!map.getLayer(id)) return;
+    map.setPaintProperty(id, 'text-color', ink);
+    map.setPaintProperty(id, 'text-halo-color', halo); });
+  ['ocean-labels','sea-labels','lake-labels'].forEach(id => { if (!map.getLayer(id)) return;
+    map.setPaintProperty(id, 'text-color', ink);
+    map.setPaintProperty(id, 'text-halo-color', ocean); });
+  if (map.getLayer('lake-labels-pt')) {
+    map.setPaintProperty('lake-labels-pt', 'text-color', ink);
+    map.setPaintProperty('lake-labels-pt', 'text-halo-color',
+      ['case', ['==', ['get', 'beside'], 1], halo, ocean]);
+  }
+  map.setPaintProperty('rivers-110m', 'line-gradient',
+    riverTaperExpr(greyOn ? GREY.WATER : WATER));
+  const shad = greyOn ? GREY.SHADOW : SHADOW;
+  ['vignette-110m','vignette-50m','vignette-10m','vignette-lakes-50m','vignette-lakes-10m'].forEach(id =>
+    map.getLayer(id) && map.setPaintProperty(id, 'fill-color',
+      vignetteColorExpr(shad, greyOn ? GREY.OCEAN : OCEAN)));
+  map.setPaintProperty('relief', 'raster-saturation', greyOn ? -1 : 0);
+});
 
 let globe = true;
 document.getElementById('proj').addEventListener('click', () => {
@@ -385,21 +519,132 @@ document.getElementById('proj').addEventListener('click', () => {
   document.getElementById('optMerc').classList.toggle('active', !globe);
 });
 
+function syncLabels() {
+  WATER_LABELS.forEach(id => map.getLayer(id) && map.setLayoutProperty(id,
+    'visibility', labelsOn ? 'visible' : 'none'));
+  RIVER_LABELS.forEach(id => map.getLayer(id) && map.setLayoutProperty(id,
+    'visibility', (labelsOn && riversOn) ? 'visible' : 'none'));
+}
 let riversOn = true;
 document.getElementById('btnRivers').addEventListener('click', e => {
   riversOn = !riversOn;
   e.currentTarget.classList.toggle('on', riversOn);
   RIVER_LINE.forEach(id => map.setLayoutProperty(id, 'visibility',
     riversOn ? 'visible' : 'none'));
+  syncLabels();
 });
 
 let labelsOn = true;
 document.getElementById('btnLabels').addEventListener('click', e => {
   labelsOn = !labelsOn;
   e.currentTarget.classList.toggle('on', labelsOn);
-  LABEL_LAYERS.forEach(id => map.setLayoutProperty(id, 'visibility',
-    labelsOn ? 'visible' : 'none'));
+  syncLabels();
 });
+
+// ---- DEMO: moveend viewport-clipped marine labels -------------------------
+// When a named water body intersects the view but its static label line is
+// off-screen, lay a temporary chord label across the VISIBLE piece of it.
+(function () {
+  let POLYS = null;
+  fetch('data/marinepolys.geojson').then(r => r.json()).then(d => {
+    POLYS = d.features.map(f => {
+      const rings = f.geometry.type === 'Polygon' ? [f.geometry.coordinates]
+                                                  : f.geometry.coordinates;
+      let bb = [180, 90, -180, -90];
+      for (const poly of rings) for (const [x, y] of poly[0]) {
+        bb = [Math.min(bb[0], x), Math.min(bb[1], y), Math.max(bb[2], x), Math.max(bb[3], y)];
+      }
+      return { p: f.properties, rings, bb };
+    });
+    refresh();
+  });
+
+  function inside(rings, x, y) {
+    let inn = false;
+    for (const poly of rings) for (const ring of poly) {
+      for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        const [xi, yi] = ring[i], [xj, yj] = ring[j];
+        if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) inn = !inn;
+      }
+    }
+    return inn;
+  }
+
+  function refresh() {
+    if (!POLYS || !mfmap.isStyleLoaded()) return;
+    const z = mfmap.getZoom();
+    // work in a frame inset 100px from every screen edge so dynamic labels
+    // never hug the frame (Maddy 2026-08-04)
+    const PAD = 100;
+    const cw = mfmap.getContainer().clientWidth, chh = mfmap.getContainer().clientHeight;
+    const sw = mfmap.unproject([PAD, chh - PAD]), ne = mfmap.unproject([cw - PAD, PAD]);
+    const W = Math.min(sw.lng, ne.lng), E = Math.max(sw.lng, ne.lng);
+    const S = Math.min(sw.lat, ne.lat), N = Math.max(sw.lat, ne.lat);
+    const shown = new Set(
+      mfmap.queryRenderedFeatures({ layers: ['ocean-labels', 'sea-labels'] })
+        .map(f => f.properties.name));
+    const feats = [];
+    for (const f of POLYS) {
+      const pr = f.p;
+      if (z < pr.min_label) continue;
+      if (pr.featurecla !== 'ocean' && pr.min_label > 4.5) continue;
+      if (shown.has(pr.name)) continue;
+      if (f.bb[2] < W || f.bb[0] > E || f.bb[3] < S || f.bb[1] > N) continue;
+      // scan candidate latitudes across the view; longest in-polygon run wins
+      const x0 = Math.max(W, f.bb[0]), x1 = Math.min(E, f.bb[2]);
+      const y0 = Math.max(S, f.bb[1]), y1 = Math.min(N, f.bb[3]);
+      if (x1 - x0 < 1e-6 || y1 - y0 < 1e-6) continue;
+      let best = null, bestScore = 0;
+      for (let r = 0; r < 11; r++) {
+        const y = y0 + (y1 - y0) * (0.12 + 0.76 * r / 10);
+        let run = null, bestRun = null;
+        for (let c = 0; c <= 60; c++) {
+          const x = x0 + (x1 - x0) * c / 60;
+          if (inside(f.rings, x, y)) { run = run || [x, x]; run[1] = x; }
+          else {
+            if (run && (!bestRun || run[1] - run[0] > bestRun[1] - bestRun[0])) bestRun = run;
+            run = null;
+          }
+        }
+        if (run && (!bestRun || run[1] - run[0] > bestRun[1] - bestRun[0])) bestRun = run;
+        if (!bestRun) continue;
+        const len = bestRun[1] - bestRun[0];
+        const central = 1 - Math.abs((y - y0) / (y1 - y0) - 0.5);
+        if (len * (0.5 + 0.5 * central) > bestScore) {
+          bestScore = len * (0.5 + 0.5 * central);
+          best = [bestRun[0], bestRun[1], y];
+        }
+      }
+      if (!best) continue;
+      // fit gate in screen px: name must fit on the chord at current text-size
+      const ocean = pr.featurecla === 'ocean';
+      const size = ocean ? Math.min(16, Math.max(11, 11 + 5 * (z - 1.5) / 2.5))
+                         : Math.min(11, Math.max(8.5, 8.5 + 2.5 * (z - 3) / 3));
+      const perChar = size * (ocean ? 1.2 : 0.95);
+      const ins = (best[1] - best[0]) * 0.05;
+      const pxA = mfmap.project([best[0] + ins, best[2]]);
+      const pxB = mfmap.project([best[1] - ins, best[2]]);
+      if (Math.hypot(pxB.x - pxA.x, pxB.y - pxA.y) < pr.name.length * perChar) continue;
+      const n = Math.max(2, Math.round((best[1] - best[0]) / 1.5));
+      const coords = [];
+      for (let i = 0; i <= n; i++)
+        coords.push([best[0] + ins + (best[1] - best[0] - 2 * ins) * i / n, best[2]]);
+      feats.push({ type: 'Feature', properties: { name: pr.name, featurecla: pr.featurecla },
+                   len: best[1] - best[0],
+                   geometry: { type: 'LineString', coordinates: coords } });
+    }
+    // one dynamic label per NAME (NE splits oceans into N/S polygons that share it)
+    const byName = new Map();
+    for (const f of feats)
+      if (!byName.has(f.properties.name) || f.len > byName.get(f.properties.name).len)
+        byName.set(f.properties.name, f);
+    mfmap.getSource('dynlabels').setData(
+      { type: 'FeatureCollection', features: [...byName.values()] });
+  }
+  let t = null;
+  mfmap.on('moveend', () => { clearTimeout(t); t = setTimeout(refresh, 150); });
+  mfmap.on('load', refresh);
+})();
 </script>
 </body>
 </html>
