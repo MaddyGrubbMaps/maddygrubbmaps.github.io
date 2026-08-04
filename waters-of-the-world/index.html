@@ -233,12 +233,15 @@ const style = {
     // silently never renders (Congo b2, Brahmaputra — 2026-08-04)
     // tolerance 0 is REQUIRED here: tile simplification kinks the smooth
     // windows and text-max-angle then rejects the whole label (2026-08-04)
+    // maxzoom LOW so windows stay whole per tile (Euphrates b3 was clipped at
+    // the 45E tile edge into unplaceable fragments); tolerance 0 so the coarse
+    // tiles don't simplify-kink the smooth windows. BOTH are required.
     'riverlabels-110m': { type: 'geojson', data: 'data/riverlabels-110m.geojson',
-      buffer: 512, maxzoom: 4, tolerance: 0 },
+      buffer: 512, maxzoom: 2, tolerance: 0 },
     'riverlabels-50m': { type: 'geojson', data: 'data/riverlabels-50m.geojson',
-      buffer: 512, maxzoom: 5, tolerance: 0 },
+      buffer: 512, maxzoom: 2, tolerance: 0 },
     'riverlabels-10m': { type: 'geojson', data: 'data/riverlabels-10m.geojson',
-      buffer: 512, maxzoom: 6, tolerance: 0 },
+      buffer: 512, maxzoom: 4, tolerance: 0 },
     'vignette-110m': { type: 'geojson', data: 'data/vignette-110m.geojson' },
     'vignette-50m':  { type: 'geojson', data: 'data/vignette-50m.geojson' },
     'vignette-10m':  { type: 'geojson', data: 'data/vignette-10m.geojson' },
