@@ -295,6 +295,7 @@ scene.add(fill);
 // ---- post-processing: static film grain (Sketchfab-style), MSAA kept via a multisampled target ----
 const composerTarget = new THREE.WebGLRenderTarget(wrap.clientWidth, wrap.clientHeight, { samples: 4, type: THREE.HalfFloatType });
 const composer = new EffectComposer(renderer, composerTarget);
+composer.setSize(wrap.clientWidth, wrap.clientHeight);   // applies the device pixel ratio; without this the first frame renders at CSS resolution
 const renderPass = new RenderPass(scene, camera);
 composer.addPass(renderPass);
 // sharpen: 5-tap unsharp mask, runs before the grain so the grain itself is not sharpened
