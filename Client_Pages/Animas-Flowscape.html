@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Animas Flowscape - 3D Reference Prototype</title>
+<style>
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #e6e6e6;
+    color: #111;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 13px;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    padding: 10px 14px;
+    border-bottom: 1px solid #bbb;
+    background: #e6e6e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+  header h1 { font-size: 14px; font-weight: 600; margin: 0; }
+  header .sub { color: #666; }
+  main { position: relative; flex: 1; min-height: 0; }
+  #canvas-wrap { position: absolute; inset: 0; background: #d6d6d6; }
+  canvas { display: block; }
+  #loading {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: #d6d6d6; color: #444; z-index: 4;
+  }
+  #loading[hidden] { display: none; }
+  #side {
+    position: absolute; top: 12px; right: 12px; bottom: 12px; width: 280px;
+    display: flex; flex-direction: column; gap: 12px;
+    overflow-y: auto; pointer-events: none;
+  }
+  #side > * { pointer-events: auto; flex: none; }
+  #panel {
+    background: #f2f2f2; border: 1px solid #999;
+    padding: 12px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .label { color: #666; font-size: 11px; text-transform: uppercase; }
+  #slider-value, #tilt-value { font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  #slider-value small, #tilt-value small { font-size: 12px; font-weight: 400; color: #666; margin-left: 6px; }
+  input[type="range"] { width: 100%; margin: 6px 0 2px; accent-color: #222; }
+  #range-caps, .caps { display: flex; justify-content: space-between; color: #666; font-size: 11px; }
+  #total { padding-bottom: 10px; border-bottom: 1px solid #bbb; display: flex; justify-content: space-between; align-items: center; }
+  #panel-toggle { display: none; font: inherit; font-size: 12px; color: #111; background: #fff; border: 1px solid #999; width: 34px; height: 30px; cursor: pointer; }
+
+  /* phones: panel collapses to a bottom bar showing only total model height; tap to expand */
+  @media (max-width: 720px) {
+    #side { position: static; width: auto; overflow: visible; }
+    #panel {
+      position: absolute; bottom: 0; left: 0; right: 0; width: auto;
+      border-left: none; border-right: none; border-bottom: none;
+      max-height: 75vh; overflow-y: auto;
+      padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    }
+    #panel:not(.open) > :not(#total) { display: none; }
+    #panel:not(.open) #total { padding-bottom: 0; border-bottom: none; }
+    #panel-toggle { display: block; }
+    #panel.open #panel-toggle { transform: rotate(180deg); }
+    #dev-panel { display: none !important; }
+    header .sub { display: none; }
+  }
+  #stat-height { font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  #stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px;
+    padding-top: 10px; border-top: 1px solid #bbb;
+  }
+  .stat .k { color: #666; font-size: 11px; text-transform: uppercase; }
+  .stat .v { font-size: 15px; font-variant-numeric: tabular-nums; }
+  .stat .v .unit { color: #666; font-size: 11px; margin-left: 2px; }
+  #toggles { padding-top: 10px; border-top: 1px solid #bbb; display: flex; flex-direction: column; gap: 8px; }
+  .switch { display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; }
+  .switch input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .switch i {
+    position: relative; flex: none; width: 34px; height: 20px; border-radius: 10px;
+    background: #bdbdbd; transition: background .15s;
+  }
+  .switch i::after {
+    content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%;
+    background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.35); transition: transform .15s;
+  }
+  .switch input:checked + i { background: #222; }
+  .switch input:checked + i::after { transform: translateX(14px); }
+  .switch input:focus-visible + i { outline: 2px solid #222; outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { .switch i, .switch i::after { transition: none; } }
+  #view-btns { display: flex; gap: 6px; }
+  #view-btns button {
+    flex: 1; font: inherit; color: #111; background: #fff; border: 1px solid #999;
+    padding: 4px 0; cursor: pointer;
+  }
+  #view-btns button:hover { background: #e6e6e6; }
+  #view-btns button.on { background: #222; color: #fff; border-color: #222; }
+  #view-btns button:focus-visible { outline: 2px solid #222; outline-offset: 2px; }
+  #hint { color: #666; font-size: 11px; padding-top: 10px; border-top: 1px solid #bbb; }
+  input:focus-visible { outline: 2px solid #222; outline-offset: 2px; }
+  #dev-panel {
+    background: #f2f2f2; border: 1px dashed #999;
+    padding: 12px; display: flex; flex-direction: column; gap: 8px;
+  }
+  #dev-panel[hidden] { display: none; }
+  .adj { display: grid; grid-template-columns: 82px 1fr 44px; align-items: center; gap: 8px; font-size: 12px; }
+  .adj span { color: #666; }
+  .adj b { font-weight: 400; text-align: right; font-variant-numeric: tabular-nums; }
+  .adj input[type="range"] { margin: 0; }
+  #adj-reset { font: inherit; font-size: 12px; color: #111; background: #fff; border: 1px solid #999; padding: 3px 10px; cursor: pointer; align-self: flex-start; }
+  #adj-reset:hover { background: #e6e6e6; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Animas Flowscape - 3D Reference Prototype</h1>
+</header>
+
+<main>
+  <div id="canvas-wrap"></div>
+  <div id="loading">loading terrain…</div>
+
+  <div id="side">
+  <div id="panel">
+    <div id="total">
+      <div>
+        <div class="label">Total model height</div>
+        <div id="stat-height">3.42 ft</div>
+      </div>
+      <button type="button" id="panel-toggle" aria-expanded="false" aria-controls="panel" aria-label="Show controls">&#9650;</button>
+    </div>
+
+    <div>
+      <div class="label">Terrain exaggeration</div>
+      <div id="slider-value">2.50×</div>
+      <input type="range" id="slider" min="0" max="16" step="1" value="6" aria-label="Terrain exaggeration">
+      <div id="range-caps"><span>1.00× (true scale)</span><span>5.00×</span></div>
+    </div>
+
+    <div>
+      <div class="label">Tilt</div>
+      <div id="tilt-value">+5.00%</div>
+      <input type="range" id="tilt" min="0" max="40" step="1" value="20" aria-label="Tilt grade">
+      <div id="range-caps"><span>0%</span><span>+10.00%</span></div>
+    </div>
+
+    <div id="stats">
+      <div class="stat"><div class="k">Min reach slope</div><div class="v" id="stat-min">4.45<span class="unit">%</span></div></div>
+      <div class="stat"><div class="k">Max reach slope</div><div class="v" id="stat-max">8.08<span class="unit">%</span></div></div>
+    </div>
+
+    <div id="toggles">
+      <label class="switch"><span>1 ft / 5 ft grid</span><input type="checkbox" id="grid-toggle"><i></i></label>
+      <label class="switch"><span>rivers only</span><input type="checkbox" id="rivers-toggle"><i></i></label>
+      <div id="view-btns" role="group" aria-label="Projection">
+        <button type="button" data-view="persp" aria-pressed="false">perspective</button>
+        <button type="button" data-view="ortho" class="on" aria-pressed="true">orthographic</button>
+      </div>
+    </div>
+
+    <div id="hint">drag to orbit · scroll to zoom · right-drag to pan</div>
+  </div>
+
+  <!-- dev-only image controls: hidden when SHOW_DEV_PANEL is false -->
+  <div id="dev-panel" hidden>
+    <div class="label">image (dev)</div>
+    <label class="switch"><span>sharpen</span><input type="checkbox" id="sharpen-toggle" checked><i></i></label>
+    <label class="switch"><span>grain</span><input type="checkbox" id="grain-toggle" checked><i></i></label>
+    <div class="adj"><span>grain amount</span><input type="range" id="adj-grain" min="0" max="100" step="1" value="50"><b id="v-grain">50%</b></div>
+    <div class="adj"><span>hue</span><input type="range" id="adj-hue" min="-180" max="180" step="1" value="-2"><b id="v-hue">-2°</b></div>
+    <div class="adj"><span>saturation</span><input type="range" id="adj-sat" min="-100" max="100" step="1" value="28"><b id="v-sat">28%</b></div>
+    <div class="adj"><span>value</span><input type="range" id="adj-val" min="-50" max="50" step="1" value="-14"><b id="v-val">-14%</b></div>
+    <div class="adj"><span>contrast</span><input type="range" id="adj-con" min="-50" max="50" step="1" value="10"><b id="v-con">10%</b></div>
+    <div class="adj"><span>temperature</span><input type="range" id="adj-tmp" min="-100" max="100" step="1" value="-10"><b id="v-tmp">-10</b></div>
+    <div class="adj"><span>tint</span><input type="range" id="adj-tnt" min="-100" max="100" step="1" value="-7"><b id="v-tnt">-7</b></div>
+    <button type="button" id="adj-reset">reset</button>
+  </div>
+  </div>
+</main>
+
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+import { LineSegments2 } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/lines/LineSegments2.js';
+import { LineSegmentsGeometry } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/lines/LineSegmentsGeometry.js';
+import { LineMaterial } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/lines/LineMaterial.js';
+import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/postprocessing/RenderPass.js';
+import { OutputPass } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/postprocessing/OutputPass.js';
+import { ShaderPass } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/postprocessing/ShaderPass.js';
+
+const SHOW_DEV_PANEL = false;   // set false before publishing: hides the sharpen/grain/colour dev panel
+
+// ---- model constants (Blender scene: 20 x 40 ft plane, metres internally) ----
+const FT = 0.3048;
+const PLANE_W = 20 * FT;
+const PLANE_H = 40 * FT;
+const ASSET_V = '4';               // bump when height.bin / color.jpg change, so browsers refetch
+const HM_W = 1632, HM_H = 3264;   // height.bin == level-4 grid; row 0 = south edge (v = 0)
+
+// stats reference: v1_subtle remap, calibrated at 4.00 ft model height
+const TRUE_SCALE_FT = 0.6019;                             // model height at 1x exaggeration
+const REF_H = 4.0, REF_LOWER = 5.9375, REF_HW = 10.7797;  // % grade at REF_H
+
+// mesh detail: level 4 (one vertex per heightmap texel). Phones get level 2 — 5M verts is not viable there.
+const isPhone = navigator.maxTouchPoints > 0 && Math.min(screen.width, screen.height) < 900;
+const LEVEL = isPhone ? 2 : 4;
+
+const wrap = document.getElementById('canvas-wrap');
+const loadingEl = document.getElementById('loading');
+const slider = document.getElementById('slider');
+const sliderValueEl = document.getElementById('slider-value');
+const statHeight = document.getElementById('stat-height');
+const statMin = document.getElementById('stat-min');
+const statMax = document.getElementById('stat-max');
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xd6d6d6);
+
+const persp = new THREE.PerspectiveCamera(42, wrap.clientWidth / wrap.clientHeight, 0.02, 400);
+const ortho = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.02, 400);
+let camera = persp;
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(wrap.clientWidth, wrap.clientHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+wrap.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.maxPolarAngle = Math.PI / 2;   // down to exactly eye level (0° elevation), never below the base
+controls.minZoom = 0.25;    // orthographic zoom limits
+controls.maxZoom = 25;
+
+function fitOrthoToView() {
+  // size the orthographic frustum so the switch keeps the same framing as the perspective view
+  const dist = persp.position.distanceTo(controls.target);
+  const halfH = dist * Math.tan(THREE.MathUtils.degToRad(persp.fov / 2));
+  const halfW = halfH * (wrap.clientWidth / wrap.clientHeight);
+  ortho.left = -halfW; ortho.right = halfW; ortho.top = halfH; ortho.bottom = -halfH;
+  ortho.near = persp.near; ortho.far = persp.far;
+  ortho.updateProjectionMatrix();
+}
+function setProjection(mode) {
+  const to = mode === 'ortho' ? ortho : persp;
+  if (to === camera) return;
+  if (to === ortho) { fitOrthoToView(); ortho.zoom = 1; }
+  to.position.copy(camera.position);
+  to.quaternion.copy(camera.quaternion);
+  camera = to;
+  renderPass.camera = to;
+  controls.object = to;
+  controls.update();
+  requestRender();
+}
+const viewBtns = document.querySelectorAll('#view-btns button');
+viewBtns.forEach((b) => b.addEventListener('click', () => {
+  setProjection(b.dataset.view);
+  viewBtns.forEach((o) => { const on = o === b; o.classList.toggle('on', on); o.setAttribute('aria-pressed', String(on)); });
+}));
+
+scene.add(new THREE.HemisphereLight(0xffffff, 0x333333, 1.1));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2);
+sun.position.set(-30, 45, 20);
+scene.add(sun);
+const fill = new THREE.DirectionalLight(0xffffff, 0.4);
+fill.position.set(25, 10, -20);
+scene.add(fill);
+
+// ---- post-processing: static film grain (Sketchfab-style), MSAA kept via a multisampled target ----
+const composerTarget = new THREE.WebGLRenderTarget(wrap.clientWidth, wrap.clientHeight, { samples: 4, type: THREE.HalfFloatType });
+const composer = new EffectComposer(renderer, composerTarget);
+const renderPass = new RenderPass(scene, camera);
+composer.addPass(renderPass);
+// sharpen: 5-tap unsharp mask, runs before the grain so the grain itself is not sharpened
+const SharpenShader = {
+  uniforms: { tDiffuse: { value: null }, resolution: { value: new THREE.Vector2(1, 1) }, amount: { value: 0.35 } },
+  vertexShader: `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+  fragmentShader: `
+    uniform sampler2D tDiffuse; uniform vec2 resolution; uniform float amount; varying vec2 vUv;
+    void main() {
+      vec2 px = 1.0 / resolution;
+      vec4 c = texture2D(tDiffuse, vUv);
+      vec4 n = texture2D(tDiffuse, vUv + vec2(0.0, px.y)) + texture2D(tDiffuse, vUv - vec2(0.0, px.y))
+             + texture2D(tDiffuse, vUv + vec2(px.x, 0.0)) + texture2D(tDiffuse, vUv - vec2(px.x, 0.0));
+      gl_FragColor = vec4(c.rgb + amount * (4.0 * c.rgb - n.rgb), c.a);
+    }`
+};
+const sharpenPass = new ShaderPass(SharpenShader);
+sharpenPass.uniforms.resolution.value.set(wrap.clientWidth * renderer.getPixelRatio(), wrap.clientHeight * renderer.getPixelRatio());
+composer.addPass(sharpenPass);
+const sharpenToggle = document.getElementById('sharpen-toggle');
+sharpenToggle.addEventListener('change', () => { sharpenPass.enabled = sharpenToggle.checked; requestRender(); });
+
+// colour adjust: hue / saturation / value / contrast / temperature / tint on the whole frame
+const ColorAdjustShader = {
+  uniforms: {
+    tDiffuse: { value: null },
+    // defaults chosen in the dev panel on 2026-09-07
+    hue: { value: -2 }, sat: { value: 0.28 }, val: { value: -0.14 }, con: { value: 0.10 }, tmp: { value: -0.10 }, tnt: { value: -0.07 },
+  },
+  vertexShader: `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+  fragmentShader: `
+    uniform sampler2D tDiffuse; uniform float hue, sat, val, con, tmp, tnt; varying vec2 vUv;
+    void main() {
+      vec4 c = texture2D(tDiffuse, vUv);
+      vec3 rgb = c.rgb;
+      // hue rotation (YIQ)
+      float a = hue * 3.14159265 / 180.0;
+      vec3 yiq = mat3(0.299, 0.596, 0.211, 0.587, -0.274, -0.523, 0.114, -0.322, 0.312) * rgb;
+      float h = atan(yiq.z, yiq.y) + a; float ch = length(yiq.yz);
+      yiq.y = ch * cos(h); yiq.z = ch * sin(h);
+      rgb = mat3(1.0, 1.0, 1.0, 0.956, -0.272, -1.106, 0.621, -0.647, 1.703) * yiq;
+      // saturation
+      float luma = dot(rgb, vec3(0.2126, 0.7152, 0.0722));
+      rgb = mix(vec3(luma), rgb, 1.0 + sat);
+      // temperature (warm +, cool -) and tint (magenta +, green -), gentle
+      rgb += vec3(0.10, 0.0, -0.10) * tmp;
+      rgb += vec3(0.06, -0.08, 0.06) * tnt;
+      // contrast around mid grey, then value
+      rgb = (rgb - 0.5) * (1.0 + con) + 0.5;
+      rgb *= 1.0 + val;
+      gl_FragColor = vec4(clamp(rgb, 0.0, 1.0), c.a);
+    }`
+};
+const colorPass = new ShaderPass(ColorAdjustShader);
+composer.addPass(colorPass);
+
+// grain: zero-mean noise so exposure is unchanged (Three's FilmShader brightens on average)
+const GrainShader = {
+  uniforms: { tDiffuse: { value: null }, intensity: { value: 0.5 }, seed: { value: 7.31 } },
+  vertexShader: `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+  fragmentShader: `
+    uniform sampler2D tDiffuse; uniform float intensity; uniform float seed; varying vec2 vUv;
+    float rand(vec2 co) { return fract(sin(dot(co, vec2(12.9898, 78.233)) + seed) * 43758.5453); }
+    void main() {
+      vec4 c = texture2D(tDiffuse, vUv);
+      float n = rand(gl_FragCoord.xy) - 0.5;            // -0.5 .. 0.5, mean 0, fixed per pixel (static)
+      gl_FragColor = vec4(clamp(c.rgb + n * intensity * 0.35, 0.0, 1.0), c.a);
+    }`
+};
+const filmPass = new ShaderPass(GrainShader);
+composer.addPass(filmPass);
+composer.addPass(new OutputPass());
+const devPanel = document.getElementById('dev-panel');
+devPanel.hidden = !SHOW_DEV_PANEL;
+const ADJ = [
+  ['hue', 'adj-hue', 'v-hue', (v) => v + '°', (v) => v],
+  ['sat', 'adj-sat', 'v-sat', (v) => v + '%', (v) => v / 100],
+  ['val', 'adj-val', 'v-val', (v) => v + '%', (v) => v / 100],
+  ['con', 'adj-con', 'v-con', (v) => v + '%', (v) => v / 100],
+  ['tmp', 'adj-tmp', 'v-tmp', (v) => String(v), (v) => v / 100],
+  ['tnt', 'adj-tnt', 'v-tnt', (v) => String(v), (v) => v / 100],
+];
+for (const [u, id, vid, fmt, map] of ADJ) {
+  const el = document.getElementById(id), out = document.getElementById(vid);
+  el.addEventListener('input', () => {
+    const v = parseFloat(el.value);
+    colorPass.uniforms[u].value = map(v);
+    out.textContent = fmt(v);
+    requestRender();
+  });
+}
+const ADJ_DEFAULTS = { hue: -2, sat: 28, val: -14, con: 10, tmp: -10, tnt: -7 };
+document.getElementById('adj-reset').addEventListener('click', () => {
+  for (const [u, id, vid, fmt, map] of ADJ) {
+    const d = ADJ_DEFAULTS[u];
+    const el = document.getElementById(id); el.value = d;
+    colorPass.uniforms[u].value = map(d); document.getElementById(vid).textContent = fmt(d);
+  }
+  requestRender();
+});
+const panelEl = document.getElementById('panel');
+const panelToggle = document.getElementById('panel-toggle');
+panelToggle.addEventListener('click', () => {
+  const open = panelEl.classList.toggle('open');
+  panelToggle.setAttribute('aria-expanded', String(open));
+  panelToggle.setAttribute('aria-label', open ? 'Hide controls' : 'Show controls');
+});
+const grainAmt = document.getElementById('adj-grain');
+grainAmt.addEventListener('input', () => {
+  filmPass.uniforms.intensity.value = parseFloat(grainAmt.value) / 100;
+  document.getElementById('v-grain').textContent = grainAmt.value + '%';
+  requestRender();
+});
+const grainToggle = document.getElementById('grain-toggle');
+grainToggle.addEventListener('change', () => { filmPass.enabled = grainToggle.checked; requestRender(); });
+
+// ---- render on demand ----
+let needsRender = true;
+let dampingUntil = 0;
+function requestRender() { needsRender = true; }
+controls.addEventListener('change', requestRender);
+controls.addEventListener('start', () => { dampingUntil = Infinity; });
+controls.addEventListener('end', () => { dampingUntil = performance.now() + 1200; });
+function tick(now) {
+  const damping = now < dampingUntil;
+  if (damping) controls.update();
+  if (needsRender || damping) { composer.render(); needsRender = false; }
+  requestAnimationFrame(tick);
+}
+
+// ---- material: heightmap displacement in the vertex shader ----
+const uniforms = {
+  uHeight: { value: null },
+  uScale: { value: 2.5 * 0.6019 * FT },
+  uTexel: { value: new THREE.Vector2(1 / HM_W, 1 / HM_H) },
+  uSize: { value: new THREE.Vector2(PLANE_W, PLANE_H) },
+  uTilt: { value: 2.0 * FT },      // rise at the north (headwater) edge, metres; 0 at the south (mouth) edge
+  uWater: { value: null },     // water mask (white = water) from the water-only artboard export
+  uRiversOnly: { value: 0 },
+};
+const material = new THREE.MeshStandardMaterial({ roughness: 1.0, metalness: 0.0, side: THREE.FrontSide });
+material.onBeforeCompile = (shader) => {
+  Object.assign(shader.uniforms, uniforms);
+  shader.vertexShader = shader.vertexShader
+    .replace('#include <common>', `
+      #include <common>
+      uniform sampler2D uHeight;
+      uniform float uScale;
+      uniform vec2 uTexel;
+      uniform vec2 uSize;
+      uniform float uTilt;
+      // tilt applies to the raised watershed only (heightmap > 0); the paper base stays flat
+      float hAt(vec2 uv) {
+        vec2 hm = texture2D(uHeight, uv).rg;      // r = height, g = tilt mask feathered inward from the watershed edge
+        return hm.r * uScale + uTilt * uv.y * hm.g;
+      }
+      vec2 hUv;`)
+    .replace('#include <uv_vertex>', `
+      hUv = position.xy / uSize + 0.5;
+      #if defined( USE_MAP )
+        vMapUv = ( mapTransform * vec3( hUv, 1 ) ).xy;
+      #endif`)
+    .replace('#include <beginnormal_vertex>', `
+      float hL = hAt(hUv - vec2(uTexel.x, 0.0));
+      float hR = hAt(hUv + vec2(uTexel.x, 0.0));
+      float hD = hAt(hUv - vec2(0.0, uTexel.y));
+      float hU = hAt(hUv + vec2(0.0, uTexel.y));
+      float ddx = 2.0 * uTexel.x * uSize.x;
+      float ddy = 2.0 * uTexel.y * uSize.y;
+      vec3 objectNormal = normalize(vec3(-(hR - hL) / ddx, -(hU - hD) / ddy, 1.0));`)
+    .replace('#include <begin_vertex>', `
+      vec3 transformed = vec3(position.xy, hAt(hUv));`);
+  // rivers-only mode: drop every fragment that is not water (mask from the water-only artboard)
+  shader.fragmentShader = shader.fragmentShader
+    .replace('#include <common>', `
+      #include <common>
+      uniform sampler2D uWater;
+      uniform float uRiversOnly;`)
+    .replace('#include <map_fragment>', `
+      #include <map_fragment>
+      #ifdef USE_MAP
+        if (uRiversOnly > 0.5 && texture2D(uWater, vMapUv).r < 0.5) discard;
+      #endif`);
+};
+
+// ---- grid: one vertex per heightmap texel, at texel centres (positions + index only) ----
+function gridSize(level) {
+  const f = Math.pow(2, 4 - level);
+  return { nx: HM_W / f, ny: HM_H / f };
+}
+function buildGrid(level) {
+  const { nx, ny } = gridSize(level);
+  const segX = nx - 1, segY = ny - 1;
+  const pos = new Float32Array(nx * ny * 3);
+  let p = 0;
+  for (let j = 0; j < ny; j++) {
+    const y = ((j + 0.5) / ny - 0.5) * PLANE_H;
+    for (let i = 0; i < nx; i++) {
+      pos[p++] = ((i + 0.5) / nx - 0.5) * PLANE_W;
+      pos[p++] = y;
+      pos[p++] = 0;
+    }
+  }
+  const idx = new Uint32Array(segX * segY * 6);
+  let q = 0;
+  for (let j = 0; j < segY; j++) {
+    for (let i = 0; i < segX; i++) {
+      const a = j * nx + i, b = a + 1, c = a + nx, d = c + 1;
+      idx[q++] = a; idx[q++] = b; idx[q++] = c;   // counter-clockwise from +Z: front face is the terrain top
+      idx[q++] = b; idx[q++] = d; idx[q++] = c;
+    }
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  g.setIndex(new THREE.BufferAttribute(idx, 1));
+  g.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 0, 0.5), Math.hypot(PLANE_W, PLANE_H));
+  return g;
+}
+
+// tilt mask: 1 well inside the watershed, feathering to 0 at its edge over FEATHER_PX texels (inward only)
+function tiltMask(heightFull) {
+  const FEATHER_PX = 20;                         // ~0.25 ft at level-4 spacing
+  const n = HM_W * HM_H;
+  let a = new Float32Array(n);
+  for (let i = 0; i < n; i++) a[i] = heightFull[i] > 0 ? 1 : 0;
+  // three passes of a separable box blur ~ gaussian; radius chosen so the 0.5 -> 1 rise spans FEATHER_PX
+  const r = Math.max(1, Math.round(FEATHER_PX / 3));
+  let b = new Float32Array(n);
+  for (let pass = 0; pass < 3; pass++) {
+    // horizontal
+    for (let j = 0; j < HM_H; j++) {
+      const o = j * HM_W; let sum = 0;
+      for (let i = -r; i <= r; i++) sum += a[o + Math.min(HM_W - 1, Math.max(0, i))];
+      for (let i = 0; i < HM_W; i++) {
+        b[o + i] = sum / (2 * r + 1);
+        sum += a[o + Math.min(HM_W - 1, i + r + 1)] - a[o + Math.max(0, i - r)];
+      }
+    }
+    // vertical
+    for (let i = 0; i < HM_W; i++) {
+      let sum = 0;
+      for (let j = -r; j <= r; j++) sum += b[Math.min(HM_H - 1, Math.max(0, j)) * HM_W + i];
+      for (let j = 0; j < HM_H; j++) {
+        a[j * HM_W + i] = sum / (2 * r + 1);
+        sum += b[Math.min(HM_H - 1, j + r + 1) * HM_W + i] - b[Math.max(0, j - r) * HM_W + i];
+      }
+    }
+  }
+  // remap so the mask is 0 at the true edge (blur = 0.5) and 1 once fully inside; outside stays 0
+  for (let i = 0; i < n; i++) {
+    const m = Math.min(1, Math.max(0, (a[i] - 0.5) / 0.5));
+    a[i] = heightFull[i] > 0 ? m * m * (3 - 2 * m) : 0;
+  }
+  return a;
+}
+
+function heightTexture(heightFull, maskFull, level) {
+  const { nx, ny } = gridSize(level);
+  const f = HM_W / nx;
+  const data = new Float32Array(nx * ny * 2);
+  if (f === 1) {
+    for (let i = 0; i < nx * ny; i++) { data[2 * i] = heightFull[i]; data[2 * i + 1] = maskFull[i]; }
+  } else {
+    const inv = 1 / (f * f);
+    for (let j = 0; j < ny; j++) for (let i = 0; i < nx; i++) {
+      let sh = 0, sm = 0;
+      for (let dj = 0; dj < f; dj++) {
+        const row = (j * f + dj) * HM_W + i * f;
+        for (let di = 0; di < f; di++) { sh += heightFull[row + di]; sm += maskFull[row + di]; }
+      }
+      const k = 2 * (j * nx + i);
+      data[k] = sh * inv; data[k + 1] = sm * inv;
+    }
+  }
+  const tex = new THREE.DataTexture(data, nx, ny, THREE.RGFormat, THREE.FloatType);
+  tex.minFilter = THREE.LinearFilter;
+  tex.magFilter = THREE.LinearFilter;
+  tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping;
+  tex.generateMipmaps = false;
+  tex.needsUpdate = true;
+  return tex;
+}
+
+async function loadHeight() {
+  const res = await fetch('animas-flowscape/height.bin?v=' + ASSET_V);
+  if (!res.ok) throw new Error('height.bin ' + res.status);
+  const u16 = new Uint16Array(await res.arrayBuffer());
+  if (u16.length !== HM_W * HM_H) throw new Error('height.bin is ' + u16.length + ' samples, expected ' + (HM_W * HM_H));
+  const f32 = new Float32Array(u16.length);
+  for (let i = 0; i < u16.length; i++) f32[i] = u16[i] / 65535;
+  return f32;
+}
+function loadWater() {
+  return new Promise((resolve, reject) => {
+    new THREE.TextureLoader().load('animas-flowscape/water.png?v=' + ASSET_V, (t) => {
+      t.colorSpace = THREE.NoColorSpace;
+      t.minFilter = THREE.LinearFilter; t.magFilter = THREE.LinearFilter; t.generateMipmaps = false;
+      resolve(t);
+    }, undefined, reject);
+  });
+}
+function loadColor() {
+  return new Promise((resolve, reject) => {
+    new THREE.TextureLoader().load('animas-flowscape/color.jpg?v=' + ASSET_V, (t) => {
+      t.colorSpace = THREE.SRGBColorSpace;
+      t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+      resolve(t);
+    }, undefined, reject);
+  });
+}
+
+function frameCamera() {
+  const maxDim = Math.max(PLANE_W, PLANE_H);
+  const dist = maxDim * 1.35;
+  persp.position.set(dist * 0.62, dist * 0.55, dist * 0.7);
+  persp.near = maxDim * 0.002;
+  persp.far = maxDim * 50;
+  persp.updateProjectionMatrix();
+  controls.target.set(0, 0, 0);
+  controls.minDistance = maxDim * 0.04;
+  controls.maxDistance = maxDim * 8;
+  controls.update();
+}
+
+// exaggeration stops: 1.00x (true scale) .. 5.00x in 0.25x steps; height in ft follows from the multiplier
+const VE_STOPS = [];
+for (let v = 1.0; v <= 5.001; v += 0.25) VE_STOPS.push(+v.toFixed(2));
+const STOPS = VE_STOPS.map((v) => v * TRUE_SCALE_FT);
+
+const tiltEl = document.getElementById('tilt');
+const tiltValueEl = document.getElementById('tilt-value');
+let rowMax = null;   // per heightmap row (south -> north), max normalised height; for the max-height stat under tilt
+
+function currentTiltGrade() { return parseInt(tiltEl.value, 10) * 0.25; }   // percent
+function currentTiltFt() { return currentTiltGrade() / 100 * 40; }        // rise at the north edge over the 40 ft length
+function maxHeightFt(h, tiltFt) {
+  if (!rowMax) return h;
+  let m = 0;
+  for (let j = 0; j < rowMax.length; j++) m = Math.max(m, rowMax[j] * h + tiltFt * (j + 0.5) / rowMax.length);
+  return m;
+}
+function updateStats() {
+  const i = parseInt(slider.value, 10);
+  const h = STOPS[i];
+  const tiltFt = currentTiltFt();
+  const tiltGrade = currentTiltGrade();
+  const ve = VE_STOPS[i];
+  const lo = REF_LOWER * h / REF_H + tiltGrade;
+  const hi = REF_HW * h / REF_H + tiltGrade;
+  sliderValueEl.innerHTML = ve.toFixed(2) + '×' + (i === 0 ? ' <small>true scale</small>' : '');
+  tiltValueEl.textContent = '+' + tiltGrade.toFixed(2) + '%';
+  statHeight.textContent = maxHeightFt(h, tiltFt).toFixed(2) + ' ft';
+  statMin.innerHTML = lo.toFixed(2) + '<span class="unit">%</span>';
+  statMax.innerHTML = hi.toFixed(2) + '<span class="unit">%</span>';
+}
+function applyTilt() {
+  uniforms.uTilt.value = currentTiltFt() * FT;
+  updateStats();
+  requestRender();
+}
+tiltEl.addEventListener('input', applyTilt);
+
+function applySlider(i) {
+  const h = STOPS[i];
+  uniforms.uScale.value = h * FT;
+  updateStats();
+  requestRender();
+}
+slider.addEventListener('input', () => applySlider(parseInt(slider.value, 10)));
+// ---- 3D reference grid: a cage in world space (floor + west wall + north wall), 1 ft and 5 ft spacing ----
+// World axes after the mesh rotation: x east (20 ft), y up, z south (40 ft; north edge at z = -20 ft).
+const GRID_H_FT = 6;                       // cage height, covers the 5.5 ft maximum
+const gridGroup = new THREE.Group();
+gridGroup.visible = false;
+scene.add(gridGroup);
+function gridSegments(spacing) {
+  const pts = [];
+  const X0 = -10, X1 = 10, Z0 = -20, Z1 = 20, Y1 = GRID_H_FT;   // ft
+  const seg = (ax, ay, az, bx, by, bz) => pts.push(ax * FT, ay * FT, az * FT, bx * FT, by * FT, bz * FT);
+  for (let x = X0; x <= X1 + 1e-6; x += spacing) {
+    seg(x, 0, Z0, x, 0, Z1);          // floor, north-south lines
+    seg(x, 0, Z0, x, Y1, Z0);         // north wall, verticals
+  }
+  for (let z = Z0; z <= Z1 + 1e-6; z += spacing) {
+    seg(X0, 0, z, X1, 0, z);          // floor, east-west lines
+    seg(X0, 0, z, X0, Y1, z);         // west wall, verticals
+  }
+  for (let y = 0; y <= Y1 + 1e-6; y += spacing) {
+    seg(X0, y, Z0, X1, y, Z0);        // north wall, horizontals
+    seg(X0, y, Z0, X0, y, Z1);        // west wall, horizontals
+  }
+  const g = new LineSegmentsGeometry();
+  g.setPositions(pts);
+  return g;
+}
+const gridRes = new THREE.Vector2(wrap.clientWidth, wrap.clientHeight);
+const thinMat = new LineMaterial({ color: 0xb0b0b0, linewidth: 1, resolution: gridRes });
+const thickMat = new LineMaterial({ color: 0x6a6a6a, linewidth: 2, resolution: gridRes });
+gridGroup.add(new LineSegments2(gridSegments(1), thinMat));
+gridGroup.add(new LineSegments2(gridSegments(5), thickMat));
+
+const gridToggle = document.getElementById('grid-toggle');
+gridToggle.addEventListener('change', () => { gridGroup.visible = gridToggle.checked; requestRender(); });
+const riversToggle = document.getElementById('rivers-toggle');
+riversToggle.addEventListener('change', () => {
+  uniforms.uRiversOnly.value = riversToggle.checked ? 1 : 0;
+  // river ribbons are viewed from underneath once tilt lifts them above eye level: draw both faces in this mode
+  material.side = riversToggle.checked ? THREE.DoubleSide : THREE.FrontSide;
+  material.needsUpdate = true;
+  requestRender();
+});
+
+window.addEventListener('resize', () => {
+  persp.aspect = wrap.clientWidth / wrap.clientHeight;
+  persp.updateProjectionMatrix();
+  if (camera === ortho) { const z = ortho.zoom; fitOrthoToView(); ortho.zoom = z; ortho.updateProjectionMatrix(); }
+  renderer.setSize(wrap.clientWidth, wrap.clientHeight);
+  composer.setSize(wrap.clientWidth, wrap.clientHeight);
+  sharpenPass.uniforms.resolution.value.set(wrap.clientWidth * renderer.getPixelRatio(), wrap.clientHeight * renderer.getPixelRatio());
+  gridRes.set(wrap.clientWidth, wrap.clientHeight);
+  requestRender();
+});
+
+(async () => {
+  try {
+    const [heightFull, colorTex, waterTex] = await Promise.all([loadHeight(), loadColor(), loadWater()]);
+    uniforms.uWater.value = waterTex;
+    rowMax = new Float32Array(HM_H);
+    for (let j = 0; j < HM_H; j++) { let m = 0; const o = j * HM_W; for (let i = 0; i < HM_W; i++) if (heightFull[o + i] > m) m = heightFull[o + i]; rowMax[j] = m; }
+    const { nx, ny } = gridSize(LEVEL);
+    uniforms.uHeight.value = heightTexture(heightFull, tiltMask(heightFull), LEVEL);
+    uniforms.uTexel.value.set(1 / nx, 1 / ny);
+    material.map = colorTex;
+    material.needsUpdate = true;
+    const mesh = new THREE.Mesh(buildGrid(LEVEL), material);
+    mesh.rotation.x = -Math.PI / 2;   // Blender XY plane -> lie flat, +Y up
+    mesh.frustumCulled = false;
+    scene.add(mesh);
+    frameCamera();
+    setProjection('ortho');
+    applySlider(parseInt(slider.value, 10));
+    loadingEl.hidden = true;
+    requestAnimationFrame(tick);
+  } catch (err) {
+    loadingEl.textContent = 'failed to load terrain data — ' + err.message;
+    console.error(err);
+  }
+})();
+</script>
+</body>
+</html>
