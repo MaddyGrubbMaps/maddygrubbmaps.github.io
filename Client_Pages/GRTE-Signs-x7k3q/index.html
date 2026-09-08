@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>GRTE Trail Signs — Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#777;font-family:"Space Mono",monospace;color:#e8e4de}
+  .bar{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+       padding:10px 14px;background:#2b2b2bee;font-size:11px}
+  select,button,input{font:400 11px "Space Mono",monospace;padding:6px 9px;border:1px solid #e8e4de55;
+       border-radius:7px;background:#3a3a3a;color:#e8e4de}
+  button{cursor:pointer;background:transparent} button:hover{background:#e8e4de22}
+  .bar a{color:#e8e4de;margin-left:auto}
+  .stage{padding:64px 16px 40px;display:flex;justify-content:center}
+  .sign{box-shadow:0 4px 24px rgba(0,0,0,.4);background:#fff;display:block;height:auto}
+  .nets{display:none;padding:64px 16px 40px;max-width:1100px;margin:0 auto}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+  .card{background:#2b2b2b;border-radius:8px;overflow:hidden}
+  .card img{display:block;width:100%}
+  .card .cap{padding:6px 8px;font-size:11px} .card .cap span{opacity:.6}
+  body.nets-view .stage{display:none} body.nets-view .nets{display:block}
+  .hint{font-size:10px;opacity:.6}
+</style>
+</head>
+<body>
+<div class="bar">
+  <button id="prev">&lsaquo;</button>
+  <select id="sel"></select>
+  <button id="next">&rsaquo;</button>
+  <input id="q" placeholder="search…" style="width:160px">
+  <button id="zm">&minus;</button><button id="zfit">fit</button><button id="zp">+</button>
+  <button id="toggle">network maps</button>
+  <span class="hint" id="meta"></span>
+</div>
+<div class="stage"><img class="sign" id="img" alt=""></div>
+<div class="nets"><div class="grid" id="grid"></div></div>
+<script>
+let IDX, list=[], cur=0, z=1;
+const $=id=>document.getElementById(id);
+fetch("signs_index.json").then(r=>r.json()).then(d=>{
+  IDX=d; list=d.signs; const sel=$("sel");
+  for(const s of list){ const o=document.createElement("option"); o.value=s.key; o.textContent=(s.label||s.title).toLowerCase(); sel.appendChild(o); }
+  const g=$("grid");
+  for(const [c,name] of Object.entries(d.networks)){
+    const zones=[...new Set(list.filter(s=>s.network===c).map(s=>s.sar.split("-")[0]))];
+    const card=document.createElement("div"); card.className="card";
+    card.innerHTML=`<img src="nets/${c}.png" alt="${name}"><div class="cap"><b>${name}</b><br><span>${zones.join(" · ")}</span></div>`;
+    g.appendChild(card);
+  }
+  const h=(location.hash||"").slice(1); const i=list.findIndex(s=>s.key===h);
+  show(i>=0?i:0);
+});
+function show(i){
+  cur=(i+list.length)%list.length; const s=list[cur];
+  $("sel").value=s.key; $("img").src=`signs/${s.key}.png`;
+  $("meta").textContent=`${s.sar} · ${s.network_name} · ${s.dir==="A"?"start end":"far end"}`;
+  location.hash=s.key; document.body.classList.remove("nets-view"); apply();
+}
+function apply(){ $("img").style.width=(307.2*z)+"px"; }
+function fit(){ z=Math.max(0.3,(innerHeight-90)/1920); apply(); scrollTo(0,0); }
+$("sel").onchange=e=>show(list.findIndex(s=>s.key===e.target.value));
+$("prev").onclick=()=>show(cur-1); $("next").onclick=()=>show(cur+1);
+$("zm").onclick=()=>{z=Math.max(.3,z-.25);apply();}; $("zp").onclick=()=>{z=Math.min(4,z+.25);apply();}; $("zfit").onclick=fit;
+$("toggle").onclick=()=>document.body.classList.toggle("nets-view");
+$("q").oninput=e=>{ const f=e.target.value.toLowerCase().trim(); if(!f) return;
+  const i=list.findIndex(s=>(s.label||s.title).toLowerCase().includes(f)); if(i>=0) show(i); };
+addEventListener("keydown",e=>{ if(e.target.tagName==="INPUT") return; if(e.key==="ArrowLeft") show(cur-1); if(e.key==="ArrowRight") show(cur+1); });
+addEventListener("hashchange",()=>{ const i=list.findIndex(s=>s.key===location.hash.slice(1)); if(i>=0&&i!==cur) show(i); });
+addEventListener("load",fit);
+</script>
+</body>
+</html>

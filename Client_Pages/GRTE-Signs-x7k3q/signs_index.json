@@ -1,0 +1,951 @@
+{
+ "signs": [
+  {
+   "key": "42A",
+   "label": "Bug Canyon \u00b7 42A",
+   "title": "Bug Canyon Trail",
+   "sar": "BCU-001",
+   "dir": "A",
+   "seg_id": 42,
+   "network": "grandview",
+   "network_name": "Grandview Point"
+  },
+  {
+   "key": "42B",
+   "label": "Bug Canyon \u00b7 42B",
+   "title": "Bug Canyon Trail",
+   "sar": "BCU-002",
+   "dir": "B",
+   "seg_id": 42,
+   "network": "grandview",
+   "network_name": "Grandview Point"
+  },
+  {
+   "key": "330A",
+   "label": "Bug Canyon \u00b7 330A",
+   "title": "Bug Canyon Trail",
+   "sar": "BCU-003",
+   "dir": "A",
+   "seg_id": 330,
+   "network": "grandview",
+   "network_name": "Grandview Point"
+  },
+  {
+   "key": "330B",
+   "label": "Bug Canyon \u00b7 330B",
+   "title": "Bug Canyon Trail",
+   "sar": "BCU-004",
+   "dir": "B",
+   "seg_id": 330,
+   "network": "grandview",
+   "network_name": "Grandview Point"
+  },
+  {
+   "key": "45A",
+   "label": "Christian Pond Loop \u00b7 45A",
+   "title": "Christian Pond Loop Trail",
+   "sar": "CPL-001",
+   "dir": "A",
+   "seg_id": 45,
+   "network": "lodge",
+   "network_name": "Jackson Lake Lodge"
+  },
+  {
+   "key": "45B",
+   "label": "Christian Pond Loop \u00b7 45B",
+   "title": "Christian Pond Loop Trail",
+   "sar": "CPL-002",
+   "dir": "B",
+   "seg_id": 45,
+   "network": "lodge",
+   "network_name": "Jackson Lake Lodge"
+  },
+  {
+   "key": "149A",
+   "label": "Christian Pond Loop \u00b7 149A",
+   "title": "Christian Pond Loop Trail",
+   "sar": "CPL-003",
+   "dir": "A",
+   "seg_id": 149,
+   "network": "lodge",
+   "network_name": "Jackson Lake Lodge"
+  },
+  {
+   "key": "149B",
+   "label": "Christian Pond Loop \u00b7 149B",
+   "title": "Christian Pond Loop Trail",
+   "sar": "CPL-004",
+   "dir": "B",
+   "seg_id": 149,
+   "network": "lodge",
+   "network_name": "Jackson Lake Lodge"
+  },
+  {
+   "key": "150A",
+   "label": "Christian Pond Loop \u00b7 150A",
+   "title": "Christian Pond Loop Trail",
+   "sar": "CPL-005",
+   "dir": "A",
+   "seg_id": 150,
+   "network": "lodge",
+   "network_name": "Jackson Lake Lodge"
+  },
+  {
+   "key": "150B",
+   "label": "Christian Pond Loop \u00b7 150B",
+   "title": "Christian Pond Loop Trail",
+   "sar": "CPL-006",
+   "dir": "B",
+   "seg_id": 150,
+   "network": "lodge",
+   "network_name": "Jackson Lake Lodge"
+  },
+  {
+   "key": "49A",
+   "label": "Christian Pond Spur \u00b7 49A",
+   "title": "Christian Pond Spur Trail",
+   "sar": "CPS-001",
+   "dir": "A",
+   "seg_id": 49,
+   "network": "lodge",
+   "network_name": "Jackson Lake Lodge"
+  },
+  {
+   "key": "49B",
+   "label": "Christian Pond Spur \u00b7 49B",
+   "title": "Christian Pond Spur Trail",
+   "sar": "CPS-002",
+   "dir": "B",
+   "seg_id": 49,
+   "network": "lodge",
+   "network_name": "Jackson Lake Lodge"
+  },
+  {
+   "key": "337A",
+   "label": "Christian Pond to Lookout Rock Cutoff \u00b7 337A",
+   "title": "Christian Pond to Lookout Rock Cutoff Trail",
+   "sar": "CPT-001",
+   "dir": "A",
+   "seg_id": 337,
+   "network": "lodge",
+   "network_name": "Jackson Lake Lodge"
+  },
+  {
+   "key": "337B",
+   "label": "Christian Pond to Lookout Rock Cutoff \u00b7 337B",
+   "title": "Christian Pond to Lookout Rock Cutoff Trail",
+   "sar": "CPT-002",
+   "dir": "B",
+   "seg_id": 337,
+   "network": "lodge",
+   "network_name": "Jackson Lake Lodge"
+  },
+  {
+   "key": "30A",
+   "label": "Emma Matilda Loop \u00b7 30A",
+   "title": "Emma Matilda Loop Trail",
+   "sar": "EML-001",
+   "dir": "A",
+   "seg_id": 30,
+   "network": "two_ocean",
+   "network_name": "Two Ocean / Emma Matilda"
+  },
+  {
+   "key": "30B",
+   "label": "Emma Matilda Loop \u00b7 30B",
+   "title": "Emma Matilda Loop Trail",
+   "sar": "EML-002",
+   "dir": "B",
+   "seg_id": 30,
+   "network": "two_ocean",
+   "network_name": "Two Ocean / Emma Matilda"
+  },
+  {
+   "key": "47A",
+   "label": "Emma Matilda Loop \u00b7 47A",
+   "title": "Emma Matilda Loop Trail",
+   "sar": "EML-003",
+   "dir": "A",
+   "seg_id": 47,
+   "network": "two_ocean",
+   "network_name": "Two Ocean / Emma Matilda"
+  },
+  {
+   "key": "47B",
+   "label": "Emma Matilda Loop \u00b7 47B",
+   "title": "Emma Matilda Loop Trail",
+   "sar": "EML-004",
+   "dir": "B",
+   "seg_id": 47,
+   "network": "two_ocean",
+   "network_name": "Two Ocean / Emma Matilda"
+  },
+  {
+   "key": "145A",
+   "label": "Emma Matilda Loop \u00b7 145A",
+   "title": "Emma Matilda Loop Trail",
+   "sar": "EML-005",
+   "dir": "A",
+   "seg_id": 145,
+   "network": "two_ocean",
+   "network_name": "Two Ocean / Emma Matilda"
+  },
+  {
+   "key": "145B",
+   "label": "Emma Matilda Loop \u00b7 145B",
+   "title": "Emma Matilda Loop Trail",
+   "sar": "EML-006",
+   "dir": "B",
+   "seg_id": 145,
+   "network": "two_ocean",
+   "network_name": "Two Ocean / Emma Matilda"
+  },
+  {
+   "key": "146A",
+   "label": "Emma Matilda Loop \u00b7 146A",
+   "title": "Emma Matilda Loop Trail",
+   "sar": "EML-007",
+   "dir": "A",
+   "seg_id": 146,
+   "network": "two_ocean",
+   "network_name": "Two Ocean / Emma Matilda"
+  },
+  {
+   "key": "146B",
+   "label": "Emma Matilda Loop \u00b7 146B",
+   "title": "Emma Matilda Loop Trail",
+   "sar": "EML-008",
+   "dir": "B",
+   "seg_id": 146,
+   "network": "two_ocean",
+   "network_name": "Two Ocean / Emma Matilda"
+  },
+  {
+   "key": "147A",
+   "label": "Emma Matilda Loop \u00b7 147A",
+   "title": "Emma Matilda Loop Trail",
+   "sar": "EML-009",
+   "dir": "A",
+   "seg_id": 147,
+   "network": "two_ocean",
+   "network_name": "Two Ocean / Emma Matilda"
+  },
+  {
+   "key": "147B",
+   "label": "Emma Matilda Loop \u00b7 147B",
+   "title": "Emma Matilda Loop Trail",
+   "sar": "EML-010",
+   "dir": "B",
+   "seg_id": 147,
+   "network": "two_ocean",
+   "network_name": "Two Ocean / Emma Matilda"
+  },
+  {
+   "key": "183A",
+   "label": "Emma Matilda Loop \u00b7 183A",
+   "title": "Emma Matilda Loop Trail",
+   "sar": "EML-011",
+   "dir": "A",
+   "seg_id": 183,
+   "network": "two_ocean",
+   "network_name": "Two Ocean / Emma Matilda"
+  },
+  {
+   "key": "183B",
+   "label": "Emma Matilda Loop \u00b7 183B",
+   "title": "Emma Matilda Loop Trail",
+   "sar": "EML-012",
+   "dir": "B",
+   "seg_id": 183,
+   "network": "two_ocean",
+   "network_name": "Two Ocean / Emma Matilda"
+  },
+  {
+   "key": "184A",
+   "label": "Emma Matilda Loop \u00b7 184A",
+   "title": "Emma Matilda Loop Trail",
+   "sar": "EML-013",
+   "dir": "A",
+   "seg_id": 184,
+   "network": "two_ocean",
+   "network_name": "Two Ocean / Emma Matilda"
+  },
+  {
+   "key": "184B",
+   "label": "Emma Matilda Loop \u00b7 184B",
+   "title": "Emma Matilda Loop Trail",
+   "sar": "EML-014",
+   "dir": "B",
+   "seg_id": 184,
+   "network": "two_ocean",
+   "network_name": "Two Ocean / Emma Matilda"
+  },
+  {
+   "key": "178A",
+   "label": "Grandview Point \u00b7 178A",
+   "title": "Grandview Point Trail",
+   "sar": "GPR-001",
+   "dir": "A",
+   "seg_id": 178,
+   "network": "grandview",
+   "network_name": "Grandview Point"
+  },
+  {
+   "key": "178B",
+   "label": "Grandview Point \u00b7 178B",
+   "title": "Grandview Point Trail",
+   "sar": "GPR-002",
+   "dir": "B",
+   "seg_id": 178,
+   "network": "grandview",
+   "network_name": "Grandview Point"
+  },
+  {
+   "key": "180A",
+   "label": "Grandview Point \u00b7 180A",
+   "title": "Grandview Point Trail",
+   "sar": "GPR-003",
+   "dir": "A",
+   "seg_id": 180,
+   "network": "grandview",
+   "network_name": "Grandview Point"
+  },
+  {
+   "key": "180B",
+   "label": "Grandview Point \u00b7 180B",
+   "title": "Grandview Point Trail",
+   "sar": "GPR-004",
+   "dir": "B",
+   "seg_id": 180,
+   "network": "grandview",
+   "network_name": "Grandview Point"
+  },
+  {
+   "key": "306A",
+   "label": "Grandview Point \u00b7 306A",
+   "title": "Grandview Point Trail",
+   "sar": "GPR-005",
+   "dir": "A",
+   "seg_id": 306,
+   "network": "grandview",
+   "network_name": "Grandview Point"
+  },
+  {
+   "key": "306B",
+   "label": "Grandview Point \u00b7 306B",
+   "title": "Grandview Point Trail",
+   "sar": "GPR-006",
+   "dir": "B",
+   "seg_id": 306,
+   "network": "grandview",
+   "network_name": "Grandview Point"
+  },
+  {
+   "key": "179A",
+   "label": "Grandview Point North Spur \u00b7 179A",
+   "title": "Grandview Point North Spur Trail",
+   "sar": "GPN-001",
+   "dir": "A",
+   "seg_id": 179,
+   "network": "grandview",
+   "network_name": "Grandview Point"
+  },
+  {
+   "key": "179B",
+   "label": "Grandview Point North Spur \u00b7 179B",
+   "title": "Grandview Point North Spur Trail",
+   "sar": "GPN-002",
+   "dir": "B",
+   "seg_id": 179,
+   "network": "grandview",
+   "network_name": "Grandview Point"
+  },
+  {
+   "key": "152A",
+   "label": "Hermitage Point \u00b7 152A",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-001",
+   "dir": "A",
+   "seg_id": 152,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "152B",
+   "label": "Hermitage Point \u00b7 152B",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-002",
+   "dir": "B",
+   "seg_id": 152,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "153A",
+   "label": "Hermitage Point \u00b7 153A",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-003",
+   "dir": "A",
+   "seg_id": 153,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "153B",
+   "label": "Hermitage Point \u00b7 153B",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-004",
+   "dir": "B",
+   "seg_id": 153,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "154A",
+   "label": "Hermitage Point \u00b7 154A",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-005",
+   "dir": "A",
+   "seg_id": 154,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "154B",
+   "label": "Hermitage Point \u00b7 154B",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-006",
+   "dir": "B",
+   "seg_id": 154,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "155A",
+   "label": "Hermitage Point \u00b7 155A",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-007",
+   "dir": "A",
+   "seg_id": 155,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "155B",
+   "label": "Hermitage Point \u00b7 155B",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-008",
+   "dir": "B",
+   "seg_id": 155,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "156A",
+   "label": "Hermitage Point \u00b7 156A",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-009",
+   "dir": "A",
+   "seg_id": 156,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "156B",
+   "label": "Hermitage Point \u00b7 156B",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-010",
+   "dir": "B",
+   "seg_id": 156,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "160A",
+   "label": "Hermitage Point \u00b7 160A",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-011",
+   "dir": "A",
+   "seg_id": 160,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "160B",
+   "label": "Hermitage Point \u00b7 160B",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-012",
+   "dir": "B",
+   "seg_id": 160,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "161A",
+   "label": "Hermitage Point \u00b7 161A",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-013",
+   "dir": "A",
+   "seg_id": 161,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "161B",
+   "label": "Hermitage Point \u00b7 161B",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-014",
+   "dir": "B",
+   "seg_id": 161,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "162A",
+   "label": "Hermitage Point \u00b7 162A",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-015",
+   "dir": "A",
+   "seg_id": 162,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "162B",
+   "label": "Hermitage Point \u00b7 162B",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-016",
+   "dir": "B",
+   "seg_id": 162,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "163A",
+   "label": "Hermitage Point \u00b7 163A",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-017",
+   "dir": "A",
+   "seg_id": 163,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "163B",
+   "label": "Hermitage Point \u00b7 163B",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-018",
+   "dir": "B",
+   "seg_id": 163,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "164A",
+   "label": "Hermitage Point \u00b7 164A",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-019",
+   "dir": "A",
+   "seg_id": 164,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "164B",
+   "label": "Hermitage Point \u00b7 164B",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-020",
+   "dir": "B",
+   "seg_id": 164,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "165A",
+   "label": "Hermitage Point \u00b7 165A",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-021",
+   "dir": "A",
+   "seg_id": 165,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "165B",
+   "label": "Hermitage Point \u00b7 165B",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-022",
+   "dir": "B",
+   "seg_id": 165,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "166A",
+   "label": "Hermitage Point \u00b7 166A",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-023",
+   "dir": "A",
+   "seg_id": 166,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "166B",
+   "label": "Hermitage Point \u00b7 166B",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-024",
+   "dir": "B",
+   "seg_id": 166,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "169A",
+   "label": "Hermitage Point \u00b7 169A",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-025",
+   "dir": "A",
+   "seg_id": 169,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "169B",
+   "label": "Hermitage Point \u00b7 169B",
+   "title": "Hermitage Point Trail",
+   "sar": "HPE-026",
+   "dir": "B",
+   "seg_id": 169,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "52A",
+   "label": "Hermitage Point Cutoff \u00b7 52A",
+   "title": "Hermitage Point Cutoff Trail",
+   "sar": "HPC-001",
+   "dir": "A",
+   "seg_id": 52,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "52B",
+   "label": "Hermitage Point Cutoff \u00b7 52B",
+   "title": "Hermitage Point Cutoff Trail",
+   "sar": "HPC-002",
+   "dir": "B",
+   "seg_id": 52,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "62A",
+   "label": "Jenny Lake Horse \u00b7 62A",
+   "title": "Jenny Lake Horse Trail",
+   "sar": "JLH-001",
+   "dir": "A",
+   "seg_id": 62,
+   "network": "jenny_lake",
+   "network_name": "Jenny Lake"
+  },
+  {
+   "key": "62B",
+   "label": "Jenny Lake Horse \u00b7 62B",
+   "title": "Jenny Lake Horse Trail",
+   "sar": "JLH-002",
+   "dir": "B",
+   "seg_id": 62,
+   "network": "jenny_lake",
+   "network_name": "Jenny Lake"
+  },
+  {
+   "key": "63A",
+   "label": "Jenny Lake Horse Bypass \u00b7 63A",
+   "title": "Jenny Lake Horse Bypass Trail",
+   "sar": "JLH-003",
+   "dir": "A",
+   "seg_id": 63,
+   "network": "jenny_lake",
+   "network_name": "Jenny Lake"
+  },
+  {
+   "key": "63B",
+   "label": "Jenny Lake Horse Bypass \u00b7 63B",
+   "title": "Jenny Lake Horse Bypass Trail",
+   "sar": "JLH-004",
+   "dir": "B",
+   "seg_id": 63,
+   "network": "jenny_lake",
+   "network_name": "Jenny Lake"
+  },
+  {
+   "key": "108A",
+   "label": "Jenny Lake Loop \u00b7 108A",
+   "title": "Jenny Lake Loop Trail",
+   "sar": "JLL-001",
+   "dir": "A",
+   "seg_id": 108,
+   "network": "jenny_lake",
+   "network_name": "Jenny Lake"
+  },
+  {
+   "key": "108B",
+   "label": "Jenny Lake Loop \u00b7 108B",
+   "title": "Jenny Lake Loop Trail",
+   "sar": "JLL-002",
+   "dir": "B",
+   "seg_id": 108,
+   "network": "jenny_lake",
+   "network_name": "Jenny Lake"
+  },
+  {
+   "key": "190A",
+   "label": "Jenny Lake Loop \u00b7 190A",
+   "title": "Jenny Lake Loop Trail",
+   "sar": "JLL-003",
+   "dir": "A",
+   "seg_id": 190,
+   "network": "jenny_lake",
+   "network_name": "Jenny Lake"
+  },
+  {
+   "key": "190B",
+   "label": "Jenny Lake Loop \u00b7 190B",
+   "title": "Jenny Lake Loop Trail",
+   "sar": "JLL-004",
+   "dir": "B",
+   "seg_id": 190,
+   "network": "jenny_lake",
+   "network_name": "Jenny Lake"
+  },
+  {
+   "key": "191A",
+   "label": "Jenny Lake Loop \u00b7 191A",
+   "title": "Jenny Lake Loop Trail",
+   "sar": "JLL-005",
+   "dir": "A",
+   "seg_id": 191,
+   "network": "jenny_lake",
+   "network_name": "Jenny Lake"
+  },
+  {
+   "key": "191B",
+   "label": "Jenny Lake Loop \u00b7 191B",
+   "title": "Jenny Lake Loop Trail",
+   "sar": "JLL-006",
+   "dir": "B",
+   "seg_id": 191,
+   "network": "jenny_lake",
+   "network_name": "Jenny Lake"
+  },
+  {
+   "key": "192A",
+   "label": "Jenny Lake Loop \u00b7 192A",
+   "title": "Jenny Lake Loop Trail",
+   "sar": "JLL-007",
+   "dir": "A",
+   "seg_id": 192,
+   "network": "jenny_lake",
+   "network_name": "Jenny Lake"
+  },
+  {
+   "key": "192B",
+   "label": "Jenny Lake Loop \u00b7 192B",
+   "title": "Jenny Lake Loop Trail",
+   "sar": "JLL-008",
+   "dir": "B",
+   "seg_id": 192,
+   "network": "jenny_lake",
+   "network_name": "Jenny Lake"
+  },
+  {
+   "key": "200A",
+   "label": "Jenny Lake Loop \u00b7 200A",
+   "title": "Jenny Lake Loop Trail",
+   "sar": "JLL-009",
+   "dir": "A",
+   "seg_id": 200,
+   "network": "jenny_lake",
+   "network_name": "Jenny Lake"
+  },
+  {
+   "key": "200B",
+   "label": "Jenny Lake Loop \u00b7 200B",
+   "title": "Jenny Lake Loop Trail",
+   "sar": "JLL-010",
+   "dir": "B",
+   "seg_id": 200,
+   "network": "jenny_lake",
+   "network_name": "Jenny Lake"
+  },
+  {
+   "key": "46A",
+   "label": "Lookout Rock Cutoff \u00b7 46A",
+   "title": "Lookout Rock Cutoff Trail",
+   "sar": "LRC-001",
+   "dir": "A",
+   "seg_id": 46,
+   "network": "lodge",
+   "network_name": "Jackson Lake Lodge"
+  },
+  {
+   "key": "46B",
+   "label": "Lookout Rock Cutoff \u00b7 46B",
+   "title": "Lookout Rock Cutoff Trail",
+   "sar": "LRC-002",
+   "dir": "B",
+   "seg_id": 46,
+   "network": "lodge",
+   "network_name": "Jackson Lake Lodge"
+  },
+  {
+   "key": "107A",
+   "label": "Moose Pond \u00b7 107A",
+   "title": "Moose Pond Trail",
+   "sar": "MPL-001",
+   "dir": "A",
+   "seg_id": 107,
+   "network": "jenny_lake",
+   "network_name": "Jenny Lake"
+  },
+  {
+   "key": "107B",
+   "label": "Moose Pond \u00b7 107B",
+   "title": "Moose Pond Trail",
+   "sar": "MPL-002",
+   "dir": "B",
+   "seg_id": 107,
+   "network": "jenny_lake",
+   "network_name": "Jenny Lake"
+  },
+  {
+   "key": "148A",
+   "label": "Oxbow Bend \u00b7 148A",
+   "title": "Oxbow Bend Trail",
+   "sar": "BXL-001",
+   "dir": "A",
+   "seg_id": 148,
+   "network": "lodge",
+   "network_name": "Jackson Lake Lodge"
+  },
+  {
+   "key": "148B",
+   "label": "Oxbow Bend \u00b7 148B",
+   "title": "Oxbow Bend Trail",
+   "sar": "BXL-002",
+   "dir": "B",
+   "seg_id": 148,
+   "network": "lodge",
+   "network_name": "Jackson Lake Lodge"
+  },
+  {
+   "key": "338A",
+   "label": "Swan Lake \u00b7 338A",
+   "title": "Swan Lake Trail",
+   "sar": "SLW-001",
+   "dir": "A",
+   "seg_id": 338,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "338B",
+   "label": "Swan Lake \u00b7 338B",
+   "title": "Swan Lake Trail",
+   "sar": "SLW-002",
+   "dir": "B",
+   "seg_id": 338,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "53A",
+   "label": "Swan Lake Cutoff \u00b7 53A",
+   "title": "Swan Lake Cutoff Trail",
+   "sar": "SLC-001",
+   "dir": "A",
+   "seg_id": 53,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "53B",
+   "label": "Swan Lake Cutoff \u00b7 53B",
+   "title": "Swan Lake Cutoff Trail",
+   "sar": "SLC-002",
+   "dir": "B",
+   "seg_id": 53,
+   "network": "hermitage_point",
+   "network_name": "Hermitage Point"
+  },
+  {
+   "key": "43A",
+   "label": "Two Ocean - Emma Matilda Cutoff \u00b7 43A",
+   "title": "Two Ocean - Emma Matilda Cutoff Trail",
+   "sar": "TEL-001",
+   "dir": "A",
+   "seg_id": 43,
+   "network": "two_ocean",
+   "network_name": "Two Ocean / Emma Matilda"
+  },
+  {
+   "key": "43B",
+   "label": "Two Ocean - Emma Matilda Cutoff \u00b7 43B",
+   "title": "Two Ocean - Emma Matilda Cutoff Trail",
+   "sar": "TEL-002",
+   "dir": "B",
+   "seg_id": 43,
+   "network": "two_ocean",
+   "network_name": "Two Ocean / Emma Matilda"
+  },
+  {
+   "key": "7A",
+   "label": "Two Ocean Lake \u00b7 7A",
+   "title": "Two Ocean Lake Trail",
+   "sar": "TLL-001",
+   "dir": "A",
+   "seg_id": 7,
+   "network": "two_ocean",
+   "network_name": "Two Ocean / Emma Matilda"
+  },
+  {
+   "key": "7B",
+   "label": "Two Ocean Lake \u00b7 7B",
+   "title": "Two Ocean Lake Trail",
+   "sar": "TLL-002",
+   "dir": "B",
+   "seg_id": 7,
+   "network": "two_ocean",
+   "network_name": "Two Ocean / Emma Matilda"
+  },
+  {
+   "key": "182A",
+   "label": "Two Ocean Lake \u00b7 182A",
+   "title": "Two Ocean Lake Trail",
+   "sar": "TLL-003",
+   "dir": "A",
+   "seg_id": 182,
+   "network": "two_ocean",
+   "network_name": "Two Ocean / Emma Matilda"
+  },
+  {
+   "key": "182B",
+   "label": "Two Ocean Lake \u00b7 182B",
+   "title": "Two Ocean Lake Trail",
+   "sar": "TLL-004",
+   "dir": "B",
+   "seg_id": 182,
+   "network": "two_ocean",
+   "network_name": "Two Ocean / Emma Matilda"
+  }
+ ],
+ "networks": {
+  "grandview": "Grandview Point",
+  "hermitage_point": "Hermitage Point",
+  "jenny_lake": "Jenny Lake",
+  "lodge": "Jackson Lake Lodge",
+  "two_ocean": "Two Ocean / Emma Matilda"
+ }
+}
