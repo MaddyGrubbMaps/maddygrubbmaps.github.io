@@ -21,8 +21,16 @@
   .nets{display:none;padding:64px 16px 40px;max-width:1100px;margin:0 auto}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
   .card{background:#2b2b2b;border-radius:8px;overflow:hidden}
+  .card .mapwrap{position:relative}
   .card img{display:block;width:100%}
+  .card svg{position:absolute;inset:0;width:100%;height:100%}
+  .card svg path{fill:none;stroke:#C1272D;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;cursor:pointer}
+  .card svg path.hit{stroke:#000;stroke-opacity:.001;stroke-width:14}
+  .card svg path.hl{stroke:#ECAA00;stroke-width:4}
   .card .cap{padding:6px 8px;font-size:11px} .card .cap span{opacity:.6}
+  .pop{position:fixed;z-index:20;background:#2b2b2b;border:1px solid #e8e4de55;border-radius:8px;padding:8px 10px;font-size:11px;display:none}
+  .pop b{display:block;margin-bottom:6px} .pop a{display:inline-block;margin:2px 6px 2px 0;padding:5px 10px;background:#8E4820;color:#fff;text-decoration:none;border-radius:6px}
+  .nets .hint{display:block;margin:0 0 10px}
   body.nets-view .stage{display:none} body.nets-view .nets{display:block}
   .hint{font-size:10px;opacity:.6}
 </style>
@@ -38,20 +46,39 @@
   <span class="hint" id="meta"></span>
 </div>
 <div class="stage"><img class="sign" id="img" alt=""></div>
-<div class="nets"><div class="grid" id="grid"></div></div>
+<div class="nets"><span class="hint">click a red segment to open its signs</span><div class="grid" id="grid"></div></div>
+<div class="pop" id="pop"></div>
 <script>
 let IDX, list=[], cur=0, z=1;
 const $=id=>document.getElementById(id);
-fetch("signs_index.json").then(r=>r.json()).then(d=>{
+const my=v=>Math.log(Math.tan(Math.PI/4+v*Math.PI/360));
+Promise.all([fetch("signs_index.json").then(r=>r.json()), fetch("seg_lines.geojson").then(r=>r.json())]).then(([d,sl])=>{
   IDX=d; list=d.signs; const sel=$("sel");
   for(const s of list){ const o=document.createElement("option"); o.value=s.key; o.textContent=(s.label||s.title).toLowerCase(); sel.appendChild(o); }
-  const g=$("grid");
-  for(const [c,name] of Object.entries(d.networks)){
+  const g=$("grid"), pop=$("pop");
+  for(const [c,n] of Object.entries(d.networks)){
     const zones=[...new Set(list.filter(s=>s.network===c).map(s=>s.sar.split("-")[0]))];
     const card=document.createElement("div"); card.className="card";
-    card.innerHTML=`<img src="nets/${c}.png" alt="${name}"><div class="cap"><b>${name}</b><br><span>${zones.join(" · ")}</span></div>`;
+    let paths="";
+    if(n.rendered){ const [[w0,s0],[e0,n0]]=n.rendered;
+      const px=(x,y)=>[(x-w0)/(e0-w0)*1000,(my(n0)-my(y))/(my(n0)-my(s0))*1000];
+      for(const f of sl.features){ const sid=f.properties.seg_id; if(!n.segs.includes(sid)) continue;
+        const parts=f.geometry.type==="MultiLineString"?f.geometry.coordinates:[f.geometry.coordinates];
+        let dd=""; for(const part of parts) dd+="M"+part.map(([x,y])=>{const [a,b]=px(x,y);return a.toFixed(1)+","+b.toFixed(1);}).join("L");
+        paths+=`<path class="hit" data-seg="${sid}" d="${dd}"/><path data-seg="${sid}" d="${dd}"/>`; } }
+    card.innerHTML=`<div class="mapwrap"><img src="nets/${c}.png" alt="${n.name}"><svg viewBox="0 0 1000 1000" preserveAspectRatio="none">${paths}</svg></div>
+      <div class="cap"><b>${n.name}</b><br><span>${zones.join(" · ")}</span></div>`;
     g.appendChild(card);
+    card.querySelectorAll("path").forEach(pth=>{
+      const sid=pth.dataset.seg, vis=card.querySelector(`path:not(.hit)[data-seg="${sid}"]`);
+      pth.onmouseenter=()=>vis.classList.add("hl"); pth.onmouseleave=()=>vis.classList.remove("hl");
+      pth.onclick=e=>{ e.stopPropagation(); const ss=list.filter(s=>String(s.seg_id)===sid);
+        pop.innerHTML=`<b>${ss[0].title} · ${sid}</b>`+ss.map(s=>`<a href="#${s.key}" data-key="${s.key}">${s.sar} (${s.dir})</a>`).join("");
+        pop.style.left=Math.min(e.clientX+8,innerWidth-220)+"px"; pop.style.top=(e.clientY+8)+"px"; pop.style.display="block";
+        pop.querySelectorAll("a").forEach(a=>a.onclick=ev=>{ev.preventDefault(); pop.style.display="none"; show(list.findIndex(s=>s.key===a.dataset.key));}); };
+    });
   }
+  addEventListener("click",()=>{pop.style.display="none";});
   const h=(location.hash||"").slice(1); const i=list.findIndex(s=>s.key===h);
   show(i>=0?i:0);
 });
@@ -61,8 +88,11 @@ function show(i){
   $("meta").textContent=`${s.sar} · ${s.network_name} · ${s.dir==="A"?"start end":"far end"}`;
   location.hash=s.key; document.body.classList.remove("nets-view"); apply();
 }
-function apply(){ $("img").style.width=(307.2*z)+"px"; }
-function fit(){ z=Math.max(0.3,(innerHeight-90)/1920); apply(); scrollTo(0,0); }
+function barH(){ return document.querySelector(".bar").offsetHeight; }
+function apply(){ $("img").style.width=(307.2*z)+"px"; document.querySelector(".stage").style.paddingTop=(barH()+14)+"px"; document.querySelector(".nets").style.paddingTop=(barH()+14)+"px"; }
+function fit(){ const img=$("img"); const ratio=img.naturalHeight&&img.naturalWidth?img.naturalHeight/img.naturalWidth:6.25;
+  z=Math.max(0.3,(innerHeight-barH()-28)/(307.2*ratio)); apply(); scrollTo(0,0); }
+$("img").addEventListener("load",fit);
 $("sel").onchange=e=>show(list.findIndex(s=>s.key===e.target.value));
 $("prev").onclick=()=>show(cur-1); $("next").onclick=()=>show(cur+1);
 $("zm").onclick=()=>{z=Math.max(.3,z-.25);apply();}; $("zp").onclick=()=>{z=Math.min(4,z+.25);apply();}; $("zfit").onclick=fit;
@@ -71,7 +101,7 @@ $("q").oninput=e=>{ const f=e.target.value.toLowerCase().trim(); if(!f) return;
   const i=list.findIndex(s=>(s.label||s.title).toLowerCase().includes(f)); if(i>=0) show(i); };
 addEventListener("keydown",e=>{ if(e.target.tagName==="INPUT") return; if(e.key==="ArrowLeft") show(cur-1); if(e.key==="ArrowRight") show(cur+1); });
 addEventListener("hashchange",()=>{ const i=list.findIndex(s=>s.key===location.hash.slice(1)); if(i>=0&&i!==cur) show(i); });
-addEventListener("load",fit);
+addEventListener("resize",apply);
 </script>
 </body>
 </html>
