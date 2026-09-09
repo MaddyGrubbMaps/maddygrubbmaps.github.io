@@ -151,10 +151,10 @@
     </div>
 
     <div>
-      <div class="label">River lift</div>
-      <div id="river-value">+0.00 ft</div>
-      <input type="range" id="river" min="0" max="20" step="1" value="0" aria-label="River lift">
-      <div id="range-caps"><span>0 ft (on terrain)</span><span>+1.00 ft</span></div>
+      <div class="label">River exaggeration</div>
+      <div id="river-value">1.00×</div>
+      <input type="range" id="river" min="0" max="16" step="1" value="0" aria-label="River exaggeration">
+      <div id="range-caps"><span>1.00× (on terrain)</span><span>5.00×</span></div>
     </div>
 
     <div id="stats">
@@ -435,7 +435,7 @@ const uniforms = {
   uTilt: { value: 2.0 * FT },      // rise at the north (headwater) edge, metres; 0 at the south (mouth) edge
   uWater: { value: null },     // water mask (white = water) from the water-only artboard export
   uRiversOnly: { value: 0 },
-  uRiverLift: { value: 0 },    // metres: rivers stand this far above the terrain (feathered at the bank)
+  uRiverK: { value: 1.0 },     // extra exaggeration factor on water texels (1 = rivers sit on the terrain)
 };
 const material = new THREE.MeshStandardMaterial({ roughness: 1.0, metalness: 0.0, side: THREE.FrontSide });
 material.onBeforeCompile = (shader) => {
@@ -449,13 +449,14 @@ material.onBeforeCompile = (shader) => {
       uniform vec2 uSize;
       uniform float uTilt;
       uniform sampler2D uWater;
-      uniform float uRiverLift;
+      uniform float uRiverK;
       // tilt applies to the raised watershed only (heightmap > 0); the paper base stays flat;
       // river lift raises water texels by a constant height, feathered across the bank
       float hAt(vec2 uv) {
         vec2 hm = texture2D(uHeight, uv).rg;      // r = height, g = tilt mask feathered inward from the watershed edge
         float w = smoothstep(0.25, 0.75, texture2D(uWater, uv).r);
-        return hm.r * uScale + uTilt * uv.y * hm.g + uRiverLift * w;
+        // river exaggeration multiplies the scaled height under water (feathered at the bank)
+        return hm.r * uScale * (1.0 + w * (uRiverK - 1.0)) + uTilt * uv.y * hm.g;
       }
       vec2 hUv;`)
     .replace('#include <uv_vertex>', `
@@ -664,14 +665,14 @@ function applyTilt() {
 }
 tiltEl.addEventListener('input', applyTilt);
 
-// river lift: constant rise of the water texels above the terrain, 0-1 ft in 0.05 ft steps
+// river exaggeration: extra factor on the water texels' height, 1-5x in 0.25 steps
 const riverEl = document.getElementById('river');
 const riverValueEl = document.getElementById('river-value');
-function currentRiverLiftFt() { return parseInt(riverEl.value, 10) * 0.05; }
+function currentRiverK() { return 1 + parseInt(riverEl.value, 10) * 0.25; }
 function applyRiver() {
-  const ft = currentRiverLiftFt();
-  uniforms.uRiverLift.value = ft * FT;
-  riverValueEl.textContent = '+' + ft.toFixed(2) + ' ft';
+  const k = currentRiverK();
+  uniforms.uRiverK.value = k;
+  riverValueEl.textContent = k.toFixed(2) + '×';
   requestRender();
 }
 riverEl.addEventListener('input', applyRiver);
