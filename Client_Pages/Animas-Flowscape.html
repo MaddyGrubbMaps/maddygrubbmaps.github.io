@@ -47,8 +47,8 @@
     padding: 12px; display: flex; flex-direction: column; gap: 10px;
   }
   .label { color: #666; font-size: 11px; text-transform: uppercase; }
-  #slider-value, #tilt-value { font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; }
-  #slider-value small, #tilt-value small { font-size: 12px; font-weight: 400; color: #666; margin-left: 6px; }
+  #slider-value, #tilt-value, #river-value { font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  #slider-value small, #tilt-value small, #river-value small { font-size: 12px; font-weight: 400; color: #666; margin-left: 6px; }
   input[type="range"] { width: 100%; margin: 6px 0 2px; accent-color: #222; }
   #range-caps, .caps { display: flex; justify-content: space-between; color: #666; font-size: 11px; }
   #total { padding-bottom: 10px; border-bottom: 1px solid #bbb; display: flex; justify-content: space-between; align-items: center; }
@@ -148,6 +148,13 @@
       <div id="tilt-value">+5.00%</div>
       <input type="range" id="tilt" min="0" max="40" step="1" value="20" aria-label="Tilt grade">
       <div id="range-caps"><span>0%</span><span>+10.00%</span></div>
+    </div>
+
+    <div>
+      <div class="label">River lift</div>
+      <div id="river-value">+0.00 ft</div>
+      <input type="range" id="river" min="0" max="20" step="1" value="0" aria-label="River lift">
+      <div id="range-caps"><span>0 ft (on terrain)</span><span>+1.00 ft</span></div>
     </div>
 
     <div id="stats">
@@ -428,6 +435,7 @@ const uniforms = {
   uTilt: { value: 2.0 * FT },      // rise at the north (headwater) edge, metres; 0 at the south (mouth) edge
   uWater: { value: null },     // water mask (white = water) from the water-only artboard export
   uRiversOnly: { value: 0 },
+  uRiverLift: { value: 0 },    // metres: rivers stand this far above the terrain (feathered at the bank)
 };
 const material = new THREE.MeshStandardMaterial({ roughness: 1.0, metalness: 0.0, side: THREE.FrontSide });
 material.onBeforeCompile = (shader) => {
@@ -440,10 +448,14 @@ material.onBeforeCompile = (shader) => {
       uniform vec2 uTexel;
       uniform vec2 uSize;
       uniform float uTilt;
-      // tilt applies to the raised watershed only (heightmap > 0); the paper base stays flat
+      uniform sampler2D uWater;
+      uniform float uRiverLift;
+      // tilt applies to the raised watershed only (heightmap > 0); the paper base stays flat;
+      // river lift raises water texels by a constant height, feathered across the bank
       float hAt(vec2 uv) {
         vec2 hm = texture2D(uHeight, uv).rg;      // r = height, g = tilt mask feathered inward from the watershed edge
-        return hm.r * uScale + uTilt * uv.y * hm.g;
+        float w = smoothstep(0.25, 0.75, texture2D(uWater, uv).r);
+        return hm.r * uScale + uTilt * uv.y * hm.g + uRiverLift * w;
       }
       vec2 hUv;`)
     .replace('#include <uv_vertex>', `
@@ -651,6 +663,18 @@ function applyTilt() {
   requestRender();
 }
 tiltEl.addEventListener('input', applyTilt);
+
+// river lift: constant rise of the water texels above the terrain, 0-1 ft in 0.05 ft steps
+const riverEl = document.getElementById('river');
+const riverValueEl = document.getElementById('river-value');
+function currentRiverLiftFt() { return parseInt(riverEl.value, 10) * 0.05; }
+function applyRiver() {
+  const ft = currentRiverLiftFt();
+  uniforms.uRiverLift.value = ft * FT;
+  riverValueEl.textContent = '+' + ft.toFixed(2) + ' ft';
+  requestRender();
+}
+riverEl.addEventListener('input', applyRiver);
 
 function applySlider(i) {
   const h = STOPS[i];
