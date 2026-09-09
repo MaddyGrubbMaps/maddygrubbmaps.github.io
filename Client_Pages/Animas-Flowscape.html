@@ -153,8 +153,8 @@
     <div>
       <div class="label">River exaggeration</div>
       <div id="river-value">1.00×</div>
-      <input type="range" id="river" min="0" max="16" step="1" value="0" aria-label="River exaggeration">
-      <div id="range-caps"><span>1.00× (on terrain)</span><span>5.00×</span></div>
+      <input type="range" id="river" min="0" max="200" step="1" value="100" aria-label="River exaggeration">
+      <div id="range-caps"><span>0.00×</span><span>1.00× on terrain</span><span>2.00×</span></div>
     </div>
 
     <div id="stats">
@@ -665,10 +665,10 @@ function applyTilt() {
 }
 tiltEl.addEventListener('input', applyTilt);
 
-// river exaggeration: extra factor on the water texels' height, 1-5x in 0.25 steps
+// river exaggeration: factor on the water texels' height, 0-2x in 0.01 steps (1 = on terrain)
 const riverEl = document.getElementById('river');
 const riverValueEl = document.getElementById('river-value');
-function currentRiverK() { return 1 + parseInt(riverEl.value, 10) * 0.25; }
+function currentRiverK() { return parseInt(riverEl.value, 10) / 100; }
 function applyRiver() {
   const k = currentRiverK();
   uniforms.uRiverK.value = k;
