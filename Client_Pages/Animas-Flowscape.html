@@ -102,6 +102,33 @@
   #view-btns button.on { background: #222; color: #fff; border-color: #222; }
   #view-btns button:focus-visible { outline: 2px solid #222; outline-offset: 2px; }
   #hint { color: #666; font-size: 11px; padding-top: 10px; border-top: 1px solid #bbb; }
+  #units { display: flex; gap: 0; }
+  #units button {
+    font: inherit; font-size: 12px; color: #111; background: #fff; border: 1px solid #999;
+    padding: 3px 12px; cursor: pointer;
+  }
+  #units button + button { border-left: none; }
+  #units button.on { background: #222; color: #fff; border-color: #222; }
+  #units button:focus-visible { outline: 2px solid #222; outline-offset: 2px; }
+  #lock-note { font-size: 11px; color: #666; display: flex; align-items: center; gap: 8px; }
+  #lock-note[hidden] { display: none; }
+  #unlock { font: inherit; font-size: 11px; color: #111; background: #fff; border: 1px solid #999; padding: 2px 8px; cursor: pointer; }
+  #unlock:hover { background: #e6e6e6; }
+  #panel input[type="range"]:disabled { opacity: 0.4; }
+  #overlay { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .nlabel {
+    position: absolute; transform: translate(6px, -50%); white-space: nowrap;
+    font-size: 10px; line-height: 1.15; color: #111; font-variant-numeric: tabular-nums;
+    background: rgba(255,255,255,0.82); padding: 1px 4px; border-radius: 2px;
+  }
+  .nlabel b { font-weight: 600; }
+  #tip {
+    position: absolute; pointer-events: none; z-index: 5;
+    background: #222; color: #fff; font-size: 12px; padding: 5px 8px; border-radius: 3px;
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  #tip[hidden] { display: none; }
+  #tip small { color: #bbb; }
   input:focus-visible { outline: 2px solid #222; outline-offset: 2px; }
   #dev-panel {
     background: #f2f2f2; border: 1px dashed #999;
@@ -120,10 +147,16 @@
 
 <header>
   <h1>Animas Flowscape - 3D Reference Prototype</h1>
+  <div id="units" role="group" aria-label="Units">
+    <button type="button" data-u="ft" class="on" aria-pressed="true">ft</button>
+    <button type="button" data-u="m" aria-pressed="false">m</button>
+  </div>
 </header>
 
 <main>
   <div id="canvas-wrap"></div>
+  <div id="overlay"></div>
+  <div id="tip" hidden></div>
   <div id="loading">loading terrain…</div>
 
   <div id="side">
@@ -131,15 +164,15 @@
     <div id="total">
       <div>
         <div class="label">Total model height</div>
-        <div id="stat-height">3.42 ft</div>
+        <div id="stat-height">3.79 ft</div>
       </div>
       <button type="button" id="panel-toggle" aria-expanded="false" aria-controls="panel" aria-label="Show controls">&#9650;</button>
     </div>
 
     <div>
       <div class="label">Local relief exaggeration</div>
-      <div id="slider-value">2.50×</div>
-      <input type="range" id="slider" min="0" max="16" step="1" value="6" aria-label="Local relief exaggeration">
+      <div id="slider-value">3.00×</div>
+      <input type="range" id="slider" min="0" max="16" step="1" value="8" aria-label="Local relief exaggeration">
       <div id="range-caps"><span>1.00× (true scale)</span><span>5.00×</span></div>
     </div>
 
@@ -152,15 +185,15 @@
 
     <div>
       <div class="label">Regional uplift (3 km trend)</div>
-      <div id="trend-value">2.50×</div>
-      <input type="range" id="trend" min="0" max="36" step="1" value="6" aria-label="Regional uplift">
+      <div id="trend-value">4.00×</div>
+      <input type="range" id="trend" min="0" max="36" step="1" value="12" aria-label="Regional uplift">
       <div id="range-caps"><span>1.00× (true scale)</span><span>10.00×</span></div>
     </div>
 
     <div>
       <div class="label">Tilt</div>
-      <div id="tilt-value">+5.00%</div>
-      <input type="range" id="tilt" min="0" max="40" step="1" value="20" aria-label="Tilt grade">
+      <div id="tilt-value">+4.00%</div>
+      <input type="range" id="tilt" min="0" max="40" step="1" value="16" aria-label="Tilt grade">
       <div id="range-caps"><span>0%</span><span>+10.00%</span></div>
     </div>
 
@@ -172,6 +205,9 @@
     <div id="toggles">
       <label class="switch"><span>1 ft / 5 ft grid</span><input type="checkbox" id="grid-toggle"><i></i></label>
       <label class="switch"><span>rivers only</span><input type="checkbox" id="rivers-toggle"><i></i></label>
+      <label class="switch"><span>elevation dots</span><input type="checkbox" id="dots-toggle"><i></i></label>
+      <label class="switch"><span>elevation readings</span><input type="checkbox" id="readings-toggle"><i></i></label>
+      <div id="lock-note" hidden><span>terrain locked to the default settings while dots are shown</span><button type="button" id="unlock">unlock</button></div>
       <div id="view-btns" role="group" aria-label="Projection">
         <button type="button" data-view="persp" aria-pressed="false">perspective</button>
         <button type="button" data-view="ortho" class="on" aria-pressed="true">orthographic</button>
@@ -218,7 +254,7 @@ const SHOW_DEV_PANEL = false;   // set false before publishing: hides the sharpe
 const FT = 0.3048;
 const PLANE_W = 20 * FT;
 const PLANE_H = 40 * FT;
-const ASSET_V = '4';               // bump when height.bin / color.jpg change, so browsers refetch
+const ASSET_V = '5';               // bump when height.bin / color.jpg change, so browsers refetch
 const HM_W = 1632, HM_H = 3264;   // height.bin == level-4 grid; row 0 = south edge (v = 0)
 
 const TRUE_SCALE_FT = 0.6019;   // model height at 1x exaggeration
@@ -430,7 +466,7 @@ controls.addEventListener('end', () => { dampingUntil = performance.now() + 1200
 function tick(now) {
   const damping = now < dampingUntil;
   if (damping) controls.update();
-  if (needsRender || damping) { composer.render(); needsRender = false; }
+  if (needsRender || damping) { composer.render(); needsRender = false; syncNodeScreen(); }
   requestAnimationFrame(tick);
 }
 
@@ -680,6 +716,7 @@ function updateStats() {
   statHeight.textContent = maxHeightFt(h, tiltFt).toFixed(2) + ' ft';
   statMin.innerHTML = lo.toFixed(2) + '<span class="unit">%</span>';
   statMax.innerHTML = hi.toFixed(2) + '<span class="unit">%</span>';
+  updateNodeHeights();
 }
 function applyTilt() {
   uniforms.uTilt.value = currentTiltFt() * FT;
@@ -696,6 +733,7 @@ function applyRiver() {
   const k = currentRiverK();
   uniforms.uRiverK.value = k;
   riverValueEl.textContent = k.toFixed(2) + '×';
+  updateNodeHeights();
   requestRender();
 }
 riverEl.addEventListener('input', applyRiver);
@@ -758,6 +796,161 @@ riversToggle.addEventListener('change', () => {
   requestRender();
 });
 
+
+// ---- river network nodes: outlet, confluences, headwater starts (animas-flowscape/nodes.json,
+// built by Scripts/build_river_nodes.py). Each carries the real 10 m DEM elevation; the modelled
+// height is computed here with the same formula as the vertex shader, from the full-res arrays.
+// While dots are shown the terrain is locked to the default settings (Dylan, 2026-09-10) so the
+// readings describe one fixed model; unlocking hides the dots and readings.
+const NODE_DEFAULTS = { slider: 8, river: 100, trend: 12, tilt: 16 };   // 3.00x, 1.00x, 4.00x, +4.00%
+const overlayEl = document.getElementById('overlay');
+const tipEl = document.getElementById('tip');
+const dotsToggle = document.getElementById('dots-toggle');
+const readingsToggle = document.getElementById('readings-toggle');
+const lockNote = document.getElementById('lock-note');
+const unlockBtn = document.getElementById('unlock');
+const unitBtns = document.querySelectorAll('#units button');
+let units = 'ft';
+let NODES = [];            // {id, kind, u, v, elev_m, hFt, world: Vector3, el: label div}
+let nodePts = null;        // THREE.Points
+let hmArrays = null;       // {height, mask, trend} full-res Float32Arrays, row 0 = south
+let waterPix = null;       // Uint8 red channel of water.png, row 0 = TOP of image (north)
+let waterW = 0, waterH = 0;
+const lockedEls = () => [slider, riverEl, trendEl, tiltEl];
+
+function fmtReal(m) {
+  return units === 'ft' ? Math.round(m / FT).toLocaleString('en-US') + ' ft' : Math.round(m).toLocaleString('en-US') + ' m';
+}
+function fmtModel(hFt) { return units === 'ft' ? hFt.toFixed(2) + ' ft' : (hFt * 30.48).toFixed(1) + ' cm'; }
+
+// bilinear sample of a full-res heightmap array at plane coords (u east, v north)
+function sampleHM(arr, u, v) {
+  const x = Math.min(Math.max(u * HM_W - 0.5, 0), HM_W - 1), y = Math.min(Math.max(v * HM_H - 0.5, 0), HM_H - 1);
+  const x0 = Math.floor(x), y0 = Math.floor(y), x1 = Math.min(x0 + 1, HM_W - 1), y1 = Math.min(y0 + 1, HM_H - 1);
+  const fx = x - x0, fy = y - y0;
+  return (arr[y0 * HM_W + x0] * (1 - fx) + arr[y0 * HM_W + x1] * fx) * (1 - fy)
+       + (arr[y1 * HM_W + x0] * (1 - fx) + arr[y1 * HM_W + x1] * fx) * fy;
+}
+function sampleWater(u, v) {
+  if (!waterPix) return 0;
+  const c = Math.min(waterW - 1, Math.max(0, Math.round(u * waterW - 0.5)));
+  const r = Math.min(waterH - 1, Math.max(0, Math.round((1 - v) * waterH - 0.5)));
+  return waterPix[r * waterW + c] / 255;
+}
+// same as hAt() in the vertex shader; returns metres above the paper base
+function modelHeightM(u, v) {
+  const r = sampleHM(hmArrays.height, u, v), b = sampleHM(hmArrays.trend, u, v), g = sampleHM(hmArrays.mask, u, v);
+  const t = sampleWater(u, v); const w = t <= 0.25 ? 0 : t >= 0.75 ? 1 : ((t - 0.25) / 0.5) ** 2 * (3 - 2 * (t - 0.25) / 0.5);
+  const hs = b * uniforms.uTrend.value + (r - b) * uniforms.uScale.value;
+  return hs * (1 + w * (uniforms.uRiverK.value - 1)) + uniforms.uTilt.value * v * g;
+}
+
+function makeDotTexture() {
+  const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d');
+  g.beginPath(); g.arc(32, 32, 26, 0, Math.PI * 2); g.fillStyle = '#b3261e'; g.fill();
+  g.lineWidth = 8; g.strokeStyle = '#fff'; g.stroke();
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+async function loadNodes() {
+  const res = await fetch('animas-flowscape/nodes.json?v=' + ASSET_V);
+  if (!res.ok) throw new Error('nodes.json ' + res.status);
+  return (await res.json()).nodes;
+}
+function waterPixels(tex) {
+  const img = tex.image; const c = document.createElement('canvas'); c.width = img.width; c.height = img.height;
+  const g = c.getContext('2d', { willReadFrequently: true }); g.drawImage(img, 0, 0);
+  const d = g.getImageData(0, 0, c.width, c.height).data; const out = new Uint8Array(c.width * c.height);
+  for (let i = 0; i < out.length; i++) out[i] = d[i * 4];
+  waterW = c.width; waterH = c.height; return out;
+}
+function initNodes(list) {
+  NODES = list.map((n) => {
+    const el = document.createElement('div'); el.className = 'nlabel'; el.hidden = true; overlayEl.appendChild(el);
+    return { ...n, hFt: 0, world: new THREE.Vector3(), el };
+  });
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(NODES.length * 3), 3));
+  geo.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 0, 0), Math.hypot(PLANE_W, PLANE_H));
+  nodePts = new THREE.Points(geo, new THREE.PointsMaterial({
+    map: makeDotTexture(), size: 13, sizeAttenuation: false, transparent: true, alphaTest: 0.5, depthTest: false, depthWrite: false,
+  }));
+  nodePts.renderOrder = 10; nodePts.visible = false; nodePts.frustumCulled = false;
+  scene.add(nodePts);
+  updateNodeHeights();
+}
+function updateNodeHeights() {
+  if (!nodePts || !hmArrays) return;
+  const pos = nodePts.geometry.attributes.position.array;
+  NODES.forEach((n, i) => {
+    const hM = modelHeightM(n.u, n.v); n.hFt = hM / FT;
+    n.world.set((n.u - 0.5) * PLANE_W, hM, -(n.v - 0.5) * PLANE_H);
+    pos[i * 3] = n.world.x; pos[i * 3 + 1] = n.world.y; pos[i * 3 + 2] = n.world.z;
+  });
+  nodePts.geometry.attributes.position.needsUpdate = true;
+  refreshLabels();
+}
+function refreshLabels() {
+  for (const n of NODES) n.el.innerHTML = '<b>' + fmtReal(n.elev_m) + '</b><br>' + fmtModel(n.hFt);
+  if (!tipEl.hidden && tipEl._node) showTip(tipEl._node, tipEl._x, tipEl._y);
+}
+const _v = new THREE.Vector3();
+function nodeScreen(n) {
+  _v.copy(n.world).project(camera);
+  return { x: (_v.x + 1) / 2 * wrap.clientWidth, y: (1 - _v.y) / 2 * wrap.clientHeight, ok: _v.z < 1 };
+}
+function syncNodeScreen() {
+  if (!nodePts) return;
+  const show = readingsToggle.checked && nodePts.visible;
+  for (const n of NODES) {
+    if (!show) { n.el.hidden = true; continue; }
+    const p = nodeScreen(n); n.el.hidden = !p.ok; n.el.style.left = p.x + 'px'; n.el.style.top = p.y + 'px';
+  }
+}
+function showTip(n, x, y) {
+  tipEl._node = n; tipEl._x = x; tipEl._y = y;
+  tipEl.innerHTML = '<small>#' + n.id + '</small><br><b>' + fmtReal(n.elev_m) + '</b> real<br>' + fmtModel(n.hFt) + ' model';
+  tipEl.hidden = false;
+  const tw = tipEl.offsetWidth, th = tipEl.offsetHeight;
+  tipEl.style.left = Math.min(x + 14, wrap.clientWidth - tw - 8) + 'px';
+  tipEl.style.top = Math.max(8, Math.min(y - th / 2, wrap.clientHeight - th - 8)) + 'px';
+}
+renderer.domElement.addEventListener('pointermove', (e) => {
+  if (!nodePts || !nodePts.visible) return;
+  const rect = renderer.domElement.getBoundingClientRect(); const x = e.clientX - rect.left, y = e.clientY - rect.top;
+  let best = null, bd = 12 * 12;
+  for (const n of NODES) { const p = nodeScreen(n); if (!p.ok) continue; const d = (p.x - x) ** 2 + (p.y - y) ** 2; if (d < bd) { bd = d; best = n; } }
+  if (best) showTip(best, x, y); else { tipEl.hidden = true; tipEl._node = null; }
+});
+renderer.domElement.addEventListener('pointerleave', () => { tipEl.hidden = true; tipEl._node = null; });
+
+function setLocked(on) {
+  if (on) {
+    slider.value = NODE_DEFAULTS.slider; riverEl.value = NODE_DEFAULTS.river; trendEl.value = NODE_DEFAULTS.trend; tiltEl.value = NODE_DEFAULTS.tilt;
+    applyRiver(); applyTrend(); applyTilt(); applySlider(NODE_DEFAULTS.slider);
+  }
+  for (const el of lockedEls()) el.disabled = on;
+  lockNote.hidden = !on;
+}
+function setDots(on) {
+  if (!nodePts) return;
+  dotsToggle.checked = on; nodePts.visible = on;
+  if (!on) readingsToggle.checked = false;
+  setLocked(on);
+  if (!on) { tipEl.hidden = true; tipEl._node = null; }
+  syncNodeScreen(); requestRender();
+}
+dotsToggle.addEventListener('change', () => setDots(dotsToggle.checked));
+readingsToggle.addEventListener('change', () => {
+  if (readingsToggle.checked && !dotsToggle.checked) setDots(true);
+  syncNodeScreen(); requestRender();
+});
+unlockBtn.addEventListener('click', () => setDots(false));
+unitBtns.forEach((b) => b.addEventListener('click', () => {
+  units = b.dataset.u;
+  unitBtns.forEach((x) => { const on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+  refreshLabels();
+}));
+
 window.addEventListener('resize', () => {
   persp.aspect = wrap.clientWidth / wrap.clientHeight;
   persp.updateProjectionMatrix();
@@ -771,16 +964,19 @@ window.addEventListener('resize', () => {
 
 (async () => {
   try {
-    const [heightFull, colorTex, waterTex, trendFull] = await Promise.all([loadHeight(), loadColor(), loadWater(), loadTrend()]);
+    const [heightFull, colorTex, waterTex, trendFull, nodeList] = await Promise.all([loadHeight(), loadColor(), loadWater(), loadTrend(), loadNodes()]);
     window._trendFull = trendFull;
     uniforms.uWater.value = waterTex;
+    waterPix = waterPixels(waterTex);
     // stats sample: every 4th texel of (trend, relief, north fraction)
     statSamp = []; for (let j = 0; j < HM_H; j += 4) for (let i = 0; i < HM_W; i += 4) { const k = j * HM_W + i; if (heightFull[k] > 0) statSamp.push(trendFull[k], heightFull[k] - trendFull[k], (j + 0.5) / HM_H); }
     statSamp = new Float32Array(statSamp);
     // profile trend: 1D gaussian of z along s with the same 3 km sigma (0.83 model ft)
     for (const pr of Object.values(PROFILES)) { const sg = 3000 / (145400 / 40); pr.t = pr.s.map((si, i) => { let n = 0, d = 0; for (let j = 0; j < pr.s.length; j++) { const w = Math.exp(-0.5 * ((pr.s[j] - si) / sg) ** 2); n += w * pr.z[j]; d += w; } return n / d; }); }
     const { nx, ny } = gridSize(LEVEL);
-    uniforms.uHeight.value = heightTexture(heightFull, tiltMask(heightFull), LEVEL, trendFull);
+    const maskFull = tiltMask(heightFull);
+    hmArrays = { height: heightFull, mask: maskFull, trend: trendFull };
+    uniforms.uHeight.value = heightTexture(heightFull, maskFull, LEVEL, trendFull);
     uniforms.uTexel.value.set(1 / nx, 1 / ny);
     material.map = colorTex;
     material.needsUpdate = true;
@@ -790,6 +986,8 @@ window.addEventListener('resize', () => {
     scene.add(mesh);
     frameCamera();
     setProjection('ortho');
+    initNodes(nodeList);
+    applyRiver(); applyTrend(); applyTilt();
     applySlider(parseInt(slider.value, 10));
     loadingEl.hidden = true;
     requestAnimationFrame(tick);
