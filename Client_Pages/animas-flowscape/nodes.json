@@ -243,6 +243,474 @@
    "u": 0.29291,
    "v": 0.96951,
    "elev_m": 3666.2
+  },
+  {
+   "id": 35,
+   "kind": "ref2",
+   "u": 0.63131,
+   "v": 0.06974,
+   "elev_m": 1637.8,
+   "stream": "Animas River",
+   "dist_ft": 2.0
+  },
+  {
+   "id": 36,
+   "kind": "ref2",
+   "u": 0.67055,
+   "v": 0.115,
+   "elev_m": 1669.8,
+   "stream": "Animas River",
+   "dist_ft": 4.0
+  },
+  {
+   "id": 37,
+   "kind": "ref2",
+   "u": 0.7173,
+   "v": 0.15873,
+   "elev_m": 1706.6,
+   "stream": "Animas River",
+   "dist_ft": 6.0
+  },
+  {
+   "id": 38,
+   "kind": "ref2",
+   "u": 0.72419,
+   "v": 0.20819,
+   "elev_m": 1741.3,
+   "stream": "Animas River",
+   "dist_ft": 8.0
+  },
+  {
+   "id": 39,
+   "kind": "ref2",
+   "u": 0.74144,
+   "v": 0.25319,
+   "elev_m": 1774.0,
+   "stream": "Animas River",
+   "dist_ft": 10.0
+  },
+  {
+   "id": 40,
+   "kind": "ref2",
+   "u": 0.72891,
+   "v": 0.29265,
+   "elev_m": 1802.8,
+   "stream": "Animas River",
+   "dist_ft": 12.0
+  },
+  {
+   "id": 41,
+   "kind": "ref2",
+   "u": 0.67135,
+   "v": 0.33183,
+   "elev_m": 1830.5,
+   "stream": "Animas River",
+   "dist_ft": 14.0
+  },
+  {
+   "id": 42,
+   "kind": "ref2",
+   "u": 0.60758,
+   "v": 0.36801,
+   "elev_m": 1868.5,
+   "stream": "Animas River",
+   "dist_ft": 16.0
+  },
+  {
+   "id": 43,
+   "kind": "ref2",
+   "u": 0.57333,
+   "v": 0.41311,
+   "elev_m": 1916.3,
+   "stream": "Animas River",
+   "dist_ft": 18.0
+  },
+  {
+   "id": 44,
+   "kind": "ref2",
+   "u": 0.54304,
+   "v": 0.44733,
+   "elev_m": 1955.7,
+   "stream": "Animas River",
+   "dist_ft": 20.0
+  },
+  {
+   "id": 45,
+   "kind": "ref2",
+   "u": 0.49864,
+   "v": 0.48422,
+   "elev_m": 2000.8,
+   "stream": "Animas River",
+   "dist_ft": 22.0
+  },
+  {
+   "id": 46,
+   "kind": "ref2",
+   "u": 0.47343,
+   "v": 0.52783,
+   "elev_m": 1997.0,
+   "stream": "Animas River",
+   "dist_ft": 24.0
+  },
+  {
+   "id": 47,
+   "kind": "ref2",
+   "u": 0.46277,
+   "v": 0.57384,
+   "elev_m": 2021.6,
+   "stream": "Animas River",
+   "dist_ft": 26.0
+  },
+  {
+   "id": 48,
+   "kind": "ref2",
+   "u": 0.43491,
+   "v": 0.6174,
+   "elev_m": 2193.9,
+   "stream": "Animas River",
+   "dist_ft": 28.0
+  },
+  {
+   "id": 49,
+   "kind": "ref2",
+   "u": 0.39817,
+   "v": 0.66285,
+   "elev_m": 2264.9,
+   "stream": "Animas River",
+   "dist_ft": 30.0
+  },
+  {
+   "id": 50,
+   "kind": "ref2",
+   "u": 0.38141,
+   "v": 0.70332,
+   "elev_m": 2383.9,
+   "stream": "Animas River",
+   "dist_ft": 32.0
+  },
+  {
+   "id": 51,
+   "kind": "ref2",
+   "u": 0.4152,
+   "v": 0.74478,
+   "elev_m": 2527.5,
+   "stream": "Animas River",
+   "dist_ft": 34.0
+  },
+  {
+   "id": 52,
+   "kind": "ref2",
+   "u": 0.40152,
+   "v": 0.79101,
+   "elev_m": 2678.9,
+   "stream": "Animas River",
+   "dist_ft": 36.0
+  },
+  {
+   "id": 53,
+   "kind": "ref2",
+   "u": 0.34669,
+   "v": 0.83005,
+   "elev_m": 2792.3,
+   "stream": "Animas River",
+   "dist_ft": 38.0
+  },
+  {
+   "id": 54,
+   "kind": "ref2",
+   "u": 0.33679,
+   "v": 0.87279,
+   "elev_m": 2881.6,
+   "stream": "Animas River",
+   "dist_ft": 40.0
+  },
+  {
+   "id": 55,
+   "kind": "ref2",
+   "u": 0.36683,
+   "v": 0.91649,
+   "elev_m": 2982.6,
+   "stream": "Animas River",
+   "dist_ft": 42.0
+  },
+  {
+   "id": 56,
+   "kind": "ref2",
+   "u": 0.31857,
+   "v": 0.95608,
+   "elev_m": 3391.9,
+   "stream": "Animas River",
+   "dist_ft": 44.0
+  },
+  {
+   "id": 57,
+   "kind": "ref2",
+   "u": 0.48024,
+   "v": 0.67254,
+   "elev_m": 3081.8,
+   "stream": "Canyon Creek",
+   "dist_ft": 2.0
+  },
+  {
+   "id": 58,
+   "kind": "ref2",
+   "u": 0.29131,
+   "v": 0.71772,
+   "elev_m": 2638.6,
+   "stream": "Cascade Creek",
+   "dist_ft": 2.0
+  },
+  {
+   "id": 59,
+   "kind": "ref2",
+   "u": 0.21078,
+   "v": 0.74438,
+   "elev_m": 2965.9,
+   "stream": "Cascade Creek",
+   "dist_ft": 4.0
+  },
+  {
+   "id": 60,
+   "kind": "ref2",
+   "u": 0.26106,
+   "v": 0.89069,
+   "elev_m": 3109.7,
+   "stream": "Cement Creek",
+   "dist_ft": 2.0
+  },
+  {
+   "id": 61,
+   "kind": "ref2",
+   "u": 0.46917,
+   "v": 0.82804,
+   "elev_m": 3186.4,
+   "stream": "Elk Creek",
+   "dist_ft": 2.0
+  },
+  {
+   "id": 62,
+   "kind": "ref2",
+   "u": 0.29278,
+   "v": 0.64308,
+   "elev_m": 3004.6,
+   "stream": "Elk Creek",
+   "dist_ft": 2.0
+  },
+  {
+   "id": 63,
+   "kind": "ref2",
+   "u": 0.58192,
+   "v": 0.7108,
+   "elev_m": 3333.4,
+   "stream": "Florida River",
+   "dist_ft": 2.0
+  },
+  {
+   "id": 64,
+   "kind": "ref2",
+   "u": 0.66373,
+   "v": 0.39129,
+   "elev_m": 1906.7,
+   "stream": "Florida River",
+   "dist_ft": 2.0
+  },
+  {
+   "id": 65,
+   "kind": "ref2",
+   "u": 0.70679,
+   "v": 0.42725,
+   "elev_m": 1971.5,
+   "stream": "Florida River",
+   "dist_ft": 4.0
+  },
+  {
+   "id": 66,
+   "kind": "ref2",
+   "u": 0.66868,
+   "v": 0.47154,
+   "elev_m": 2049.7,
+   "stream": "Florida River",
+   "dist_ft": 6.0
+  },
+  {
+   "id": 67,
+   "kind": "ref2",
+   "u": 0.58012,
+   "v": 0.49398,
+   "elev_m": 2140.4,
+   "stream": "Florida River",
+   "dist_ft": 8.0
+  },
+  {
+   "id": 68,
+   "kind": "ref2",
+   "u": 0.60096,
+   "v": 0.53908,
+   "elev_m": 2244.9,
+   "stream": "Florida River",
+   "dist_ft": 10.0
+  },
+  {
+   "id": 69,
+   "kind": "ref2",
+   "u": 0.64352,
+   "v": 0.58185,
+   "elev_m": 2390.0,
+   "stream": "Florida River",
+   "dist_ft": 12.0
+  },
+  {
+   "id": 70,
+   "kind": "ref2",
+   "u": 0.58467,
+   "v": 0.6196,
+   "elev_m": 2493.6,
+   "stream": "Florida River",
+   "dist_ft": 14.0
+  },
+  {
+   "id": 71,
+   "kind": "ref2",
+   "u": 0.37813,
+   "v": 0.58288,
+   "elev_m": 2189.8,
+   "stream": "Hermosa Creek",
+   "dist_ft": 2.0
+  },
+  {
+   "id": 72,
+   "kind": "ref2",
+   "u": 0.28388,
+   "v": 0.59365,
+   "elev_m": 2353.0,
+   "stream": "Hermosa Creek",
+   "dist_ft": 4.0
+  },
+  {
+   "id": 73,
+   "kind": "ref2",
+   "u": 0.22425,
+   "v": 0.62802,
+   "elev_m": 2619.3,
+   "stream": "Hermosa Creek",
+   "dist_ft": 6.0
+  },
+  {
+   "id": 74,
+   "kind": "ref2",
+   "u": 0.18882,
+   "v": 0.67376,
+   "elev_m": 2724.7,
+   "stream": "Hermosa Creek",
+   "dist_ft": 8.0
+  },
+  {
+   "id": 75,
+   "kind": "ref2",
+   "u": 0.16373,
+   "v": 0.71931,
+   "elev_m": 3125.2,
+   "stream": "Hermosa Creek",
+   "dist_ft": 10.0
+  },
+  {
+   "id": 76,
+   "kind": "ref2",
+   "u": 0.41859,
+   "v": 0.4912,
+   "elev_m": 2191.0,
+   "stream": "Junction Creek",
+   "dist_ft": 2.0
+  },
+  {
+   "id": 77,
+   "kind": "ref2",
+   "u": 0.33839,
+   "v": 0.51835,
+   "elev_m": 2501.9,
+   "stream": "Junction Creek",
+   "dist_ft": 4.0
+  },
+  {
+   "id": 78,
+   "kind": "ref2",
+   "u": 0.4202,
+   "v": 0.45553,
+   "elev_m": 2136.4,
+   "stream": "Lightner Creek",
+   "dist_ft": 2.0
+  },
+  {
+   "id": 79,
+   "kind": "ref2",
+   "u": 0.34812,
+   "v": 0.4792,
+   "elev_m": 2398.9,
+   "stream": "Lightner Creek",
+   "dist_ft": 4.0
+  },
+  {
+   "id": 80,
+   "kind": "ref2",
+   "u": 0.33407,
+   "v": 0.74639,
+   "elev_m": 2767.0,
+   "stream": "Lime Creek",
+   "dist_ft": 2.0
+  },
+  {
+   "id": 81,
+   "kind": "ref2",
+   "u": 0.28038,
+   "v": 0.78666,
+   "elev_m": 3041.3,
+   "stream": "Lime Creek",
+   "dist_ft": 4.0
+  },
+  {
+   "id": 82,
+   "kind": "ref2",
+   "u": 0.23072,
+   "v": 0.85526,
+   "elev_m": 2997.1,
+   "stream": "Mineral Creek",
+   "dist_ft": 2.0
+  },
+  {
+   "id": 83,
+   "kind": "ref2",
+   "u": 0.17866,
+   "v": 0.88654,
+   "elev_m": 3843.4,
+   "stream": "Mineral Creek",
+   "dist_ft": 4.0
+  },
+  {
+   "id": 84,
+   "kind": "ref2",
+   "u": 0.51063,
+   "v": 0.74017,
+   "elev_m": 3320.7,
+   "stream": "Needle Creek",
+   "dist_ft": 2.0
+  },
+  {
+   "id": 85,
+   "kind": "ref2",
+   "u": 0.24771,
+   "v": 0.55254,
+   "elev_m": 2765.6,
+   "stream": "South Fork Hermosa Creek",
+   "dist_ft": 2.0
+  },
+  {
+   "id": 86,
+   "kind": "ref2",
+   "u": 0.2084,
+   "v": 0.80569,
+   "elev_m": 3187.4,
+   "stream": "South Fork Mineral Creek",
+   "dist_ft": 2.0
   }
  ]
 }

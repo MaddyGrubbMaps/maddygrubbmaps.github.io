@@ -80,6 +80,8 @@
   .stat .v .unit { color: #666; font-size: 11px; margin-left: 2px; }
   #toggles { padding-top: 10px; border-top: 1px solid #bbb; display: flex; flex-direction: column; gap: 8px; }
   .switch { display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; }
+  .switch span { font-size: 11.5px; letter-spacing: -0.02em; white-space: nowrap; }
+  #toggles { gap: 6px; }
   .switch input { position: absolute; opacity: 0; width: 0; height: 0; }
   .switch i {
     position: relative; flex: none; width: 34px; height: 20px; border-radius: 10px;
@@ -111,24 +113,23 @@
   #units button.on { background: #222; color: #fff; border-color: #222; }
   #units button:focus-visible { outline: 2px solid #222; outline-offset: 2px; }
   #lock-note { font-size: 11px; color: #666; display: flex; align-items: center; gap: 8px; }
-  #lock-note[hidden] { display: none; }
+  #lock-note[hidden], #relock-note[hidden] { display: none; }
+  #relock-note { font-size: 11px; color: #666; display: flex; align-items: center; gap: 8px; justify-content: space-between; }
+  #relock { font: inherit; font-size: 11px; color: #111; background: #fff; border: 1px solid #999; padding: 2px 8px; cursor: pointer; }
+  #relock:hover { background: #e6e6e6; }
   #unlock { font: inherit; font-size: 11px; color: #111; background: #fff; border: 1px solid #999; padding: 2px 8px; cursor: pointer; }
   #unlock:hover { background: #e6e6e6; }
   #panel input[type="range"]:disabled { opacity: 0.4; }
   #overlay { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
   .nlabel {
     position: absolute; transform: translate(6px, -50%); white-space: nowrap;
-    font-size: 10px; line-height: 1.15; color: #111; font-variant-numeric: tabular-nums;
-    background: rgba(255,255,255,0.82); padding: 1px 4px; border-radius: 2px;
+    font-size: 10px; line-height: 1.15; color: #444; font-variant-numeric: tabular-nums;
+    background: rgba(255,255,255,0.78); padding: 1px 4px; border-radius: 2px;
   }
-  .nlabel b { font-weight: 600; }
-  #tip {
-    position: absolute; pointer-events: none; z-index: 5;
-    background: #222; color: #fff; font-size: 12px; padding: 5px 8px; border-radius: 3px;
-    font-variant-numeric: tabular-nums; white-space: nowrap;
-  }
+  .nlabel i { font-weight: 300; font-style: italic; }
+  .nlabel b { font-weight: 700; }
+  #tip { z-index: 5; }
   #tip[hidden] { display: none; }
-  #tip small { color: #bbb; }
   input:focus-visible { outline: 2px solid #222; outline-offset: 2px; }
   #dev-panel {
     background: #f2f2f2; border: 1px dashed #999;
@@ -156,7 +157,7 @@
 <main>
   <div id="canvas-wrap"></div>
   <div id="overlay"></div>
-  <div id="tip" hidden></div>
+  <div id="tip" class="nlabel" hidden></div>
   <div id="loading">loading terrain…</div>
 
   <div id="side">
@@ -205,9 +206,11 @@
     <div id="toggles">
       <label class="switch"><span>1 ft / 5 ft grid</span><input type="checkbox" id="grid-toggle"><i></i></label>
       <label class="switch"><span>rivers only</span><input type="checkbox" id="rivers-toggle"><i></i></label>
-      <label class="switch"><span>elevation dots</span><input type="checkbox" id="dots-toggle"><i></i></label>
+      <label class="switch"><span>start/end/confluence points</span><input type="checkbox" id="dots-toggle" checked><i></i></label>
+      <label class="switch"><span>2ft reference dots</span><input type="checkbox" id="grid-dots-toggle"><i></i></label>
       <label class="switch"><span>elevation readings</span><input type="checkbox" id="readings-toggle"><i></i></label>
-      <div id="lock-note" hidden><span>terrain locked to the default settings while dots are shown</span><button type="button" id="unlock">unlock</button></div>
+      <div id="lock-note" hidden><span>terrain locked to the preset settings while points are shown</span><button type="button" id="unlock">unlock</button></div>
+      <div id="relock-note"><span>terrain unlocked · readings hidden</span><button type="button" id="relock">lock to preset</button></div>
       <div id="view-btns" role="group" aria-label="Projection">
         <button type="button" data-view="persp" aria-pressed="false">perspective</button>
         <button type="button" data-view="ortho" class="on" aria-pressed="true">orthographic</button>
@@ -806,13 +809,17 @@ const NODE_DEFAULTS = { slider: 8, river: 100, trend: 12, tilt: 16 };   // 3.00x
 const overlayEl = document.getElementById('overlay');
 const tipEl = document.getElementById('tip');
 const dotsToggle = document.getElementById('dots-toggle');
+const gridDotsToggle = document.getElementById('grid-dots-toggle');
 const readingsToggle = document.getElementById('readings-toggle');
 const lockNote = document.getElementById('lock-note');
 const unlockBtn = document.getElementById('unlock');
+const relockNote = document.getElementById('relock-note');
+const relockBtn = document.getElementById('relock');
 const unitBtns = document.querySelectorAll('#units button');
 let units = 'ft';
 let NODES = [];            // {id, kind, u, v, elev_m, hFt, world: Vector3, el: label div}
-let nodePts = null;        // THREE.Points
+let nodePts = null;        // THREE.Points: outlet / confluences / headwater starts
+let gridPts = null;        // THREE.Points: 2 ft reference dots along each stream (half size)
 let hmArrays = null;       // {height, mask, trend} full-res Float32Arrays, row 0 = south
 let waterPix = null;       // Uint8 red channel of water.png, row 0 = TOP of image (north)
 let waterW = 0, waterH = 0;
@@ -847,8 +854,8 @@ function modelHeightM(u, v) {
 
 function makeDotTexture() {
   const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d');
-  g.beginPath(); g.arc(32, 32, 26, 0, Math.PI * 2); g.fillStyle = '#b3261e'; g.fill();
-  g.lineWidth = 8; g.strokeStyle = '#fff'; g.stroke();
+  // hollow ring: teal stroke, transparent centre
+  g.beginPath(); g.arc(32, 32, 24, 0, Math.PI * 2); g.lineWidth = 8; g.strokeStyle = '#fff'; g.stroke();
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
 }
 async function loadNodes() {
@@ -863,34 +870,41 @@ function waterPixels(tex) {
   for (let i = 0; i < out.length; i++) out[i] = d[i * 4];
   waterW = c.width; waterH = c.height; return out;
 }
+function makePoints(count, tex, size) {
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(count * 3), 3));
+  geo.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 0, 0), Math.hypot(PLANE_W, PLANE_H));
+  const pts = new THREE.Points(geo, new THREE.PointsMaterial({
+    map: tex, size, sizeAttenuation: false, transparent: true, alphaTest: 0.2, depthTest: false, depthWrite: false,
+  }));
+  pts.renderOrder = 10; pts.visible = false; pts.frustumCulled = false;
+  scene.add(pts); return pts;
+}
 function initNodes(list) {
   NODES = list.map((n) => {
     const el = document.createElement('div'); el.className = 'nlabel'; el.hidden = true; overlayEl.appendChild(el);
-    return { ...n, hFt: 0, world: new THREE.Vector3(), el };
+    return { ...n, set: n.kind === 'ref2' ? 'grid' : 'net', hFt: 0, world: new THREE.Vector3(), el };
   });
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(NODES.length * 3), 3));
-  geo.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 0, 0), Math.hypot(PLANE_W, PLANE_H));
-  nodePts = new THREE.Points(geo, new THREE.PointsMaterial({
-    map: makeDotTexture(), size: 13, sizeAttenuation: false, transparent: true, alphaTest: 0.5, depthTest: false, depthWrite: false,
-  }));
-  nodePts.renderOrder = 10; nodePts.visible = false; nodePts.frustumCulled = false;
-  scene.add(nodePts);
+  const tex = makeDotTexture();
+  nodePts = makePoints(NODES.filter((n) => n.set === 'net').length, tex, 13);
+  gridPts = makePoints(NODES.filter((n) => n.set === 'grid').length, tex, 6.5);
   updateNodeHeights();
 }
+function nodeVisible(n) { return n.set === 'grid' ? gridPts.visible : nodePts.visible; }
 function updateNodeHeights() {
   if (!nodePts || !hmArrays) return;
-  const pos = nodePts.geometry.attributes.position.array;
-  NODES.forEach((n, i) => {
+  const idx = { net: 0, grid: 0 };
+  for (const n of NODES) {
     const hM = modelHeightM(n.u, n.v); n.hFt = hM / FT;
     n.world.set((n.u - 0.5) * PLANE_W, hM, -(n.v - 0.5) * PLANE_H);
+    const pos = (n.set === 'grid' ? gridPts : nodePts).geometry.attributes.position.array; const i = idx[n.set]++;
     pos[i * 3] = n.world.x; pos[i * 3 + 1] = n.world.y; pos[i * 3 + 2] = n.world.z;
-  });
-  nodePts.geometry.attributes.position.needsUpdate = true;
+  }
+  nodePts.geometry.attributes.position.needsUpdate = true; gridPts.geometry.attributes.position.needsUpdate = true;
   refreshLabels();
 }
 function refreshLabels() {
-  for (const n of NODES) n.el.innerHTML = '<b>' + fmtReal(n.elev_m) + '</b><br>' + fmtModel(n.hFt);
+  for (const n of NODES) n.el.innerHTML = '<i>' + fmtReal(n.elev_m) + '</i><br><b>' + fmtModel(n.hFt) + '</b>';
   if (!tipEl.hidden && tipEl._node) showTip(tipEl._node, tipEl._x, tipEl._y);
 }
 const _v = new THREE.Vector3();
@@ -900,25 +914,23 @@ function nodeScreen(n) {
 }
 function syncNodeScreen() {
   if (!nodePts) return;
-  const show = readingsToggle.checked && nodePts.visible;
   for (const n of NODES) {
-    if (!show) { n.el.hidden = true; continue; }
+    if (!(readingsToggle.checked && nodeVisible(n))) { n.el.hidden = true; continue; }
     const p = nodeScreen(n); n.el.hidden = !p.ok; n.el.style.left = p.x + 'px'; n.el.style.top = p.y + 'px';
   }
 }
 function showTip(n, x, y) {
   tipEl._node = n; tipEl._x = x; tipEl._y = y;
-  tipEl.innerHTML = '<small>#' + n.id + '</small><br><b>' + fmtReal(n.elev_m) + '</b> real<br>' + fmtModel(n.hFt) + ' model';
+  tipEl.innerHTML = '<i>' + fmtReal(n.elev_m) + '</i><br><b>' + fmtModel(n.hFt) + '</b>';
   tipEl.hidden = false;
-  const tw = tipEl.offsetWidth, th = tipEl.offsetHeight;
-  tipEl.style.left = Math.min(x + 14, wrap.clientWidth - tw - 8) + 'px';
-  tipEl.style.top = Math.max(8, Math.min(y - th / 2, wrap.clientHeight - th - 8)) + 'px';
+  const p = nodeScreen(n);
+  tipEl.style.left = p.x + 'px'; tipEl.style.top = p.y + 'px';
 }
 renderer.domElement.addEventListener('pointermove', (e) => {
-  if (!nodePts || !nodePts.visible) return;
+  if (!nodePts || !(nodePts.visible || gridPts.visible)) return;
   const rect = renderer.domElement.getBoundingClientRect(); const x = e.clientX - rect.left, y = e.clientY - rect.top;
   let best = null, bd = 12 * 12;
-  for (const n of NODES) { const p = nodeScreen(n); if (!p.ok) continue; const d = (p.x - x) ** 2 + (p.y - y) ** 2; if (d < bd) { bd = d; best = n; } }
+  for (const n of NODES) { if (!nodeVisible(n)) continue; const p = nodeScreen(n); if (!p.ok) continue; const d = (p.x - x) ** 2 + (p.y - y) ** 2; if (d < bd) { bd = d; best = n; } }
   if (best) showTip(best, x, y); else { tipEl.hidden = true; tipEl._node = null; }
 });
 renderer.domElement.addEventListener('pointerleave', () => { tipEl.hidden = true; tipEl._node = null; });
@@ -929,22 +941,26 @@ function setLocked(on) {
     applyRiver(); applyTrend(); applyTilt(); applySlider(NODE_DEFAULTS.slider);
   }
   for (const el of lockedEls()) el.disabled = on;
-  lockNote.hidden = !on;
+  lockNote.hidden = !on; relockNote.hidden = on;
 }
-function setDots(on) {
+function setDots(net, grid) {
   if (!nodePts) return;
-  dotsToggle.checked = on; nodePts.visible = on;
-  if (!on) readingsToggle.checked = false;
-  setLocked(on);
-  if (!on) { tipEl.hidden = true; tipEl._node = null; }
+  dotsToggle.checked = net; nodePts.visible = net;
+  gridDotsToggle.checked = grid; gridPts.visible = grid;
+  const any = net || grid;
+  if (!any) readingsToggle.checked = false;
+  setLocked(any);
+  if (!any) { tipEl.hidden = true; tipEl._node = null; }
   syncNodeScreen(); requestRender();
 }
-dotsToggle.addEventListener('change', () => setDots(dotsToggle.checked));
+dotsToggle.addEventListener('change', () => setDots(dotsToggle.checked, gridDotsToggle.checked));
+gridDotsToggle.addEventListener('change', () => setDots(dotsToggle.checked, gridDotsToggle.checked));
 readingsToggle.addEventListener('change', () => {
-  if (readingsToggle.checked && !dotsToggle.checked) setDots(true);
+  if (readingsToggle.checked && !dotsToggle.checked && !gridDotsToggle.checked) setDots(true, false);
   syncNodeScreen(); requestRender();
 });
-unlockBtn.addEventListener('click', () => setDots(false));
+unlockBtn.addEventListener('click', () => setDots(false, false));
+relockBtn.addEventListener('click', () => setLocked(true));
 unitBtns.forEach((b) => b.addEventListener('click', () => {
   units = b.dataset.u;
   unitBtns.forEach((x) => { const on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on ? 'true' : 'false'); });
@@ -989,6 +1005,7 @@ window.addEventListener('resize', () => {
     initNodes(nodeList);
     applyRiver(); applyTrend(); applyTilt();
     applySlider(parseInt(slider.value, 10));
+    setDots(dotsToggle.checked, gridDotsToggle.checked);   // default: network points on, terrain locked
     loadingEl.hidden = true;
     requestAnimationFrame(tick);
   } catch (err) {
