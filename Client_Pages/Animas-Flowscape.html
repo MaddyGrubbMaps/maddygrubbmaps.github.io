@@ -165,15 +165,15 @@
     <div id="total">
       <div>
         <div class="label">Total model height</div>
-        <div id="stat-height">3.79 ft</div>
+        <div id="stat-height">4.03 ft</div>
       </div>
       <button type="button" id="panel-toggle" aria-expanded="false" aria-controls="panel" aria-label="Show controls">&#9650;</button>
     </div>
 
     <div>
       <div class="label">Local relief exaggeration</div>
-      <div id="slider-value">3.00×</div>
-      <input type="range" id="slider" min="0" max="16" step="1" value="8" aria-label="Local relief exaggeration">
+      <div id="slider-value">3.25×</div>
+      <input type="range" id="slider" min="0" max="16" step="1" value="9" aria-label="Local relief exaggeration">
       <div id="range-caps"><span>1.00× (true scale)</span><span>5.00×</span></div>
     </div>
 
@@ -186,15 +186,15 @@
 
     <div>
       <div class="label">Regional uplift (3 km trend)</div>
-      <div id="trend-value">4.00×</div>
-      <input type="range" id="trend" min="0" max="36" step="1" value="12" aria-label="Regional uplift">
+      <div id="trend-value">4.25×</div>
+      <input type="range" id="trend" min="0" max="36" step="1" value="13" aria-label="Regional uplift">
       <div id="range-caps"><span>1.00× (true scale)</span><span>10.00×</span></div>
     </div>
 
     <div>
       <div class="label">Tilt</div>
-      <div id="tilt-value">+4.00%</div>
-      <input type="range" id="tilt" min="0" max="40" step="1" value="16" aria-label="Tilt grade">
+      <div id="tilt-value">+4.25%</div>
+      <input type="range" id="tilt" min="0" max="40" step="1" value="17" aria-label="Tilt grade">
       <div id="range-caps"><span>0%</span><span>+10.00%</span></div>
     </div>
 
@@ -803,9 +803,9 @@ riversToggle.addEventListener('change', () => {
 // ---- river network nodes: outlet, confluences, headwater starts (animas-flowscape/nodes.json,
 // built by Scripts/build_river_nodes.py). Each carries the real 10 m DEM elevation; the modelled
 // height is computed here with the same formula as the vertex shader, from the full-res arrays.
-// While dots are shown the terrain is locked to the default settings (Dylan, 2026-09-10) so the
+// While dots are shown the terrain is locked to the default settings (Dylan, 2026-09-11) so the
 // readings describe one fixed model; unlocking hides the dots and readings.
-const NODE_DEFAULTS = { slider: 8, river: 100, trend: 12, tilt: 16 };   // 3.00x, 1.00x, 4.00x, +4.00%
+const NODE_DEFAULTS = { slider: 9, river: 100, trend: 13, tilt: 17 };   // 3.25x, 1.00x, 4.25x, +4.25% (Dylan, 2026-09-11)
 const overlayEl = document.getElementById('overlay');
 const tipEl = document.getElementById('tip');
 const dotsToggle = document.getElementById('dots-toggle');
