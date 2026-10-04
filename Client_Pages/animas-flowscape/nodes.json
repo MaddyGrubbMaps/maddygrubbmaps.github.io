@@ -1578,6 +1578,131 @@
    "v": 0.775,
    "elev_m": 4070.2,
    "lift": 0.05438
+  },
+  {
+   "id": 191,
+   "kind": "poi",
+   "name": "Engineer Mountain",
+   "category": "peak",
+   "u": 0.26142,
+   "v": 0.74442,
+   "elev_m": 3931.1,
+   "lift": 0.05438
+  },
+  {
+   "id": 192,
+   "kind": "poi",
+   "name": "Animas City Mountain",
+   "category": "peak",
+   "u": 0.47579,
+   "v": 0.49993,
+   "elev_m": 2486.8,
+   "lift": 0.05438
+  },
+  {
+   "id": 193,
+   "kind": "poi",
+   "name": "Smelter Mountain",
+   "category": "peak",
+   "u": 0.48883,
+   "v": 0.44966,
+   "elev_m": 2350.8,
+   "lift": 0.05438
+  },
+  {
+   "id": 194,
+   "kind": "poi",
+   "name": "Perins Peak",
+   "category": "peak",
+   "u": 0.45779,
+   "v": 0.46375,
+   "elev_m": 2543.9,
+   "lift": 0.05438
+  },
+  {
+   "id": 195,
+   "kind": "poi",
+   "name": "Hogsback",
+   "category": "peak",
+   "u": 0.47912,
+   "v": 0.46831,
+   "elev_m": 2077.8,
+   "lift": 0.05438
+  },
+  {
+   "id": 196,
+   "kind": "poi",
+   "name": "Silver Mountain",
+   "category": "peak",
+   "u": 0.27795,
+   "v": 0.48917,
+   "elev_m": 3801.6,
+   "lift": 0.05438
+  },
+  {
+   "id": 197,
+   "kind": "poi",
+   "name": "Kendall Mountain",
+   "category": "peak",
+   "u": 0.36336,
+   "v": 0.85412,
+   "elev_m": 4054.5,
+   "lift": 0.05438
+  },
+  {
+   "id": 198,
+   "kind": "poi",
+   "name": "Durango Wastewater Treatment Plant",
+   "category": "facility",
+   "u": 0.51288,
+   "v": 0.45768,
+   "elev_m": 1974.3
+  },
+  {
+   "id": 199,
+   "kind": "poi",
+   "name": "Tacoma Power Plant",
+   "category": "facility",
+   "u": 0.41467,
+   "v": 0.64462,
+   "elev_m": 2226.6
+  },
+  {
+   "id": 200,
+   "kind": "poi",
+   "name": "Bakers Bridge",
+   "category": "bridge",
+   "u": 0.44705,
+   "v": 0.60028,
+   "elev_m": 2056.6
+  },
+  {
+   "id": 201,
+   "kind": "poi",
+   "name": "Durango-La Plata County Airport",
+   "category": "airport",
+   "u": 0.71561,
+   "v": 0.42895,
+   "elev_m": 2031.0,
+   "lift": 0.05438
+  },
+  {
+   "id": 202,
+   "kind": "poi",
+   "name": "Fort Lewis College",
+   "category": "college",
+   "u": 0.51498,
+   "v": 0.47005,
+   "elev_m": 2095.3
+  },
+  {
+   "id": 203,
+   "kind": "poi",
+   "name": "Hermosa",
+   "category": "town",
+   "u": 0.44422,
+   "v": 0.56333,
+   "elev_m": 2023.8
   }
  ]
 }

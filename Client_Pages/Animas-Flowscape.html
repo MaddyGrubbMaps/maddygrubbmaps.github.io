@@ -129,6 +129,15 @@
   .nlabel i { font-weight: 300; font-style: italic; }
   .nlabel b { font-weight: 700; }
   #tip { z-index: 5; }
+  /* points of interest: construction-map callouts (black box, white bold name, leader to the point, italic height) */
+  .poi { position: absolute; width: 0; height: 0; pointer-events: none; }
+  .poi[hidden] { display: none; }
+  .poi .leader { position: absolute; left: 0; top: 0; width: 21px; height: 1.5px; background: #111; transform-origin: 0 50%; transform: rotate(-49deg); }
+  /* box / leader / height positions are set per frame by placePoiCallouts() (stacked so callouts don't overlap) */
+  .poi .box { position: absolute; left: 13px; bottom: 15px; background: #111; color: #fff; font-weight: 700; font-size: 11px;
+              line-height: 1.2; padding: 2px 6px 3px; white-space: nowrap; letter-spacing: 0.02em; }
+  .poi .h { position: absolute; left: 26px; top: -15px; font-style: italic; font-size: 10px; color: #111; white-space: nowrap;
+            font-variant-numeric: tabular-nums; background: rgba(255,255,255,0.72); padding: 0 3px; border-radius: 2px; }
   #tip[hidden] { display: none; }
   input:focus-visible { outline: 2px solid #222; outline-offset: 2px; }
   #dev-panel {
@@ -209,6 +218,7 @@
       <label class="switch"><span>start/end/confluence points</span><input type="checkbox" id="dots-toggle" checked><i></i></label>
       <label class="switch"><span>2ft reference dots</span><input type="checkbox" id="grid-dots-toggle"><i></i></label>
       <label class="switch"><span>watershed boundary points</span><input type="checkbox" id="bnd-toggle"><i></i></label>
+      <label class="switch"><span>points of interest</span><input type="checkbox" id="poi-toggle"><i></i></label>
       <label class="switch"><span>elevation readings</span><input type="checkbox" id="readings-toggle"><i></i></label>
       <div id="lock-note" hidden><span>terrain locked to the preset settings while points are shown</span><button type="button" id="unlock">unlock</button></div>
       <div id="relock-note"><span>terrain unlocked · readings hidden</span><button type="button" id="relock">lock to preset</button></div>
@@ -665,7 +675,7 @@ function loadWater() {
 }
 function loadColor() {
   return new Promise((resolve, reject) => {
-    new THREE.TextureLoader().load('animas-flowscape/color.jpg?v=' + ASSET_V + 'c2', (t) => {
+    new THREE.TextureLoader().load('animas-flowscape/color.jpg?v=' + ASSET_V + 'c3', (t) => {
       t.colorSpace = THREE.SRGBColorSpace;
       t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
       resolve(t);
@@ -816,6 +826,7 @@ const tipEl = document.getElementById('tip');
 const dotsToggle = document.getElementById('dots-toggle');
 const gridDotsToggle = document.getElementById('grid-dots-toggle');
 const bndToggle = document.getElementById('bnd-toggle');
+const poiToggle = document.getElementById('poi-toggle');
 const readingsToggle = document.getElementById('readings-toggle');
 const lockNote = document.getElementById('lock-note');
 const unlockBtn = document.getElementById('unlock');
@@ -827,9 +838,10 @@ let NODES = [];            // {id, kind, u, v, elev_m, hFt, world: Vector3, el: 
 // THREE.Points per point set: net = outlet / confluences / headwater starts / lakes,
 // grid = 2 ft reference dots along each stream (half size), peak = named GNIS summits on the
 // watershed boundary, bgrid = boundary x 1 ft model-grid crossings (half size; Scripts/add_boundary_nodes.py)
-const PTS = { net: null, grid: null, peak: null, bgrid: null };
-const PT_SIZE = { net: 13, grid: 6.5, peak: 13, bgrid: 6.5 };
-const setOf = (kind) => kind === 'ref2' ? 'grid' : kind === 'peak' || kind === 'bgrid' ? kind : 'net';
+// poi = points of interest (landmarks; Scripts/add_poi_nodes.py), shown with callout boxes
+const PTS = { net: null, grid: null, peak: null, bgrid: null, poi: null };
+const PT_SIZE = { net: 13, grid: 6.5, peak: 6.5, bgrid: 6.5, poi: 14 };   // all boundary points share the small-dot style
+const setOf = (kind) => kind === 'ref2' ? 'grid' : kind === 'peak' || kind === 'bgrid' || kind === 'poi' ? kind : 'net';
 let hmArrays = null;       // {height, mask, trend} full-res Float32Arrays, row 0 = south
 let waterPix = null;       // Uint8 red channel of water.png, row 0 = TOP of image (north)
 let waterW = 0, waterH = 0;
@@ -869,8 +881,15 @@ function makeDotTexture() {
   g.beginPath(); g.arc(32, 32, 24, 0, Math.PI * 2); g.lineWidth = 8; g.strokeStyle = '#fff'; g.stroke();
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
 }
+function makePoiTexture() {
+  // the construction map's POI marker: white disc, black ring, black centre dot
+  const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d');
+  g.beginPath(); g.arc(32, 32, 26, 0, Math.PI * 2); g.fillStyle = '#fff'; g.fill(); g.lineWidth = 7; g.strokeStyle = '#111'; g.stroke();
+  g.beginPath(); g.arc(32, 32, 8, 0, Math.PI * 2); g.fillStyle = '#111'; g.fill();
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
 async function loadNodes() {
-  const res = await fetch('animas-flowscape/nodes.json?v=' + ASSET_V + 'b3');
+  const res = await fetch('animas-flowscape/nodes.json?v=' + ASSET_V + 'b4');
   if (!res.ok) throw new Error('nodes.json ' + res.status);
   return (await res.json()).nodes;
 }
@@ -893,11 +912,11 @@ function makePoints(count, tex, size) {
 }
 function initNodes(list) {
   NODES = list.map((n) => {
-    const el = document.createElement('div'); el.className = 'nlabel'; el.hidden = true; overlayEl.appendChild(el);
+    const el = document.createElement('div'); el.className = n.kind === 'poi' ? 'poi' : 'nlabel'; el.hidden = true; overlayEl.appendChild(el);
     return { ...n, set: setOf(n.kind), hFt: 0, world: new THREE.Vector3(), el };
   });
-  const tex = makeDotTexture();
-  for (const k of Object.keys(PTS)) PTS[k] = makePoints(NODES.filter((n) => n.set === k).length, tex, PT_SIZE[k]);
+  const tex = makeDotTexture(), poiTex = makePoiTexture();
+  for (const k of Object.keys(PTS)) PTS[k] = makePoints(NODES.filter((n) => n.set === k).length, k === 'poi' ? poiTex : tex, PT_SIZE[k]);
   updateNodeHeights();
 }
 function nodeVisible(n) { return PTS[n.set].visible; }
@@ -905,9 +924,13 @@ function anyPtsVisible() { return Object.values(PTS).some((p) => p && p.visible)
 function nodeText(n) {
   return (n.name ? n.name + '<br>' : '') + '<i>' + fmtReal(n.elev_m) + '</i><br><b>' + fmtModel(n.hFt) + '</b>';
 }
+function poiHTML(n) {
+  const h = units === 'ft' ? (n.hFt * 12).toFixed(2) + ' in' : (n.hFt * 30.48).toFixed(1) + ' cm';
+  return '<div class="leader"></div><div class="box">' + n.name + '</div><div class="h">' + h + '</div>';
+}
 function updateNodeHeights() {
   if (!PTS.net || !hmArrays) return;
-  const idx = { net: 0, grid: 0, peak: 0, bgrid: 0 };
+  const idx = { net: 0, grid: 0, peak: 0, bgrid: 0, poi: 0 };
   for (const n of NODES) {
     const hM = modelHeightM(n.u, n.v);
     n.hFt = (hM + (n.lift || 0) * uniforms.uScale.value) / FT;   // build height: land gets the rivers' lift; dot stays on the surface
@@ -919,7 +942,7 @@ function updateNodeHeights() {
   refreshLabels();
 }
 function refreshLabels() {
-  for (const n of NODES) n.el.innerHTML = nodeText(n);
+  for (const n of NODES) n.el.innerHTML = n.set === 'poi' ? poiHTML(n) : nodeText(n);
   if (!tipEl.hidden && tipEl._node) showTip(tipEl._node, tipEl._x, tipEl._y);
 }
 const _v = new THREE.Vector3();
@@ -929,9 +952,37 @@ function nodeScreen(n) {
 }
 function syncNodeScreen() {
   if (!PTS.net) return;
+  const pois = [];
   for (const n of NODES) {
-    if (!(readingsToggle.checked && nodeVisible(n))) { n.el.hidden = true; continue; }
+    const show = n.set === 'poi' ? PTS.poi.visible : readingsToggle.checked && nodeVisible(n);   // callouts show with their toggle
+    if (!show) { n.el.hidden = true; continue; }
     const p = nodeScreen(n); n.el.hidden = !p.ok; n.el.style.left = p.x + 'px'; n.el.style.top = p.y + 'px';
+    if (n.set === 'poi' && p.ok) pois.push({ n, p });
+  }
+  placePoiCallouts(pois);
+}
+// Callout boxes sit up-right of their point; a box that would overlap one already placed steps up (longer
+// leader) until clear. Lower points are placed first so stacks read upward like the construction map.
+const POI_DX = 13, POI_DY = 15, POI_STEP = 8, POI_HT = 14;
+function placePoiCallouts(pois) {
+  pois.sort((a, b) => b.p.y - a.p.y);
+  const placed = [];
+  for (const { n, p } of pois) {
+    const box = n.el.querySelector('.box'), lead = n.el.querySelector('.leader'), ht = n.el.querySelector('.h');
+    if (!box) continue;
+    const w = box.offsetWidth, h = box.offsetHeight;
+    let dy = POI_DY;
+    const rect = () => ({ x0: p.x + POI_DX - 2, x1: p.x + POI_DX + w + 2, y0: p.y - dy - h - 2, y1: p.y - dy + POI_HT });
+    for (let k = 0; k < 40; k++) {
+      const r = rect();
+      if (!placed.some((q) => r.x0 < q.x1 && r.x1 > q.x0 && r.y0 < q.y1 && r.y1 > q.y0)) break;
+      dy += POI_STEP;
+    }
+    placed.push(rect());
+    box.style.left = POI_DX + 'px'; box.style.bottom = dy + 'px';
+    ht.style.left = (POI_DX + 13) + 'px'; ht.style.top = (-dy) + 'px';
+    lead.style.width = Math.hypot(POI_DX, dy) + 'px';
+    lead.style.transform = 'rotate(' + (-Math.atan2(dy, POI_DX) * 180 / Math.PI) + 'deg)';
   }
 }
 function showTip(n, x, y) {
@@ -958,26 +1009,28 @@ function setLocked(on) {
   for (const el of lockedEls()) el.disabled = on;
   lockNote.hidden = !on; relockNote.hidden = on;
 }
-function setDots(net, grid, bnd) {
+function setDots(net, grid, bnd, poi) {
   if (!PTS.net) return;
   dotsToggle.checked = net; PTS.net.visible = net;
   gridDotsToggle.checked = grid; PTS.grid.visible = grid;
   bndToggle.checked = bnd; PTS.peak.visible = bnd; PTS.bgrid.visible = bnd;
-  const any = net || grid || bnd;
+  poiToggle.checked = poi; PTS.poi.visible = poi;
+  const any = net || grid || bnd || poi;
   if (!any) readingsToggle.checked = false;
   setLocked(any);
   if (!any) { tipEl.hidden = true; tipEl._node = null; }
   syncNodeScreen(); requestRender();
 }
-const syncDots = () => setDots(dotsToggle.checked, gridDotsToggle.checked, bndToggle.checked);
+const syncDots = () => setDots(dotsToggle.checked, gridDotsToggle.checked, bndToggle.checked, poiToggle.checked);
 dotsToggle.addEventListener('change', syncDots);
 gridDotsToggle.addEventListener('change', syncDots);
 bndToggle.addEventListener('change', syncDots);
+poiToggle.addEventListener('change', syncDots);
 readingsToggle.addEventListener('change', () => {
-  if (readingsToggle.checked && !dotsToggle.checked && !gridDotsToggle.checked && !bndToggle.checked) setDots(true, false, false);
+  if (readingsToggle.checked && !dotsToggle.checked && !gridDotsToggle.checked && !bndToggle.checked && !poiToggle.checked) setDots(true, false, false, false);
   syncNodeScreen(); requestRender();
 });
-unlockBtn.addEventListener('click', () => setDots(false, false, false));
+unlockBtn.addEventListener('click', () => setDots(false, false, false, false));
 relockBtn.addEventListener('click', () => setLocked(true));
 unitBtns.forEach((b) => b.addEventListener('click', () => {
   units = b.dataset.u;
