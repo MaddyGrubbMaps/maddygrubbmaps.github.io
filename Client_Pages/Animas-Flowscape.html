@@ -866,7 +866,7 @@ function makeDotTexture() {
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
 }
 async function loadNodes() {
-  const res = await fetch('animas-flowscape/nodes.json?v=' + ASSET_V + 'b1');
+  const res = await fetch('animas-flowscape/nodes.json?v=' + ASSET_V + 'b2');
   if (!res.ok) throw new Error('nodes.json ' + res.status);
   return (await res.json()).nodes;
 }
