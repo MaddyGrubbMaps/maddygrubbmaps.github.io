@@ -767,7 +767,8 @@
    "u": 0.14953,
    "v": 0.6042,
    "elev_m": 3399.0,
-   "name": "Orphan Butte"
+   "name": "Orphan Butte",
+   "lift": 0.05438
   },
   {
    "id": 95,
@@ -775,7 +776,8 @@
    "u": 0.2599,
    "v": 0.53125,
    "elev_m": 3775.1,
-   "name": "Cumberland Mountain"
+   "name": "Cumberland Mountain",
+   "lift": 0.05438
   },
   {
    "id": 96,
@@ -783,7 +785,8 @@
    "u": 0.26622,
    "v": 0.51488,
    "elev_m": 3876.4,
-   "name": "Lewis Mountain"
+   "name": "Lewis Mountain",
+   "lift": 0.05438
   },
   {
    "id": 97,
@@ -791,7 +794,8 @@
    "u": 0.27782,
    "v": 0.48913,
    "elev_m": 3802.7,
-   "name": "Silver Mountain"
+   "name": "Silver Mountain",
+   "lift": 0.05438
   },
   {
    "id": 98,
@@ -799,7 +803,8 @@
    "u": 0.2979,
    "v": 0.46341,
    "elev_m": 3313.4,
-   "name": "Baldy Peak"
+   "name": "Baldy Peak",
+   "lift": 0.05438
   },
   {
    "id": 99,
@@ -807,7 +812,8 @@
    "u": 0.38992,
    "v": 0.40617,
    "elev_m": 2400.4,
-   "name": "Red Mesa"
+   "name": "Red Mesa",
+   "lift": 0.05438
   },
   {
    "id": 100,
@@ -815,7 +821,8 @@
    "u": 0.47296,
    "v": 0.36405,
    "elev_m": 2544.4,
-   "name": "Bridge Timber Mountain"
+   "name": "Bridge Timber Mountain",
+   "lift": 0.05438
   },
   {
    "id": 101,
@@ -823,7 +830,8 @@
    "u": 0.64894,
    "v": 0.55282,
    "elev_m": 2711.6,
-   "name": "Vosburg Pike"
+   "name": "Vosburg Pike",
+   "lift": 0.05438
   },
   {
    "id": 102,
@@ -831,7 +839,8 @@
    "u": 0.17469,
    "v": 0.89043,
    "elev_m": 4058.4,
-   "name": "Trico Peak"
+   "name": "Trico Peak",
+   "lift": 0.05438
   },
   {
    "id": 103,
@@ -839,7 +848,8 @@
    "u": 0.22498,
    "v": 0.90251,
    "elev_m": 3928.0,
-   "name": "Red Mountain Number 3"
+   "name": "Red Mountain Number 3",
+   "lift": 0.05438
   },
   {
    "id": 104,
@@ -847,7 +857,8 @@
    "u": 0.24419,
    "v": 0.91582,
    "elev_m": 3836.0,
-   "name": "Red Mountain Number 1"
+   "name": "Red Mountain Number 1",
+   "lift": 0.05438
   },
   {
    "id": 105,
@@ -855,7 +866,8 @@
    "u": 0.27438,
    "v": 0.9448,
    "elev_m": 4021.6,
-   "name": "Tuttle Mountain"
+   "name": "Tuttle Mountain",
+   "lift": 0.05438
   },
   {
    "id": 106,
@@ -863,7 +875,8 @@
    "u": 0.30458,
    "v": 0.9734,
    "elev_m": 4045.6,
-   "name": "Seigal Mountain"
+   "name": "Seigal Mountain",
+   "lift": 0.05438
   },
   {
    "id": 107,
@@ -871,7 +884,8 @@
    "u": 0.33663,
    "v": 0.97492,
    "elev_m": 4162.9,
-   "name": "Wood Mountain"
+   "name": "Wood Mountain",
+   "lift": 0.05438
   },
   {
    "id": 108,
@@ -879,7 +893,8 @@
    "u": 0.28038,
    "v": 0.93041,
    "elev_m": 4098.0,
-   "name": "Hurricane Peak"
+   "name": "Hurricane Peak",
+   "lift": 0.05438
   },
   {
    "id": 109,
@@ -887,7 +902,8 @@
    "u": 0.38561,
    "v": 0.94717,
    "elev_m": 4222.9,
-   "name": "Jones Mountain"
+   "name": "Jones Mountain",
+   "lift": 0.05438
   },
   {
    "id": 110,
@@ -895,7 +911,8 @@
    "u": 0.38813,
    "v": 0.93405,
    "elev_m": 4136.8,
-   "name": "Crown Mountain"
+   "name": "Crown Mountain",
+   "lift": 0.05438
   },
   {
    "id": 111,
@@ -903,7 +920,8 @@
    "u": 0.16609,
    "v": 0.85182,
    "elev_m": 4160.9,
-   "name": "Lookout Peak"
+   "name": "Lookout Peak",
+   "lift": 0.05438
   },
   {
    "id": 112,
@@ -911,7 +929,8 @@
    "u": 0.17564,
    "v": 0.83291,
    "elev_m": 4083.6,
-   "name": "South Lookout Peak"
+   "name": "South Lookout Peak",
+   "lift": 0.05438
   },
   {
    "id": 113,
@@ -919,7 +938,8 @@
    "u": 0.16627,
    "v": 0.79922,
    "elev_m": 4231.8,
-   "name": "Vermilion Peak"
+   "name": "Vermilion Peak",
+   "lift": 0.05438
   },
   {
    "id": 114,
@@ -927,7 +947,8 @@
    "u": 0.16803,
    "v": 0.82074,
    "elev_m": 4193.4,
-   "name": "Ulysses S Grant Peak"
+   "name": "Ulysses S Grant Peak",
+   "lift": 0.05438
   },
   {
    "id": 115,
@@ -935,7 +956,8 @@
    "u": 0.1662,
    "v": 0.76305,
    "elev_m": 4187.0,
-   "name": "Grizzly Peak"
+   "name": "Grizzly Peak",
+   "lift": 0.05438
   },
   {
    "id": 116,
@@ -943,7 +965,8 @@
    "u": 0.43892,
    "v": 0.88234,
    "elev_m": 4109.3,
-   "name": "Canby Mountain"
+   "name": "Canby Mountain",
+   "lift": 0.05438
   },
   {
    "id": 117,
@@ -951,7 +974,8 @@
    "u": 0.1363,
    "v": 0.71542,
    "elev_m": 3830.2,
-   "name": "Hermosa Peak"
+   "name": "Hermosa Peak",
+   "lift": 0.05438
   },
   {
    "id": 118,
@@ -959,7 +983,8 @@
    "u": 0.11314,
    "v": 0.7024,
    "elev_m": 3637.9,
-   "name": "Section Point"
+   "name": "Section Point",
+   "lift": 0.05438
   },
   {
    "id": 119,
@@ -967,7 +992,8 @@
    "u": 0.48526,
    "v": 0.8101,
    "elev_m": 4105.4,
-   "name": "Peak Three"
+   "name": "Peak Three",
+   "lift": 0.05438
   },
   {
    "id": 120,
@@ -975,7 +1001,8 @@
    "u": 0.5093,
    "v": 0.82398,
    "elev_m": 4149.9,
-   "name": "White Dome"
+   "name": "White Dome",
+   "lift": 0.05438
   },
   {
    "id": 121,
@@ -983,7 +1010,8 @@
    "u": 0.51715,
    "v": 0.80328,
    "elev_m": 4185.6,
-   "name": "Storm King Peak"
+   "name": "Storm King Peak",
+   "lift": 0.05438
   },
   {
    "id": 122,
@@ -991,7 +1019,8 @@
    "u": 0.51654,
    "v": 0.77726,
    "elev_m": 4205.3,
-   "name": "Jagged Mountain"
+   "name": "Jagged Mountain",
+   "lift": 0.05438
   },
   {
    "id": 123,
@@ -999,7 +1028,8 @@
    "u": 0.52665,
    "v": 0.76009,
    "elev_m": 4284.6,
-   "name": "Windom Peak"
+   "name": "Windom Peak",
+   "lift": 0.05438
   },
   {
    "id": 124,
@@ -1007,7 +1037,8 @@
    "u": 0.54218,
    "v": 0.73419,
    "elev_m": 4017.5,
-   "name": "Bullion Mountain"
+   "name": "Bullion Mountain",
+   "lift": 0.05438
   },
   {
    "id": 125,
@@ -1015,7 +1046,8 @@
    "u": 0.56788,
    "v": 0.73357,
    "elev_m": 4014.4,
-   "name": "Mount Valois"
+   "name": "Mount Valois",
+   "lift": 0.05438
   },
   {
    "id": 126,
@@ -1023,7 +1055,8 @@
    "u": 0.60005,
    "v": 0.72886,
    "elev_m": 3985.2,
-   "name": "Emerson Mountain"
+   "name": "Emerson Mountain",
+   "lift": 0.05438
   },
   {
    "id": 127,
@@ -1031,7 +1064,8 @@
    "u": 0.59676,
    "v": 0.71031,
    "elev_m": 3893.4,
-   "name": "Sheridan Mountain"
+   "name": "Sheridan Mountain",
+   "lift": 0.05438
   },
   {
    "id": 128,
@@ -1039,7 +1073,8 @@
    "u": 0.6109,
    "v": 0.65373,
    "elev_m": 3578.0,
-   "name": "Miller Mountain"
+   "name": "Miller Mountain",
+   "lift": 0.05438
   },
   {
    "id": 129,
@@ -1047,7 +1082,8 @@
    "u": 0.60051,
    "v": 0.69322,
    "elev_m": 3804.5,
-   "name": "Endlich Mesa"
+   "name": "Endlich Mesa",
+   "lift": 0.05438
   },
   {
    "id": 130,
@@ -1055,7 +1091,8 @@
    "u": 0.1684,
    "v": 0.86552,
    "elev_m": 4116.2,
-   "name": "Bridal Peak"
+   "name": "Bridal Peak",
+   "lift": 0.05438
   },
   {
    "id": 131,
@@ -1063,7 +1100,8 @@
    "u": 0.85945,
    "v": 0.23271,
    "elev_m": 2116.0,
-   "name": "Hart Mountain"
+   "name": "Hart Mountain",
+   "lift": 0.05438
   },
   {
    "id": 132,
@@ -1071,7 +1109,8 @@
    "u": 0.6025,
    "v": 0.11164,
    "elev_m": 1842.0,
-   "name": "Hood Mesa"
+   "name": "Hood Mesa",
+   "lift": 0.05438
   },
   {
    "id": 133,
@@ -1079,7 +1118,8 @@
    "u": 0.83095,
    "v": 0.18319,
    "elev_m": 2069.1,
-   "name": "Knickerbocker Peaks"
+   "name": "Knickerbocker Peaks",
+   "lift": 0.05438
   },
   {
    "id": 134,
@@ -1087,7 +1127,8 @@
    "u": 0.61326,
    "v": 0.25226,
    "elev_m": 2171.8,
-   "name": "Lone Tree Mountain"
+   "name": "Lone Tree Mountain",
+   "lift": 0.05438
   },
   {
    "id": 135,
@@ -1095,7 +1136,8 @@
    "u": 0.8497,
    "v": 0.19554,
    "elev_m": 2087.5,
-   "name": "Slane Knob"
+   "name": "Slane Knob",
+   "lift": 0.05438
   },
   {
    "id": 136,
@@ -1103,112 +1145,128 @@
    "u": 0.81183,
    "v": 0.28231,
    "elev_m": 2199.6,
-   "name": "Tank Mountain"
+   "name": "Tank Mountain",
+   "lift": 0.05438
   },
   {
    "id": 137,
    "kind": "bgrid",
    "u": 0.35,
    "v": 0.96356,
-   "elev_m": 3991.3
+   "elev_m": 3991.3,
+   "lift": 0.05438
   },
   {
    "id": 138,
    "kind": "bgrid",
    "u": 0.45,
    "v": 0.90123,
-   "elev_m": 3939.6
+   "elev_m": 3939.6,
+   "lift": 0.05438
   },
   {
    "id": 139,
    "kind": "bgrid",
    "u": 0.45,
    "v": 0.86076,
-   "elev_m": 3708.9
+   "elev_m": 3708.9,
+   "lift": 0.05438
   },
   {
    "id": 140,
    "kind": "bgrid",
    "u": 0.5,
    "v": 0.8379,
-   "elev_m": 3872.1
+   "elev_m": 3872.1,
+   "lift": 0.05438
   },
   {
    "id": 141,
    "kind": "bgrid",
    "u": 0.65,
    "v": 0.61613,
-   "elev_m": 2875.6
+   "elev_m": 2875.6,
+   "lift": 0.05438
   },
   {
    "id": 142,
    "kind": "bgrid",
    "u": 0.65,
    "v": 0.56842,
-   "elev_m": 2673.8
+   "elev_m": 2673.8,
+   "lift": 0.05438
   },
   {
    "id": 143,
    "kind": "bgrid",
    "u": 0.65,
    "v": 0.53815,
-   "elev_m": 2485.0
+   "elev_m": 2485.0,
+   "lift": 0.05438
   },
   {
    "id": 144,
    "kind": "bgrid",
    "u": 0.7,
    "v": 0.49391,
-   "elev_m": 2174.4
+   "elev_m": 2174.4,
+   "lift": 0.05438
   },
   {
    "id": 145,
    "kind": "bgrid",
    "u": 0.75,
    "v": 0.47501,
-   "elev_m": 2114.1
+   "elev_m": 2114.1,
+   "lift": 0.05438
   },
   {
    "id": 146,
    "kind": "bgrid",
    "u": 0.75,
    "v": 0.37237,
-   "elev_m": 2245.0
+   "elev_m": 2245.0,
+   "lift": 0.05438
   },
   {
    "id": 147,
    "kind": "bgrid",
    "u": 0.8,
    "v": 0.32122,
-   "elev_m": 2147.9
+   "elev_m": 2147.9,
+   "lift": 0.05438
   },
   {
    "id": 148,
    "kind": "bgrid",
    "u": 0.8,
    "v": 0.16493,
-   "elev_m": 1939.6
+   "elev_m": 1939.6,
+   "lift": 0.05438
   },
   {
    "id": 149,
    "kind": "bgrid",
    "u": 0.75,
    "v": 0.12219,
-   "elev_m": 1819.9
+   "elev_m": 1819.9,
+   "lift": 0.05438
   },
   {
    "id": 150,
    "kind": "bgrid",
    "u": 0.7,
    "v": 0.09257,
-   "elev_m": 1788.5
+   "elev_m": 1788.5,
+   "lift": 0.05438
   },
   {
    "id": 151,
    "kind": "bgrid",
    "u": 0.65,
    "v": 0.07111,
-   "elev_m": 1755.6
+   "elev_m": 1755.6,
+   "lift": 0.05399
   },
   {
    "id": 152,
@@ -1222,266 +1280,304 @@
    "kind": "bgrid",
    "u": 0.6,
    "v": 0.18749,
-   "elev_m": 1940.4
+   "elev_m": 1940.4,
+   "lift": 0.05438
   },
   {
    "id": 154,
    "kind": "bgrid",
    "u": 0.6,
    "v": 0.28523,
-   "elev_m": 2038.2
+   "elev_m": 2038.2,
+   "lift": 0.05438
   },
   {
    "id": 155,
    "kind": "bgrid",
    "u": 0.55,
    "v": 0.32534,
-   "elev_m": 2273.9
+   "elev_m": 2273.9,
+   "lift": 0.05438
   },
   {
    "id": 156,
    "kind": "bgrid",
    "u": 0.5,
    "v": 0.35274,
-   "elev_m": 2353.4
+   "elev_m": 2353.4,
+   "lift": 0.05438
   },
   {
    "id": 157,
    "kind": "bgrid",
    "u": 0.45,
    "v": 0.38254,
-   "elev_m": 2301.4
+   "elev_m": 2301.4,
+   "lift": 0.05438
   },
   {
    "id": 158,
    "kind": "bgrid",
    "u": 0.35,
    "v": 0.43484,
-   "elev_m": 2614.1
+   "elev_m": 2614.1,
+   "lift": 0.05438
   },
   {
    "id": 159,
    "kind": "bgrid",
    "u": 0.2,
    "v": 0.54727,
-   "elev_m": 3680.0
+   "elev_m": 3680.0,
+   "lift": 0.05438
   },
   {
    "id": 160,
    "kind": "bgrid",
    "u": 0.15,
    "v": 0.6523,
-   "elev_m": 3323.5
+   "elev_m": 3323.5,
+   "lift": 0.05438
   },
   {
    "id": 161,
    "kind": "bgrid",
    "u": 0.15,
    "v": 0.67107,
-   "elev_m": 3204.6
+   "elev_m": 3204.6,
+   "lift": 0.05438
   },
   {
    "id": 162,
    "kind": "bgrid",
    "u": 0.2,
    "v": 0.89129,
-   "elev_m": 3495.3
+   "elev_m": 3495.3,
+   "lift": 0.05438
   },
   {
    "id": 163,
    "kind": "bgrid",
    "u": 0.42365,
    "v": 0.925,
-   "elev_m": 3959.5
+   "elev_m": 3959.5,
+   "lift": 0.05438
   },
   {
    "id": 164,
    "kind": "bgrid",
    "u": 0.46729,
    "v": 0.85,
-   "elev_m": 3861.5
+   "elev_m": 3861.5,
+   "lift": 0.05438
   },
   {
    "id": 165,
    "kind": "bgrid",
    "u": 0.60523,
    "v": 0.675,
-   "elev_m": 3638.7
+   "elev_m": 3638.7,
+   "lift": 0.05438
   },
   {
    "id": 166,
    "kind": "bgrid",
    "u": 0.6525,
    "v": 0.6,
-   "elev_m": 2918.0
+   "elev_m": 2918.0,
+   "lift": 0.05438
   },
   {
    "id": 167,
    "kind": "bgrid",
    "u": 0.66085,
    "v": 0.525,
-   "elev_m": 2341.4
+   "elev_m": 2341.4,
+   "lift": 0.05438
   },
   {
    "id": 168,
    "kind": "bgrid",
    "u": 0.6718,
    "v": 0.5,
-   "elev_m": 2223.7
+   "elev_m": 2223.7,
+   "lift": 0.05438
   },
   {
    "id": 169,
    "kind": "bgrid",
    "u": 0.76176,
    "v": 0.45,
-   "elev_m": 2043.2
+   "elev_m": 2043.2,
+   "lift": 0.05438
   },
   {
    "id": 170,
    "kind": "bgrid",
    "u": 0.76404,
    "v": 0.425,
-   "elev_m": 2029.6
+   "elev_m": 2029.6,
+   "lift": 0.05438
   },
   {
    "id": 171,
    "kind": "bgrid",
    "u": 0.79395,
    "v": 0.4,
-   "elev_m": 2097.0
+   "elev_m": 2097.0,
+   "lift": 0.05438
   },
   {
    "id": 172,
    "kind": "bgrid",
    "u": 0.77292,
    "v": 0.35,
-   "elev_m": 2214.2
+   "elev_m": 2214.2,
+   "lift": 0.05438
   },
   {
    "id": 173,
    "kind": "bgrid",
    "u": 0.83023,
    "v": 0.3,
-   "elev_m": 2145.6
+   "elev_m": 2145.6,
+   "lift": 0.05438
   },
   {
    "id": 174,
    "kind": "bgrid",
    "u": 0.83826,
    "v": 0.25,
-   "elev_m": 2047.1
+   "elev_m": 2047.1,
+   "lift": 0.05438
   },
   {
    "id": 175,
    "kind": "bgrid",
    "u": 0.79455,
    "v": 0.15,
-   "elev_m": 1851.0
+   "elev_m": 1851.0,
+   "lift": 0.05438
   },
   {
    "id": 176,
    "kind": "bgrid",
    "u": 0.63243,
    "v": 0.05,
-   "elev_m": 1644.2
+   "elev_m": 1644.2,
+   "lift": 0.04467
   },
   {
    "id": 177,
    "kind": "bgrid",
    "u": 0.58539,
    "v": 0.05,
-   "elev_m": 1661.1
+   "elev_m": 1661.1,
+   "lift": 0.05438
   },
   {
    "id": 178,
    "kind": "bgrid",
    "u": 0.57348,
    "v": 0.075,
-   "elev_m": 1807.4
+   "elev_m": 1807.4,
+   "lift": 0.05438
   },
   {
    "id": 179,
    "kind": "bgrid",
    "u": 0.58917,
    "v": 0.1,
-   "elev_m": 1799.7
+   "elev_m": 1799.7,
+   "lift": 0.05438
   },
   {
    "id": 180,
    "kind": "bgrid",
    "u": 0.58451,
    "v": 0.125,
-   "elev_m": 1838.3
+   "elev_m": 1838.3,
+   "lift": 0.05438
   },
   {
    "id": 181,
    "kind": "bgrid",
    "u": 0.58888,
    "v": 0.15,
-   "elev_m": 1882.2
+   "elev_m": 1882.2,
+   "lift": 0.05438
   },
   {
    "id": 182,
    "kind": "bgrid",
    "u": 0.59511,
    "v": 0.175,
-   "elev_m": 1929.4
+   "elev_m": 1929.4,
+   "lift": 0.05438
   },
   {
    "id": 183,
    "kind": "bgrid",
    "u": 0.60691,
    "v": 0.2,
-   "elev_m": 1971.1
+   "elev_m": 1971.1,
+   "lift": 0.05438
   },
   {
    "id": 184,
    "kind": "bgrid",
    "u": 0.61963,
    "v": 0.225,
-   "elev_m": 2005.0
+   "elev_m": 2005.0,
+   "lift": 0.05438
   },
   {
    "id": 185,
    "kind": "bgrid",
    "u": 0.59202,
    "v": 0.3,
-   "elev_m": 2155.6
+   "elev_m": 2155.6,
+   "lift": 0.05438
   },
   {
    "id": 186,
    "kind": "bgrid",
    "u": 0.31545,
    "v": 0.45,
-   "elev_m": 2662.4
+   "elev_m": 2662.4,
+   "lift": 0.05438
   },
   {
    "id": 187,
    "kind": "bgrid",
    "u": 0.16667,
    "v": 0.575,
-   "elev_m": 3523.5
+   "elev_m": 3523.5,
+   "lift": 0.05438
   },
   {
    "id": 188,
    "kind": "bgrid",
    "u": 0.13246,
    "v": 0.625,
-   "elev_m": 3283.5
+   "elev_m": 3283.5,
+   "lift": 0.05438
   },
   {
    "id": 189,
    "kind": "bgrid",
    "u": 0.16607,
    "v": 0.75,
-   "elev_m": 3745.9
+   "elev_m": 3745.9,
+   "lift": 0.05438
   },
   {
    "id": 190,
    "kind": "bgrid",
    "u": 0.15289,
    "v": 0.775,
-   "elev_m": 4070.2
+   "elev_m": 4070.2,
+   "lift": 0.05438
   }
  ]
 }

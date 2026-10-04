@@ -165,7 +165,7 @@
     <div id="total">
       <div>
         <div class="label">Total model height</div>
-        <div id="stat-height">48.4 in</div>
+        <div id="stat-height">49.6 in</div>
       </div>
       <button type="button" id="panel-toggle" aria-expanded="false" aria-controls="panel" aria-label="Show controls">&#9650;</button>
     </div>
@@ -695,7 +695,11 @@ const trendEl = document.getElementById('trend');
 const trendValueEl = document.getElementById('trend-value');
 const tiltEl = document.getElementById('tilt');
 const tiltValueEl = document.getElementById('tilt-value');
-let statSamp = null;   // [trend, relief, v] triples on a 4x subsample, watershed only
+let statSamp = null;   // [trend, relief, v, land] on a 4x subsample, watershed only (land = 1 off the drawn rivers)
+// River lift: the model PSD overlays the drawn rivers at 5.1 % (13/255) toward white, and height.bin was
+// renormalised x 65535/61437, so river texels sit LIFT_BIN above the land (visual only). Build heights add
+// the same lift to the land: readings (nodes.json "lift") and the total model height below.
+const LIFT_BIN = 13 / 255 * 65535 / 61437;
 
 function currentTiltGrade() { return parseInt(tiltEl.value, 10) * 0.25; }   // percent
 function currentTiltFt() { return currentTiltGrade() / 100 * 40; }        // rise at the north edge over the 40 ft length
@@ -703,7 +707,7 @@ function currentTrendFt() { return (1 + parseInt(trendEl.value, 10) * 0.25) * TR
 function maxHeightFt(h, tiltFt) {
   if (!statSamp) return h;
   const kT = currentTrendFt(); let m = 0;
-  for (let i = 0; i < statSamp.length; i += 3) m = Math.max(m, statSamp[i] * kT + statSamp[i + 1] * h + tiltFt * statSamp[i + 2]);
+  for (let i = 0; i < statSamp.length; i += 4) m = Math.max(m, statSamp[i] * kT + (statSamp[i + 1] + LIFT_BIN * statSamp[i + 3]) * h + tiltFt * statSamp[i + 2]);
   return m;
 }
 function updateStats() {
@@ -866,7 +870,7 @@ function makeDotTexture() {
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
 }
 async function loadNodes() {
-  const res = await fetch('animas-flowscape/nodes.json?v=' + ASSET_V + 'b2');
+  const res = await fetch('animas-flowscape/nodes.json?v=' + ASSET_V + 'b3');
   if (!res.ok) throw new Error('nodes.json ' + res.status);
   return (await res.json()).nodes;
 }
@@ -905,7 +909,8 @@ function updateNodeHeights() {
   if (!PTS.net || !hmArrays) return;
   const idx = { net: 0, grid: 0, peak: 0, bgrid: 0 };
   for (const n of NODES) {
-    const hM = modelHeightM(n.u, n.v); n.hFt = hM / FT;
+    const hM = modelHeightM(n.u, n.v);
+    n.hFt = (hM + (n.lift || 0) * uniforms.uScale.value) / FT;   // build height: land gets the rivers' lift; dot stays on the surface
     n.world.set((n.u - 0.5) * PLANE_W, hM, -(n.v - 0.5) * PLANE_H);
     const pos = PTS[n.set].geometry.attributes.position.array; const i = idx[n.set]++;
     pos[i * 3] = n.world.x; pos[i * 3 + 1] = n.world.y; pos[i * 3 + 2] = n.world.z;
@@ -998,7 +1003,7 @@ window.addEventListener('resize', () => {
     uniforms.uWater.value = waterTex;
     waterPix = waterPixels(waterTex);
     // stats sample: every 4th texel of (trend, relief, north fraction)
-    statSamp = []; for (let j = 0; j < HM_H; j += 4) for (let i = 0; i < HM_W; i += 4) { const k = j * HM_W + i; if (heightFull[k] > 0) statSamp.push(trendFull[k], heightFull[k] - trendFull[k], (j + 0.5) / HM_H); }
+    statSamp = []; for (let j = 0; j < HM_H; j += 4) for (let i = 0; i < HM_W; i += 4) { const k = j * HM_W + i; if (heightFull[k] > 0) statSamp.push(trendFull[k], heightFull[k] - trendFull[k], (j + 0.5) / HM_H, 1 - sampleWater((i + 0.5) / HM_W, (j + 0.5) / HM_H)); }
     statSamp = new Float32Array(statSamp);
     // profile trend: 1D gaussian of z along s with the same 3 km sigma (0.83 model ft)
     for (const pr of Object.values(PROFILES)) { const sg = 3000 / (145400 / 40); pr.t = pr.s.map((si, i) => { let n = 0, d = 0; for (let j = 0; j < pr.s.length; j++) { const w = Math.exp(-0.5 * ((pr.s[j] - si) / sg) ** 2); n += w * pr.z[j]; d += w; } return n / d; }); }
