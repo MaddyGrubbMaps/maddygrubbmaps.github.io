@@ -149,8 +149,8 @@
 <header>
   <h1>Animas Flowscape - 3D Reference Prototype</h1>
   <div id="units" role="group" aria-label="Units">
-    <button type="button" data-u="ft" class="on" aria-pressed="true">ft</button>
-    <button type="button" data-u="m" aria-pressed="false">m</button>
+    <button type="button" data-u="ft" class="on" aria-pressed="true">ft · in</button>
+    <button type="button" data-u="m" aria-pressed="false">m · cm</button>
   </div>
 </header>
 
@@ -165,7 +165,7 @@
     <div id="total">
       <div>
         <div class="label">Total model height</div>
-        <div id="stat-height">4.03 ft</div>
+        <div id="stat-height">48.4 in</div>
       </div>
       <button type="button" id="panel-toggle" aria-expanded="false" aria-controls="panel" aria-label="Show controls">&#9650;</button>
     </div>
@@ -208,6 +208,7 @@
       <label class="switch"><span>rivers only</span><input type="checkbox" id="rivers-toggle"><i></i></label>
       <label class="switch"><span>start/end/confluence points</span><input type="checkbox" id="dots-toggle" checked><i></i></label>
       <label class="switch"><span>2ft reference dots</span><input type="checkbox" id="grid-dots-toggle"><i></i></label>
+      <label class="switch"><span>watershed boundary points</span><input type="checkbox" id="bnd-toggle"><i></i></label>
       <label class="switch"><span>elevation readings</span><input type="checkbox" id="readings-toggle"><i></i></label>
       <div id="lock-note" hidden><span>terrain locked to the preset settings while points are shown</span><button type="button" id="unlock">unlock</button></div>
       <div id="relock-note"><span>terrain unlocked · readings hidden</span><button type="button" id="relock">lock to preset</button></div>
@@ -716,7 +717,7 @@ function updateStats() {
   const lo = Math.min(...grades), hi = Math.max(...grades);
   sliderValueEl.innerHTML = ve.toFixed(2) + '×' + (i === 0 ? ' <small>true scale</small>' : '');
   tiltValueEl.textContent = '+' + tiltGrade.toFixed(2) + '%';
-  statHeight.textContent = maxHeightFt(h, tiltFt).toFixed(2) + ' ft';
+  statHeight.textContent = fmtModel(maxHeightFt(h, tiltFt));
   statMin.innerHTML = lo.toFixed(2) + '<span class="unit">%</span>';
   statMax.innerHTML = hi.toFixed(2) + '<span class="unit">%</span>';
   updateNodeHeights();
@@ -810,6 +811,7 @@ const overlayEl = document.getElementById('overlay');
 const tipEl = document.getElementById('tip');
 const dotsToggle = document.getElementById('dots-toggle');
 const gridDotsToggle = document.getElementById('grid-dots-toggle');
+const bndToggle = document.getElementById('bnd-toggle');
 const readingsToggle = document.getElementById('readings-toggle');
 const lockNote = document.getElementById('lock-note');
 const unlockBtn = document.getElementById('unlock');
@@ -818,8 +820,12 @@ const relockBtn = document.getElementById('relock');
 const unitBtns = document.querySelectorAll('#units button');
 let units = 'ft';
 let NODES = [];            // {id, kind, u, v, elev_m, hFt, world: Vector3, el: label div}
-let nodePts = null;        // THREE.Points: outlet / confluences / headwater starts
-let gridPts = null;        // THREE.Points: 2 ft reference dots along each stream (half size)
+// THREE.Points per point set: net = outlet / confluences / headwater starts / lakes,
+// grid = 2 ft reference dots along each stream (half size), peak = named GNIS summits on the
+// watershed boundary, bgrid = boundary x 1 ft model-grid crossings (half size; Scripts/add_boundary_nodes.py)
+const PTS = { net: null, grid: null, peak: null, bgrid: null };
+const PT_SIZE = { net: 13, grid: 6.5, peak: 13, bgrid: 6.5 };
+const setOf = (kind) => kind === 'ref2' ? 'grid' : kind === 'peak' || kind === 'bgrid' ? kind : 'net';
 let hmArrays = null;       // {height, mask, trend} full-res Float32Arrays, row 0 = south
 let waterPix = null;       // Uint8 red channel of water.png, row 0 = TOP of image (north)
 let waterW = 0, waterH = 0;
@@ -828,7 +834,8 @@ const lockedEls = () => [slider, riverEl, trendEl, tiltEl];
 function fmtReal(m) {
   return units === 'ft' ? Math.round(m / FT).toLocaleString('en-US') + ' ft' : Math.round(m).toLocaleString('en-US') + ' m';
 }
-function fmtModel(hFt) { return units === 'ft' ? hFt.toFixed(2) + ' ft' : (hFt * 30.48).toFixed(1) + ' cm'; }
+// model heights read in inches (Maddy 2026-10-04); metric mode in cm
+function fmtModel(hFt) { return units === 'ft' ? (hFt * 12).toFixed(1) + ' in' : (hFt * 30.48).toFixed(1) + ' cm'; }
 
 // bilinear sample of a full-res heightmap array at plane coords (u east, v north)
 function sampleHM(arr, u, v) {
@@ -859,7 +866,7 @@ function makeDotTexture() {
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
 }
 async function loadNodes() {
-  const res = await fetch('animas-flowscape/nodes.json?v=' + ASSET_V);
+  const res = await fetch('animas-flowscape/nodes.json?v=' + ASSET_V + 'b1');
   if (!res.ok) throw new Error('nodes.json ' + res.status);
   return (await res.json()).nodes;
 }
@@ -883,28 +890,31 @@ function makePoints(count, tex, size) {
 function initNodes(list) {
   NODES = list.map((n) => {
     const el = document.createElement('div'); el.className = 'nlabel'; el.hidden = true; overlayEl.appendChild(el);
-    return { ...n, set: n.kind === 'ref2' ? 'grid' : 'net', hFt: 0, world: new THREE.Vector3(), el };
+    return { ...n, set: setOf(n.kind), hFt: 0, world: new THREE.Vector3(), el };
   });
   const tex = makeDotTexture();
-  nodePts = makePoints(NODES.filter((n) => n.set === 'net').length, tex, 13);
-  gridPts = makePoints(NODES.filter((n) => n.set === 'grid').length, tex, 6.5);
+  for (const k of Object.keys(PTS)) PTS[k] = makePoints(NODES.filter((n) => n.set === k).length, tex, PT_SIZE[k]);
   updateNodeHeights();
 }
-function nodeVisible(n) { return n.set === 'grid' ? gridPts.visible : nodePts.visible; }
+function nodeVisible(n) { return PTS[n.set].visible; }
+function anyPtsVisible() { return Object.values(PTS).some((p) => p && p.visible); }
+function nodeText(n) {
+  return (n.name ? n.name + '<br>' : '') + '<i>' + fmtReal(n.elev_m) + '</i><br><b>' + fmtModel(n.hFt) + '</b>';
+}
 function updateNodeHeights() {
-  if (!nodePts || !hmArrays) return;
-  const idx = { net: 0, grid: 0 };
+  if (!PTS.net || !hmArrays) return;
+  const idx = { net: 0, grid: 0, peak: 0, bgrid: 0 };
   for (const n of NODES) {
     const hM = modelHeightM(n.u, n.v); n.hFt = hM / FT;
     n.world.set((n.u - 0.5) * PLANE_W, hM, -(n.v - 0.5) * PLANE_H);
-    const pos = (n.set === 'grid' ? gridPts : nodePts).geometry.attributes.position.array; const i = idx[n.set]++;
+    const pos = PTS[n.set].geometry.attributes.position.array; const i = idx[n.set]++;
     pos[i * 3] = n.world.x; pos[i * 3 + 1] = n.world.y; pos[i * 3 + 2] = n.world.z;
   }
-  nodePts.geometry.attributes.position.needsUpdate = true; gridPts.geometry.attributes.position.needsUpdate = true;
+  for (const p of Object.values(PTS)) p.geometry.attributes.position.needsUpdate = true;
   refreshLabels();
 }
 function refreshLabels() {
-  for (const n of NODES) n.el.innerHTML = '<i>' + fmtReal(n.elev_m) + '</i><br><b>' + fmtModel(n.hFt) + '</b>';
+  for (const n of NODES) n.el.innerHTML = nodeText(n);
   if (!tipEl.hidden && tipEl._node) showTip(tipEl._node, tipEl._x, tipEl._y);
 }
 const _v = new THREE.Vector3();
@@ -913,7 +923,7 @@ function nodeScreen(n) {
   return { x: (_v.x + 1) / 2 * wrap.clientWidth, y: (1 - _v.y) / 2 * wrap.clientHeight, ok: _v.z < 1 };
 }
 function syncNodeScreen() {
-  if (!nodePts) return;
+  if (!PTS.net) return;
   for (const n of NODES) {
     if (!(readingsToggle.checked && nodeVisible(n))) { n.el.hidden = true; continue; }
     const p = nodeScreen(n); n.el.hidden = !p.ok; n.el.style.left = p.x + 'px'; n.el.style.top = p.y + 'px';
@@ -921,13 +931,13 @@ function syncNodeScreen() {
 }
 function showTip(n, x, y) {
   tipEl._node = n; tipEl._x = x; tipEl._y = y;
-  tipEl.innerHTML = '<i>' + fmtReal(n.elev_m) + '</i><br><b>' + fmtModel(n.hFt) + '</b>';
+  tipEl.innerHTML = nodeText(n);
   tipEl.hidden = false;
   const p = nodeScreen(n);
   tipEl.style.left = p.x + 'px'; tipEl.style.top = p.y + 'px';
 }
 renderer.domElement.addEventListener('pointermove', (e) => {
-  if (!nodePts || !(nodePts.visible || gridPts.visible)) return;
+  if (!PTS.net || !anyPtsVisible()) return;
   const rect = renderer.domElement.getBoundingClientRect(); const x = e.clientX - rect.left, y = e.clientY - rect.top;
   let best = null, bd = 12 * 12;
   for (const n of NODES) { if (!nodeVisible(n)) continue; const p = nodeScreen(n); if (!p.ok) continue; const d = (p.x - x) ** 2 + (p.y - y) ** 2; if (d < bd) { bd = d; best = n; } }
@@ -943,28 +953,31 @@ function setLocked(on) {
   for (const el of lockedEls()) el.disabled = on;
   lockNote.hidden = !on; relockNote.hidden = on;
 }
-function setDots(net, grid) {
-  if (!nodePts) return;
-  dotsToggle.checked = net; nodePts.visible = net;
-  gridDotsToggle.checked = grid; gridPts.visible = grid;
-  const any = net || grid;
+function setDots(net, grid, bnd) {
+  if (!PTS.net) return;
+  dotsToggle.checked = net; PTS.net.visible = net;
+  gridDotsToggle.checked = grid; PTS.grid.visible = grid;
+  bndToggle.checked = bnd; PTS.peak.visible = bnd; PTS.bgrid.visible = bnd;
+  const any = net || grid || bnd;
   if (!any) readingsToggle.checked = false;
   setLocked(any);
   if (!any) { tipEl.hidden = true; tipEl._node = null; }
   syncNodeScreen(); requestRender();
 }
-dotsToggle.addEventListener('change', () => setDots(dotsToggle.checked, gridDotsToggle.checked));
-gridDotsToggle.addEventListener('change', () => setDots(dotsToggle.checked, gridDotsToggle.checked));
+const syncDots = () => setDots(dotsToggle.checked, gridDotsToggle.checked, bndToggle.checked);
+dotsToggle.addEventListener('change', syncDots);
+gridDotsToggle.addEventListener('change', syncDots);
+bndToggle.addEventListener('change', syncDots);
 readingsToggle.addEventListener('change', () => {
-  if (readingsToggle.checked && !dotsToggle.checked && !gridDotsToggle.checked) setDots(true, false);
+  if (readingsToggle.checked && !dotsToggle.checked && !gridDotsToggle.checked && !bndToggle.checked) setDots(true, false, false);
   syncNodeScreen(); requestRender();
 });
-unlockBtn.addEventListener('click', () => setDots(false, false));
+unlockBtn.addEventListener('click', () => setDots(false, false, false));
 relockBtn.addEventListener('click', () => setLocked(true));
 unitBtns.forEach((b) => b.addEventListener('click', () => {
   units = b.dataset.u;
   unitBtns.forEach((x) => { const on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on ? 'true' : 'false'); });
-  refreshLabels();
+  updateStats();
 }));
 
 window.addEventListener('resize', () => {
@@ -1005,7 +1018,7 @@ window.addEventListener('resize', () => {
     initNodes(nodeList);
     applyRiver(); applyTrend(); applyTilt();
     applySlider(parseInt(slider.value, 10));
-    setDots(dotsToggle.checked, gridDotsToggle.checked);   // default: network points on, terrain locked
+    syncDots();   // default: network points on, terrain locked
     loadingEl.hidden = true;
     requestAnimationFrame(tick);
   } catch (err) {
