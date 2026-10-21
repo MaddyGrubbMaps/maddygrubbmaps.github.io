@@ -32817,7 +32817,7 @@ a.u-button-style.u-border-20 {
 
 /* begin-variables font-family */
 .u-body {
-    font-family: Alata;
+    font-family: var(--alata);
 }
 
 h1,
@@ -32826,7 +32826,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: Alata;
+    font-family: var(--alata);
 }
 
 /* end-variables font-family */
@@ -32851,11 +32851,11 @@ h6 {
 /* end-variables color */
 /* begin-variables font */
 .u-custom-font.u-text-font {
-    font-family: Alata !important;
+    font-family: var(--alata) !important;
 }
 
 .u-custom-font.u-heading-font {
-    font-family: Alata !important;
+    font-family: var(--alata) !important;
 }
 
 /* end-variables font */
@@ -55556,7 +55556,7 @@ h1.u-title {
     line-height: 1.1;
     margin-top: 20px;
     margin-bottom: 20px;
-    font-family: Alata;
+    font-family: var(--alata);
 }
 
 h2.u-subtitle {
@@ -55564,7 +55564,7 @@ h2.u-subtitle {
     line-height: 1.1;
     margin-top: 20px;
     margin-bottom: 20px;
-    font-family: Alata;
+    font-family: var(--alata);
     font-weight: 700;
     letter-spacing: 10px;
 }
@@ -55574,7 +55574,7 @@ h1:not(.u-title) {
     line-height: 1.1;
     margin-top: 20px;
     margin-bottom: 20px;
-    font-family: Alata;
+    font-family: var(--alata);
     font-weight: 700;
 }
 
@@ -55584,7 +55584,7 @@ h2:not(.u-subtitle) {
     line-height: 1.1;
     margin-top: 20px;
     margin-bottom: 20px;
-    font-family: Alata;
+    font-family: var(--alata);
 }
 
 h3 {
@@ -55593,7 +55593,7 @@ h3 {
     line-height: 1.2;
     margin-top: 20px;
     margin-bottom: 20px;
-    font-family: Alata;
+    font-family: var(--alata);
 }
 
 h4 {
@@ -55602,7 +55602,7 @@ h4 {
     line-height: 1.2;
     margin-top: 20px;
     margin-bottom: 20px;
-    font-family: Alata;
+    font-family: var(--alata);
 }
 
 h5 {
@@ -55611,7 +55611,7 @@ h5 {
     line-height: 1.2;
     margin-top: 20px;
     margin-bottom: 20px;
-    font-family: Alata;
+    font-family: var(--alata);
 }
 
 h6 {
@@ -55620,14 +55620,14 @@ h6 {
     line-height: 1.2;
     margin-top: 20px;
     margin-bottom: 20px;
-    font-family: Alata;
+    font-family: var(--alata);
 }
 
 p.u-large-text {
     font-size: 1.25rem;
     margin-top: 20px;
     margin-bottom: 20px;
-    font-family: Alata;
+    font-family: var(--alata);
 }
 
 p.u-small-text {

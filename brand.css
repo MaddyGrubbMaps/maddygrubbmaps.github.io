@@ -908,6 +908,16 @@ body:has(.mgm-hero-section:not(.mgm-hero-section--half)) #sec-cdd0.mgm-at-top .u
 body:has(.mgm-hero-section:not(.mgm-hero-section--half)) #sec-cdd0.mgm-at-top .u-hamburger-link .u-svg-content rect {
   fill: var(--paper) !important;
 }
+/* ...but NOT inside the mobile slide-out: the panel is paper, so
+   the hero-page white-link rule above must not reach into it.
+   Extra class in the selector out-specifies the paper rule. */
+body:has(.mgm-hero-section:not(.mgm-hero-section--half)) #sec-cdd0.mgm-at-top .u-nav-container-collapse .u-nav-link,
+body:has(.mgm-hero-section:not(.mgm-hero-section--half)) #sec-cdd0.mgm-at-top .u-nav-container-collapse .u-text-custom-color-2 {
+  color: var(--ink) !important;
+}
+body:has(.mgm-hero-section:not(.mgm-hero-section--half)) #sec-cdd0.mgm-at-top .u-nav-container-collapse .u-nav-4 .u-nav-link {
+  color: var(--ink-2) !important;
+}
 
 /* Sheet: pure flex row, centered, capped width via Nicepage's   */
 /* responsive --theme-sheet-width vars OR full-width — we set    */
@@ -1228,6 +1238,13 @@ body:has(.mgm-journal-hero) #sec-cdd0.mgm-at-top .u-nav-link.mgm-nav-active {
 }
 
 /* Top-level mobile links: ink color, vertical breathing room. */
+#sec-cdd0 .u-nav-container-collapse .u-nav,
+#sec-cdd0 .u-nav-container-collapse .u-nav.u-align-center,
+#sec-cdd0 .u-nav-container-collapse .u-nav-item,
+#sec-cdd0 .u-nav-container-collapse .u-nav-link {
+  text-align: left !important;
+}
+
 #sec-cdd0 .u-nav-3 > .u-nav-item > .u-nav-link {
   color: var(--ink) !important;
   padding: 14px 24px;
@@ -3058,4 +3075,25 @@ body:has(.mgm-journal-hero) #sec-cdd0.mgm-at-top .u-nav-popup .u-nav-link:hover 
 }
 .mgm-mosaic-cell:hover::after {
   background: color-mix(in oklab, var(--navy) 18%, transparent);
+}
+
+/* ── Slide-out menu: ALWAYS dark text ──────────────────────────
+   Final word, end of file on purpose. The slide-out panel is
+   paper in every state, so its links are ink no matter what the
+   top header is doing (hero white-at-top, scrolled, any page).
+   Max-specificity chain beats every earlier at-top/white rule. */
+html body #sec-cdd0 .u-nav-container-collapse .u-nav-link,
+html body #sec-cdd0 .u-nav-container-collapse .u-nav-link.u-white,
+html body #sec-cdd0 .u-nav-container-collapse .u-text-custom-color-2,
+html body #sec-cdd0 .u-nav-container-collapse .u-sidenav a,
+html body #sec-cdd0.mgm-at-top .u-nav-container-collapse .u-nav-link,
+html body #sec-cdd0.mgm-at-top .u-nav-container-collapse .u-sidenav a {
+  color: var(--ink) !important;
+}
+html body #sec-cdd0 .u-nav-container-collapse .u-nav-4 .u-nav-link {
+  color: var(--ink-2) !important;
+}
+html body #sec-cdd0 .u-nav-container-collapse .u-nav-link:hover,
+html body #sec-cdd0 .u-nav-container-collapse .u-nav-link:focus {
+  color: var(--teal) !important;
 }

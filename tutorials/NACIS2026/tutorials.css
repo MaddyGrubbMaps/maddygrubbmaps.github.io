@@ -1,0 +1,112 @@
+/* Tutorials & Resources — NACIS 2026 talk resource page.
+   Fonts come from type.css (Ranch Water h1, Figtree h2+/body);
+   this file only sets layout, size, and color. */
+
+/* mgm-hero-section switches the shared header to its white-logo
+   hero mode at top-of-page; the id rules below override its
+   full-viewport sizing down to a banner. */
+#tut-hero {
+  /* teal multiply is baked into the image — no runtime blend-mode
+     (blend + fixed attachment crashes mobile Safari) */
+  background-image: url("../../images/tutorials-winter-tetons.webp");
+  background-position: 50% 50%;
+  background-size: cover;
+  background-attachment: scroll;
+  min-height: 0;
+  display: block;
+}
+
+@media (max-width: 767px) {
+  #tut-hero {
+    background-image: url("../../images/tutorials-winter-tetons-960.webp");
+  }
+  #tut-list li {
+    margin: 14px 0;  /* thumb-sized tap spacing */
+  }
+}
+
+#tut-hero .u-sheet-1 {
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 160px 20px 80px;
+}
+
+@media (max-width: 767px) {
+  #tut-hero .u-sheet-1 {
+    min-height: 360px;
+    padding: 130px 20px 60px;
+  }
+}
+
+.tut-title {
+  color: #fff;
+  text-shadow: 0 1px 14px rgba(15, 35, 70, 0.55);
+  font-size: 2.6rem;
+  margin: 0 0 12px;
+}
+
+.tut-sub {
+  font-style: italic;
+  font-size: 1.1rem;
+  max-width: 44em;
+  margin: 0 auto 10px;
+  color: #fff;
+  text-shadow: 0 1px 10px rgba(15, 35, 70, 0.6);
+}
+
+#tut-list .tut-wrap {
+  min-height: 0;
+  max-width: 760px;
+  padding: 10px 20px 90px;
+}
+
+#tut-list h2 {
+  color: #1B3D7A;
+  font-size: 1.7rem;
+  margin: 44px 0 6px;
+}
+
+#tut-list h3 {
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 26px 0 4px;
+}
+
+#tut-list ul {
+  margin: 6px 0 10px;
+  padding-left: 1.3em;
+}
+
+#tut-list li {
+  margin: 7px 0;
+  line-height: 1.5;
+}
+
+#tut-list a {
+  color: #1B3D7A;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+#tut-list a:hover {
+  color: var(--orange);
+}
+
+.tut-note {
+  opacity: 0.65;
+}
+
+.tut-channels {
+  margin: 14px 0 0;
+}
+
+/* Desktop: title breaks "THINKING LIKE A / 3D ENVIRONMENT ARTIST";
+   on phones the break is dropped and the title wraps naturally. */
+@media (max-width: 767px) {
+  .tut-title br { display: none; }
+}

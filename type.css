@@ -1,0 +1,81 @@
+/* Site typography (July 2026 redesign): Ranch Water display + Figtree text.
+   Loaded last on every page; nicepage.css was edited to route its literal
+   Alata rules through var(--alata) so these variables control everything.
+   The :not(#\#) chains are an id-specificity boost to beat nicepage's
+   class-based !important rules.
+   Mono is the cross-platform SYSTEM stack by design (matches the Shopify
+   store) — no mono webfont is loaded. */
+
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
+
+@font-face {
+  font-family: 'Ranch Water';
+  src: url('/fonts/RanchWater.otf') format('opentype');
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Ranch Water';
+  src: url('/fonts/RanchWater-Italic.otf') format('opentype');
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --text-sans:  'Figtree', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --mono-stack: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+
+  /* was Manrope */
+  --sans:    var(--text-sans);
+  /* former Newsreader / Alata / JetBrains slots */
+  --serif:   var(--mono-stack);
+  --mono:    var(--mono-stack);
+  --display: var(--mono-stack);
+  --alata:   var(--mono-stack);
+}
+
+/* Ranch Water: h1 / hero titles. Faux-bold blocked (font only ships a Regular). */
+h1:not(#\#):not(#\#):not(#\#):not(#\#),
+h1 *:not(#\#):not(#\#):not(#\#):not(#\#),
+.mgm-hero-title:not(#\#):not(#\#):not(#\#):not(#\#),
+.u-headline:not(#\#):not(#\#):not(#\#):not(#\#) {
+  font-family: 'Ranch Water', cursive !important;
+  font-weight: 400 !important;
+  font-synthesis: none !important;
+  -webkit-text-stroke: 0 !important;
+}
+
+/* h2: Figtree bold, forced mixed case */
+h2:not(#\#):not(#\#):not(#\#):not(#\#),
+h2 *:not(#\#):not(#\#):not(#\#):not(#\#) {
+  font-family: var(--text-sans) !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+}
+
+/* h3–h6: Figtree bold (case left to the page's own styles) */
+h3:not(#\#):not(#\#):not(#\#):not(#\#),
+h4:not(#\#):not(#\#):not(#\#):not(#\#),
+h5:not(#\#):not(#\#):not(#\#):not(#\#),
+h6:not(#\#):not(#\#):not(#\#):not(#\#),
+h3 *:not(#\#):not(#\#):not(#\#):not(#\#),
+h4 *:not(#\#):not(#\#):not(#\#):not(#\#),
+h5 *:not(#\#):not(#\#):not(#\#):not(#\#),
+h6 *:not(#\#):not(#\#):not(#\#):not(#\#) {
+  font-family: var(--text-sans) !important;
+  font-weight: 700 !important;
+}
+
+/* Largest display headings in all caps */
+h1:not(#\#):not(#\#):not(#\#):not(#\#),
+h1 *:not(#\#):not(#\#):not(#\#):not(#\#),
+.u-headline:not(#\#):not(#\#):not(#\#):not(#\#) {
+  text-transform: uppercase !important;
+}
+
+/* Globe location list: mixed case (source text is already "Lofoten" etc.) */
+.mgm-where-project-title:not(#\#):not(#\#):not(#\#):not(#\#),
+.mgm-where-project-region:not(#\#):not(#\#):not(#\#):not(#\#) {
+  text-transform: none !important;
+}
